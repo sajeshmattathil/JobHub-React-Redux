@@ -4,12 +4,13 @@ import "tailwindcss/tailwind.css";
 
 interface Input {
   inputValue: string;
-  setInput:  React.Dispatch<React.SetStateAction<string>>
+  setInput:  React.Dispatch<React.SetStateAction<string>>;
+  setError:  React.Dispatch<React.SetStateAction<string>>;
   type: 'email' | 'password' | 'text';
   placeholder: string;
   className: string;
 }
-export default function BasicTextFields({type,inputValue,setInput,placeholder,className}:Input) {
+export default function BasicTextFields({type,inputValue,setInput,placeholder,className,setError}:Input) {
 
   function validateEmail(email : string){
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -35,6 +36,7 @@ export default function BasicTextFields({type,inputValue,setInput,placeholder,cl
        type={type} 
        onChange={(event)=>{
         setInput(event.target.value)
+        setError('')
        if(type == 'email') validateEmail(inputValue)
        if(type == 'password') validatePwd(inputValue)
 
