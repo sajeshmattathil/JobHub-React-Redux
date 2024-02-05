@@ -22,6 +22,10 @@ export default function BasicTextFields({type,inputValue,setInput,placeholder,cl
     return pwdRegex.test(email)
   }
   
+  function validateName(name : string){
+    const nameRegex = /^[A-Za-z]+$/;
+        return nameRegex.test(name)
+  }
   
   return (
     <Box
@@ -35,10 +39,21 @@ export default function BasicTextFields({type,inputValue,setInput,placeholder,cl
        className={className}
        type={type} 
        onChange={(event)=>{
-        setInput(event.target.value)
+
+        setInput(event.target.value) 
+
         setError('')
-       if(type == 'email') validateEmail(inputValue)
-       if(type == 'password') validatePwd(inputValue)
+
+       if(type == 'email'){
+       if(!validateEmail(inputValue)) setError('Enter a correct email')
+       } 
+
+       if(type == 'password'){
+        if(!validatePwd(inputValue)) setError('Enter a correct password')
+       } 
+       if(type == 'text'){
+        if(!validateName(inputValue)) setError('Enter a correct Name')
+       } 
 
       }} 
        value = {inputValue}

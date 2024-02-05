@@ -9,7 +9,7 @@ type button = {
 export default function BasicButtons({className,style,type} : button) {
   return (
     <Stack spacing={2} direction="row">
-      <Button type={type} className={className}  variant="contained" sx={ style}>Sign In</Button>
+      <Button type={type} className={className}  variant="contained" sx={ style}>Sign Up</Button>
     </Stack>
   );
 }

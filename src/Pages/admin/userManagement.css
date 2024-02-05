@@ -1,0 +1,24 @@
+.userTable {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+.userTable th, .userTable td {
+    border: 1px solid #131212;
+    padding: 8px;
+    text-align: center;
+}
+
+.userHead {
+    background-color: #130b0b;
+    color : white
+}
+
+.userTableBody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.userTableBody tr:hover {
+    background-color: #ddd;
+}
