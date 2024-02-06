@@ -1,18 +1,11 @@
-import React from 'react'
-import { FaRegCircleUser } from "react-icons/fa6";
+import React from 'react';
 
-function Navbar() {
-  
+const Navbar = () => {
   return (
-    <nav style={{backgroundColor:'white',color:'black'}} >
-<div>
-<p style={{margin:'20px',padding:'20px',fontSize:'30px',borderBottom:'2px solid black'}}>Job Hub</p>
-</div>
-<div><FaRegCircleUser />
-</div>
+    <nav style={{ backgroundColor: '#ffffff', padding: '1rem', borderBottom: '2px solid #cccccc' }}>
+      <h1 style={{ color: '#000000' }}>JobHunt</h1>
     </nav>
- 
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;

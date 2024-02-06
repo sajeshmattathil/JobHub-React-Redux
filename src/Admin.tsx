@@ -10,6 +10,7 @@ function Admin() {
    <Router>
       <Routes>  
         <Route path={'/admin'} element = {<UserManagementTable />}/>
+        
         <Route path={'/admin/login'} element = {<LogIn/>}/>
 
       </Routes>

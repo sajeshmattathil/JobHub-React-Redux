@@ -29,7 +29,7 @@ async  function handleSubmit(event : React.FormEvent){
         setError('Complete all the fields') 
         return
       }
-     
+     if(error !== '') return
 
         const response   =  await axiosInstance.post('/login_submit',{
           email : email,

@@ -17,9 +17,11 @@ export default function BasicTextFields({type,inputValue,setInput,placeholder,cl
     return emailRegex.test(email)
   }
 
-  function validatePwd(email : string){
+  function validatePwd(password : string){
+console.log(password,typeof(password));
+
     const pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
-    return pwdRegex.test(email)
+    return pwdRegex.test(password)
   }
   
   function validateName(name : string){

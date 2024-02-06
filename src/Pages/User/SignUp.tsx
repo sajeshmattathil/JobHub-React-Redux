@@ -4,6 +4,7 @@ import Button from '../../components/User/SignIn/Buttons/Button'
 import axiosInstance from '../../Utils/axios/axios'
 import { useNavigate } from 'react-router-dom'
 import generateOtp from '../../Utils/OtpGenerator/otpGenerator'
+import { Navbar } from '@material-tailwind/react'
 
 function SignUp() {
   const [fname, setFname] = useState<string>('')
@@ -93,8 +94,10 @@ function SignUp() {
   if(otp.trim() ===''){
     return (
       <div>
-  
+          <Navbar children={'jjj'} placeholder={'undefined'}/>
+
         <div className='signup' style={{
+          marginTop:'80px',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -126,7 +129,10 @@ function SignUp() {
             <BasicTextFields type="password" className='' setInput={setConfirm} setError={setError} inputValue={confirmPsw} placeholder='Confirm' />
   
             <Button className='' type='submit' style={{ width: '100%', backgroundColor: 'black', color: 'white', }} />
-  
+            <ul >Contain at least one lowercase letter.</ul>
+                 <ul>Contain at least one uppercase letter.</ul>
+                 <ul>Contain at least one digit.</ul>
+                 <ul>Be at least 8 characters long.</ul>
             <p style={{ cursor: "pointer" }} onClick={handleExistingUser} >Already have a account?</p>
             <p style={{ cursor: "pointer" }}  >Recruiter?</p>
   

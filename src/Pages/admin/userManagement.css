@@ -1,24 +1,46 @@
-.userTable {
-    width: 80%;
+/* userManagement.css */
+
+.table-container {
     margin: 0 auto;
-    border-collapse: collapse;
+    width: 80%;
 }
 
-.userTable th, .userTable td {
-    border: 1px solid #131212;
-    padding: 8px;
-    text-align: center;
+table {
+    width: 70%;
+    margin-left: 15%;
+    margin-top: 5%;
+    
 }
 
-.userHead {
-    background-color: #130b0b;
-    color : white
+th, td {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    text-align: left;
 }
 
-.userTableBody tr:nth-child(even) {
+th {
     background-color: #f2f2f2;
 }
 
-.userTableBody tr:hover {
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
     background-color: #ddd;
+}
+
+button {
+    padding: 6px 12px;
+    margin-right: 4px;
+    cursor: pointer;
+    border: none;
+    background-color: black;
+    color: #fff;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: white;
+    color: black;
 }
