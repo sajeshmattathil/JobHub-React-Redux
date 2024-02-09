@@ -1,7 +1,7 @@
 import Home from './Pages/User/Home'
-import LogIn from './Pages/User/Login'
+import LoginNew from './Pages/User/LoginNew'
 import SignUp from './Pages/User/SignUp'
-import 'bootstrap/dist/css/bootstrap.min.css'
+
 
 import { Route,Routes,BrowserRouter as Router } from 'react-router-dom'
 function App() {
@@ -10,7 +10,7 @@ function App() {
    <Router>
       <Routes>
         <Route path={'/signup'} element = {<SignUp/>}/>
-        <Route path={'/login'} element = {<LogIn/>}/>
+        <Route path={'/login'} element = {<LoginNew/>}/>
         <Route path={'/'} element = {<Home/>}/>
       </Routes>
    </Router>

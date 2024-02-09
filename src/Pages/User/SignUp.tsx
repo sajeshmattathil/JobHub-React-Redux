@@ -91,6 +91,9 @@ function SignUp() {
   const handleExistingUser = (): void => {
     navigate('/login')
   }
+  const handleExisitinHr = ()=>{
+    navigate('/hr/login')
+  }
   if(otp.trim() ===''){
     return (
       <div>
@@ -134,7 +137,7 @@ function SignUp() {
                  <ul>Contain at least one digit.</ul>
                  <ul>Be at least 8 characters long.</ul>
             <p style={{ cursor: "pointer" }} onClick={handleExistingUser} >Already have a account?</p>
-            <p style={{ cursor: "pointer" }}  >Recruiter?</p>
+            <p style={{ cursor: "pointer" }} onClick={handleExisitinHr} >Recruiter?</p>
   
   
           </form>
