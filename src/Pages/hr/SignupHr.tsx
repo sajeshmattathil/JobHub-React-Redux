@@ -2,13 +2,18 @@ import React, { useState } from "react";
 import axiosInstance from "../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import upload from "../../Utils/Cloudinary/cloudinary";
+import generateOtp from "../../Utils/OtpGenerator/otpGenerator";
 
 function SignupHr() {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [resume, setResume] = useState<string>('');
   const [company, setCompany] = useState<string>("");
   const [website, setWebsite] = useState<string>("");
+  const [enteredOtp, setEnteredOtp] = useState("");
+  const [otp, setOtp] = useState<string>("");
 
   const [error, setError] = useState("");
 
@@ -17,20 +22,80 @@ function SignupHr() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  interface dataInterface{
+    name : string,
+    email : string,
+    password : string,
+    resume : string | undefined,
+    company : string,
+    website : string
+    otp : string | undefined,
+    createdAt : number
+  }
 
-  const onSubmit = async (data: unknown) => {
-    console.log(data);
+
+  const onSubmit = async (data: dataInterface) => {
     try {
       if (error !== "") return;
+      if(resume === '') setError('Resume not selected,try again')
+      data.resume = resume
+     console.log(data);
 
-      const response = await axiosInstance.post("/hr/signup_submit", data);
+     const OneTimePassword = generateOtp();
+     const createdAt = Date.now();
+     data.otp = OneTimePassword
+     data.createdAt = createdAt
+     
+      const response = await axiosInstance.post(
+        "/hr/signup_submit",
+       data 
+      );
+      console.log(response.data,'djhjdddddddddd');
 
       if (response?.data?.status === 201) {
-        navigate("/hr/login");
-      } else if (response?.data?.status === 400)
+        setError("");
+        if (OneTimePassword){
+          setOtp(OneTimePassword);
+          console.log(OneTimePassword,'OneTimePassword')
+        } 
+      } 
+       if(response?.data?.status === 400){
         setError(response?.data?.message);
+      }
+      if(response?.data?.status === 409){
+        setError(response?.data?.message);
+      }
+
     } catch (err) {
       console.log("Error happenend in sigunp submit", err);
+      setError('Internal Server Down')
+    }
+  };
+  const handleOtp = async () => {
+    try {
+      if (enteredOtp.trim().length === 6) {
+        const response = await axiosInstance.post("/hr/verifyOtp", {
+          otp: enteredOtp,
+          userId: email,
+        });
+        console.log(response, "response");
+
+        if (response.data.status === 201){
+          setError("");
+          navigate("/hr/login");
+        } 
+        if (response.data.status === 401) setError(response.data.message);
+        if (response.data.status === 500) setError(response.data.message);
+        if (response.data.status === 404) setError(response.data.message);
+
+        setOtp("");
+      } else {
+        setError("Enter correct OTP");
+      }
+    } catch (error) {
+      console.log(error);
+      setError("Something went wrong try again");
+      setOtp("");
     }
   };
 
@@ -40,7 +105,9 @@ function SignupHr() {
     navigate("/hr/login");
   };
 
-  return (
+
+  if (otp.trim() === "") {
+    return (
     <div
       style={{
         display: "flex",
@@ -155,11 +222,20 @@ function SignupHr() {
             {...register("resume", {
               required: true,
             })}
+            onChange={ async (e: React.ChangeEvent<HTMLInputElement>) => {
+              setError('')
+              const files = e.target.files;
+            if(files){
+              const pdf = files[0];
+              const resumeUrl = await upload(pdf, "resume");
+            if(resumeUrl) setResume( resumeUrl )
+            }  
+             
+            }}
           />
           {errors.resume && errors.resume.type === "required" && (
             <p className="errorMsg">Resume is required.</p>
           )}
-
           <label htmlFor="resume_upload">Company Name</label>
           <input
             type="text"
@@ -201,6 +277,73 @@ function SignupHr() {
       </form>
     </div>
   );
+}else{
+  return (
+    <div>
+      <div
+        className="otp"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          backgroundColor: "white",
+        }}
+      >
+        <div
+          className="otpInner items-center justify-center "
+          style={{
+            backgroundColor: "white",
+            padding: "20px",
+            borderRadius: "8px",
+            boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
+          }}
+        >
+          <p style={{ fontWeight: "bold" }}>Enter your OTP</p>
+          <p
+            style={{
+              color: "red",
+              fontSize: "15px",
+              alignItems: "center",
+              justifyItems: "center",
+              marginLeft: "27%",
+            }}
+          >
+            {error}
+          </p>
+
+          <span>
+            <input
+              type="text"
+              style={{
+                border: "solid black 2px",
+                borderRadius: ".5rem",
+                margin: "1rem",
+              }}
+              onChange={(e) => {
+                setEnteredOtp(e.target.value);
+                setError("");
+              }}
+            />
+
+            <button
+              style={{
+                borderRadius: ".5rem",
+                color: "white",
+                backgroundColor: "black",
+                border: "none",
+              }}
+              onClick={handleOtp}
+            >
+              Submit
+            </button>
+          </span>
+          <p>Resend OTP</p>
+        </div>
+      </div>
+    </div>
+  );
+}
 }
 
 export default SignupHr;

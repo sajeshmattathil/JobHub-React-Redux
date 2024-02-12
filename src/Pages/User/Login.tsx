@@ -38,6 +38,7 @@ async  function handleSubmit(event : React.FormEvent){
        
          if(response?.data?.status === 201) {
           localStorage.setItem('token', response.data.token);
+          localStorage.setItem('userId',email)
           navigate('/')
          } 
          else if (response?.data?.status === 400) setError(response?.data?.message)

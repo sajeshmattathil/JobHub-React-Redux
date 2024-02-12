@@ -1,20 +1,37 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { axiosInstance } from "../../Utils/axios/axios";
 
 const LoginHr = () => {
 
 const [email,setEmail] = useState('')
 const [password,setPassword] = useState('')
+const [error,setError] = useState('')
 
-
+const navigate = useNavigate()
     const {
         register,
         handleSubmit,
         formState: { errors },
-      } = useForm();
+      } = useForm(); 
     
-      const onSubmit = (data: unknown) => {
-        console.log(data);
+      const onSubmit = async (data: unknown) => {
+        try {
+          const response   =  await axiosInstance.post('/hr/login_submit',data)
+        console.log(response,'res');
+        
+          if(response?.data?.status === 201) {
+          //  localStorage.setItem('token', response.data.token);
+           navigate('/hr')
+          }
+          if(response?.data?.status === 400) setError('Passoword does not match ')  
+          if(response?.data?.status === 401) setError('User not found')  
+
+        } catch (error) {
+          console.log('error :',error);
+          
+        }
       };
 
   return (
@@ -23,6 +40,7 @@ const [password,setPassword] = useState('')
           Hiring Manager Login
         </p>
       <form onSubmit={handleSubmit(onSubmit)} >
+        <p>{error}</p>
 
         <div className="form-control">
           <label>Email</label>
@@ -32,8 +50,12 @@ const [password,setPassword] = useState('')
               required: true,
               pattern: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
             })}
-            onChange={(e:  React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)=>setEmail(e.target.value)}
+            onChange={(e:  React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)=>{
+              setError('')
+              setEmail(e.target.value)}}
+
             value={email}
+
           />
           {errors.email && errors.email.type === "required" && (
             <p className="errorMsg">Email is required.</p>
@@ -56,7 +78,9 @@ const [password,setPassword] = useState('')
                   ),
               },
             })}
-            onChange={(event:  React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)=>setPassword(event.target.value)}
+            onChange={(event:  React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)=>{
+              setError('')
+              setPassword(event.target.value)}}
             value={password}
           />
           {errors.password?.type === "required" && (

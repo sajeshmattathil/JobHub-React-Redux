@@ -1,36 +1,75 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import "./profileManagement.css";
 import Select from "react-select";
+import upload from "../../Utils/Cloudinary/cloudinary";
+import axiosInstance from "../../Utils/axios/axios";
 
 export default function ProfileManagement() {
-  const departments = [
-    { value: "Computer-Science", label: "Computer Science" },
-    { value: "Physics", label: "Physics" },
-    { value: "Chemistry", label: "Chemistry" },
-    { value: "Mathematics", label: "Mathematics" },
+  const [fname, setFname] = useState<string>("");
+  const [lname, setLname] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [resume, setResume] = useState<string>("");
+  const [experience, setExperience] = useState<string>("0");
+  const [error, setError] = useState<string>("");
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const userId = localStorage.getItem("userId");
+        const response = await axiosInstance.get(`/getUser/${userId}`);
+        if (response?.data?.status === 201) {
+          setFname(response?.data?.fname);
+          setLname(response?.data?.lname);
+          setEmail(response?.data?.email);
+        }
+      } catch (error) {
+        console.log("error in fetching user");
+      }
+    };
+    fetchUser();
+  }, []);
+
+  type SkillOption = { value: string; label: string };
+
+  let skills: SkillOption[] | string[] = [
+    { value: "Javascript", label: "Javascript" },
+    { value: "NodeJS", label: "NodeJS" },
+    { value: "ReactJS", label: "ReactJS" },
+    { value: "MongoDB", label: "MongoDB" },
+    { value: "HTML", label: "HTML" },
+    { value: "CSS", label: "CSS" },
+    { value: "ExpressJS", label: "ExpressJS" },
+    { value: "Vue.js", label: "Vue.js" },
+    { value: "Angular", label: "Angular" },
   ];
 
-  interface workExperience {
-    companyName : string,jobRole : string, years : number
-  }
-  const [workExperiences, setWorkExperiences] = useState<workExperience[]>([
-    { companyName: "", jobRole: "", years: 0 },
-  ]);
+  // interface workExperience {
+  //   jobRole: string;
+  //   years: number;
+  // }
+  // const [workExperiences, setWorkExperiences] = useState<workExperience[]>([
+  //   { jobRole: "", years: 0 },
+  // ]);
 
+  // const [addWorkExpience, setAddWorkExperiences] = useState([
+  //   ...workExperiences,
+  //   {
+  //     jobRole: "", years: 0 },
+  // ]);
 
-  const [addWorkExpience, setAddWorkExperiences] = useState([
-    ...workExperiences,
-    { companyName: "", jobRole: "", years: 0 },
-  ]);
-
-  
-
-  const updateWorkExperience = (index: number,field : keyof workExperience,value : number | string)=>{
-    const updatedWorkexperience : workExperience[]= [...workExperiences]
-    updateWorkExperience[index].field = value
-    setWorkExperiences(updateWorkExperience)
-  }
+  const updateWorkExperience = (
+    index: number,
+    field: keyof workExperience,
+    value: number | string
+  ) => {
+    // const updatedWorkExperiences: workExperience[] = [...workExperiences];
+    // updatedWorkExperiences[index][field] = value;
+    // setWorkExperiences(updatedWorkExperiences);
+    // console.log(updatedWorkExperiences, 'updatedWorkExperiences');
+  };
+  // const removeWorkExperience = (index: number) => {};
 
   const {
     control,
@@ -39,16 +78,63 @@ export default function ProfileManagement() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data: unknown) => {
+  const onSubmit = async (data) => {
+    data.resume = resume;
+    if (typeof skills[0] === "object" && !Array.isArray(skills[0])) {
+      data.skills = (data.skills as SkillOption[]).map(
+        (option) => option.value
+      );
+    }
     console.log(data);
+    try {
+      const update = await axiosInstance.post("/update", data);
+    } catch (error) {
+      console.log("Error in updating profile", error);
+    }
   };
 
   return (
     <div className="App">
-      <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-        <label>Email</label>
-
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <h2 className="">Manage your Profile</h2>
         <div className="form-control">
+          <label htmlFor="">First Name</label>
+          <input
+            type="text"
+            {...register("fname", {
+              required: true,
+              pattern: /^[A-Za-z]+$/,
+            })}
+            onChange={(
+              e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+            ) => setFname(e.target.value)}
+            value={fname}
+          />
+          {errors.fname && errors.fname.type === "required" && (
+            <p className="errorMsg">First Name is required.</p>
+          )}
+          {errors.fname && errors.fname.type === "pattern" && (
+            <p className="errorMsg">First Name is not valid.</p>
+          )}
+          <label htmlFor="">Last Name</label>
+          <input
+            type="text"
+            {...register("lname", {
+              required: true,
+              pattern: /^[A-Za-z]+$/,
+            })}
+            onChange={(
+              e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+            ) => setLname(e.target.value)}
+            value={lname}
+          />
+          {errors.lname && errors.lname.type === "required" && (
+            <p className="errorMsg">Last Name is required.</p>
+          )}
+          {errors.lname && errors.lname.type === "pattern" && (
+            <p className="errorMsg">Last Name is not valid.</p>
+          )}
+
           <label>Email</label>
           <input
             type="text"
@@ -56,6 +142,10 @@ export default function ProfileManagement() {
               required: true,
               pattern: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
             })}
+            onChange={(
+              e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+            ) => setEmail(e.target.value)}
+            value={email}
           />
           {errors.email && errors.email.type === "required" && (
             <p className="errorMsg">Email is required.</p>
@@ -63,8 +153,7 @@ export default function ProfileManagement() {
           {errors.email && errors.email.type === "pattern" && (
             <p className="errorMsg">Email is not valid.</p>
           )}
-        </div>
-        <div className="form-control">
+
           <label>Password</label>
           <input
             type="password"
@@ -79,6 +168,10 @@ export default function ProfileManagement() {
                   ),
               },
             })}
+            onChange={(
+              event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+            ) => setPassword(event.target.value)}
+            value={"●●●●●●"}
           />
           {errors.password?.type === "required" && (
             <p className="errorMsg">Password is required.</p>
@@ -95,21 +188,11 @@ export default function ProfileManagement() {
             </p>
           )}
         </div>
-        <div className="form-control">
+        {/* <div className="form-control">
           <label htmlFor="">Work Experience</label>
           {workExperiences.map((workExperience, index) => (
             <div className="work-entry" key={index}>
-              <label htmlFor={`companyName${index}`}>Company Name:</label>
-              <input
-                type="text"
-                id={`companyName${index}`}
-                name={`companyName`}
-                value={workExperience.companyName}
-                onChange={(e) =>
-                  updateWorkExperience(index, "companyName", e.target.value)
-                }
-                required
-              />
+           
 
               <label htmlFor={`jobRole${index}`}>Job Role:</label>
               <input
@@ -122,14 +205,12 @@ export default function ProfileManagement() {
                 }
                 required
               />
+              <label htmlFor={`jobRole${index}`}>Years:</label>
 
-              <label htmlFor={`years${index}`}>Years:</label>
-              <input
-                type="number"
+                <input
+                type="text"
                 id={`years${index}`}
                 name={`years`}
-                min="1"
-                step="1"
                 value={workExperience.years}
                 onChange={(e) =>
                   updateWorkExperience(index, "years", e.target.value)
@@ -137,47 +218,76 @@ export default function ProfileManagement() {
                 required
               />
 
-              <button type="button" onClick={() => removeWorkExperience(index)}>
+             {index>1 && <button type="button" onClick={() => removeWorkExperience(index)}>
                 Remove
-              </button>
+              </button>}
             </div>
           ))}
-        </div>
-
+        </div> */}
         <div className="form-control">
-          <label>Select Department of Interest</label>
+          <label>Select your skills</label>
           <Controller
-            name="department"
+            name="skills"
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
-              <Select {...field} isMulti options={departments} />
+              <Select {...field} isMulti options={skills} />
             )}
           />
-          {errors.department && (
+          {errors.skills && (
             <p className="errorMsg">This is a required field.</p>
           )}
         </div>
-
+        <label>Enter your years of Experience</label>
+        <input
+          type="text"
+          {...register("years", {
+            required: true,
+            pattern: /^(0|[1-9]\d?)$|^30$/,
+          })}
+          onChange={(
+            e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+          ) => setExperience(e.target.value)}
+          value={experience}
+        />
+        {errors.years && errors.years.type === "required" && (
+          <p className="errorMsg">Experience is required.</p>
+        )}
+        {errors.years && errors.years.type === "pattern" && (
+          <p className="errorMsg">
+            Experience should be a non-negative number less than or equal to 30.
+          </p>
+        )}
         <div>
           <div className="form-control">
             <label htmlFor="resume_upload">Upload Resume (PDF)</label>
             <input
               type="file"
               id="resume_upload"
-              name="resume_upload"
               accept=".pdf"
+              {...register("resume", {
+                required: true,
+              })}
+              onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+                setError("");
+                const files = e.target.files;
+                if (files) {
+                  const pdf = files[0];
+                  const resumeUrl = await upload(pdf, "resume");
+                  if (resumeUrl) setResume(resumeUrl);
+                }
+              }}
             />
+            {errors.resume && errors.resume.type === "required" && (
+              <p className="errorMsg">Resume is required.</p>
+            )}
           </div>
         </div>
         <div className="form-control">
           <label></label>
           <button type="submit">Update</button>
-        </div>.
-        <div className="form-control">
-          <label></label>
-          <button type="submit">Update</button>
         </div>
+        .
       </form>
     </div>
   );
