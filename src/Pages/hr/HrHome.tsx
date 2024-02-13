@@ -18,11 +18,12 @@ const Jobs = () => {
   const [jobs, setJobs] = useState<jobData[]>([]);
   const [msg, setMsg] = useState<string>("");
 
+  const hrEmail = localStorage.getItem('hrEmail')
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("skjfkasjfklasdfl");
-        const fetchedData = await axiosInstance.get("/hr/getJobs");
+        const fetchedData = await axiosInstance.get(`/hr/getJobs/${hrEmail}`);
 
         console.log(fetchedData, "fetchedData");
 
@@ -40,6 +41,33 @@ const Jobs = () => {
     fetchData();
   }, []);
   console.log(msg, "msg");
+  if(!hrEmail){
+    return (
+      <div
+          className="container"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <div
+            className="content"
+            style={{
+              fontSize: "60px",
+              textAlign: "center",
+              padding: "20px",
+              // border: "1px solid #ccc",
+              // borderRadius: "8px",
+              backgroundColor: "#f9f9f9",
+            }}
+          >
+          404 ERROR
+          </div>
+        </div>
+    )
+  }
 
   if (msg == "") {
     return (

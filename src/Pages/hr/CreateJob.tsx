@@ -23,23 +23,29 @@ const CreateJobForm = () => {
     { value: "Angular", label: "Angular" },
   ];
   
-  
   const navigate = useNavigate()
+  const hrEmail = localStorage.getItem('hrEmail')
 
 interface formData {
+  createdBy: string | null;
   jobRole : string,
   description : string,
   qualification : QualificationOption[] | string[] ,
   salaryFrom : string,
   salaryTo : string,
   company :string,
-  createdAt : Date | number
+  createdAt : Date | number,
+ 
 }
 
   const onSubmit =async (data : formData) : Promise<void> => {
     console.log(data, 'data');
 
-    if(data) data.createdAt = Date.now()
+    if(data){
+      data.createdAt = Date.now()
+      data.createdBy = hrEmail
+    } 
+
 
    if (typeof qualification[0] === 'object' && !Array.isArray(qualification[0])) {
   data.qualification = ( data.qualification  as QualificationOption[]).map((option) => option.value);

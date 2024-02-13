@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import BasicTextFields from "../../components/User/SignIn/Input/BasicTextFields";
-import Button from "../../components/User/SignIn/Buttons/Button";
+
 import axiosInstance from "../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
 import generateOtp from "../../Utils/OtpGenerator/otpGenerator";
 import { Navbar } from "@material-tailwind/react";
+import { useForm } from "react-hook-form";
 
 function SignUp() {
   const [fname, setFname] = useState<string>("");
@@ -13,14 +13,18 @@ function SignUp() {
   const [password, setPassword] = useState<string>("");
   const [confirmPsw, setConfirm] = useState<string>("");
   const [otp, setOtp] = useState<string>("");
-  
+
   const [enteredOtp, setEnteredOtp] = useState("");
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  async function handleSubmit(event: React.FormEvent) {
-    event.preventDefault();
+  async function onSubmit(data) {
 
     try {
       if (password !== confirmPsw) {
@@ -114,7 +118,7 @@ function SignUp() {
               borderRadius: "8px",
               boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
             }}
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit(onSubmit)}
           >
             <p
               style={{
@@ -137,72 +141,147 @@ function SignUp() {
             >
               {error}
             </p>
-
-            <BasicTextFields
+            <div className="form-control">
+            <label htmlFor="">First Name</label>
+            <input
               type="text"
-              className=""
-              setInput={setFname}
-              setError={setError}
-              inputValue={fname}
-              placeholder="First Name"
-            />
-
-            <BasicTextFields
-              type="text"
-              className=""
-              setInput={setLname}
-              setError={setError}
-              inputValue={lname}
-              placeholder="Last Name"
-            />
-
-            <BasicTextFields
-              type="email"
-              className=""
-              setInput={setEmail}
-              setError={setError}
-              inputValue={email}
-              placeholder="Email"
-            />
-
-            <BasicTextFields
-              type="password"
-              className=""
-              setInput={setPassword}
-              setError={setError}
-              inputValue={password}
-              placeholder="Password"
-            />
-
-            <BasicTextFields
-              type="password"
-              className=""
-              setInput={setConfirm}
-              setError={setError}
-              inputValue={confirmPsw}
-              placeholder="Confirm"
-            />
-
-            <Button
-              className=""
-              type="submit"
-              style={{
-                width: "100%",
-                backgroundColor: "black",
-                color: "white",
+              {...register("fname", {
+                required: true,
+                pattern: /^[A-Za-z]+$/,
+              })}
+              onChange={(
+                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => {
+                setFname(e.target.value);
+                setError("");
               }}
+              value={fname}
             />
-            <ul>Contain at least one lowercase letter.</ul>
-            <ul>Contain at least one uppercase letter.</ul>
-            <ul>Contain at least one digit.</ul>
-            <ul>Be at least 8 characters long.</ul>
+            {errors.fname && errors.fname.type === "required" && (
+              <p className="errorMsg">First Name is required.</p>
+            )}
+            {errors.fname && errors.fname.type === "pattern" && (
+              <p className="errorMsg">First Name is not valid.</p>
+            )}
+            <label htmlFor="">Last Name</label>
+            <input
+              type="text"
+              {...register("lname", {
+                required: true,
+                pattern: /^[A-Za-z]+$/,
+              })}
+              onChange={(
+                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => {
+                setLname(e.target.value);
+                setError("");
+              }}
+              value={lname}
+            />
+            {errors.lname && errors.lname.type === "required" && (
+              <p className="errorMsg">Last Name is required.</p>
+            )}
+            {errors.lname && errors.lname.type === "pattern" && (
+              <p className="errorMsg">Last Name is not valid.</p>
+            )}
+
+            <label>Email</label>
+            <input
+              type="text"
+              {...register("email", {
+                required: true,
+                pattern: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
+              })}
+              onChange={(
+                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => setEmail(e.target.value)}
+              value={email}
+            />
+            {errors.email && errors.email.type === "required" && (
+              <p className="errorMsg">Email is required.</p>
+            )}
+            {errors.email && errors.email.type === "pattern" && (
+              <p className="errorMsg">Email is not valid.</p>
+            )}
+
+            <label>Password</label>
+            <input
+              type="password"
+              // name="password"
+              {...register("password", {
+                required: true,
+                validate: {
+                  checkLength: (value) => value.length >= 6,
+                  matchPattern: (value) =>
+                    /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*])/.test(
+                      value
+                    ),
+                },
+              })}
+              onChange={(
+                event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => setPassword(event.target.value)}
+              value={password}
+            />
+            {errors.password?.type === "required" && (
+              <p className="errorMsg">Password is required.</p>
+            )}
+            {errors.password?.type === "checkLength" && (
+              <p className="errorMsg">
+                Password should be at-least 6 characters.
+              </p>
+            )}
+            {errors.password?.type === "matchPattern" && (
+              <p className="errorMsg">
+                Password should contain at least one uppercase letter, lowercase
+                letter, digit, and special symbol.
+              </p>
+            )}
+
+            <label>Confirm</label>
+            <input
+              type="password"
+              // name="password"
+              {...register("password", {
+                required: true,
+                validate: {
+                  checkLength: (value) => value.length >= 6,
+                  matchPattern: (value) =>
+                    /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*])/.test(
+                      value
+                    ),
+                },
+              })}
+              onChange={(
+                event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => setConfirm(event.target.value)}
+              value={confirmPsw}
+            />
+            {errors.password?.type === "required" && (
+              <p className="errorMsg">Password is required.</p>
+            )}
+            {errors.password?.type === "checkLength" && (
+              <p className="errorMsg">
+                Password should be at-least 6 characters.
+              </p>
+            )}
+            {errors.password?.type === "matchPattern" && (
+              <p className="errorMsg">
+                Password should contain at least one uppercase letter, lowercase
+                letter, digit, and special symbol.
+              </p>
+            )}
+          <button type="submit">Sign up</button>
+
             <p style={{ cursor: "pointer" }} onClick={handleExistingUser}>
               Already have a account?
             </p>
             <p style={{ cursor: "pointer" }} onClick={handleExisitinHr}>
               Recruiter?
             </p>
+            </div>
           </form>
+          
         </div>
       </div>
     );

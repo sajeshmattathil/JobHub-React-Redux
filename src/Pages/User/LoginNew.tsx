@@ -24,6 +24,9 @@ function LoginNew() {
          const response   =  await axiosInstance.post('/login_submit',data)
         
           if(response?.data?.status === 201) {
+            console.log(email,'email');
+          
+            localStorage.setItem('userId',email)
            localStorage.setItem('token', response.data.token);
            navigate('/')
           } 

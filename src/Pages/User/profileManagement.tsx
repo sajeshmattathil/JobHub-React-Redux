@@ -4,25 +4,33 @@ import "./profileManagement.css";
 import Select from "react-select";
 import upload from "../../Utils/Cloudinary/cloudinary";
 import axiosInstance from "../../Utils/axios/axios";
+import { useNavigate } from "react-router-dom";
 
 export default function ProfileManagement() {
   const [fname, setFname] = useState<string>("");
   const [lname, setLname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [password,setPassword] =useState<string>('')
   const [resume, setResume] = useState<string>("");
   const [experience, setExperience] = useState<string>("0");
+
   const [error, setError] = useState<string>("");
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const userId = localStorage.getItem("userId");
+        console.log(userId,'userId');
+        if(!userId) navigate('/login')
+        
         const response = await axiosInstance.get(`/getUser/${userId}`);
+        console.log(response,'responde');
+        
         if (response?.data?.status === 201) {
-          setFname(response?.data?.fname);
-          setLname(response?.data?.lname);
-          setEmail(response?.data?.email);
+          setFname(response?.data?.user?.fname);
+          setLname(response?.data?.user?.lname);
+          setEmail(response?.data?.user?.email);
         }
       } catch (error) {
         console.log("error in fetching user");
@@ -45,31 +53,6 @@ export default function ProfileManagement() {
     { value: "Angular", label: "Angular" },
   ];
 
-  // interface workExperience {
-  //   jobRole: string;
-  //   years: number;
-  // }
-  // const [workExperiences, setWorkExperiences] = useState<workExperience[]>([
-  //   { jobRole: "", years: 0 },
-  // ]);
-
-  // const [addWorkExpience, setAddWorkExperiences] = useState([
-  //   ...workExperiences,
-  //   {
-  //     jobRole: "", years: 0 },
-  // ]);
-
-  const updateWorkExperience = (
-    index: number,
-    field: keyof workExperience,
-    value: number | string
-  ) => {
-    // const updatedWorkExperiences: workExperience[] = [...workExperiences];
-    // updatedWorkExperiences[index][field] = value;
-    // setWorkExperiences(updatedWorkExperiences);
-    // console.log(updatedWorkExperiences, 'updatedWorkExperiences');
-  };
-  // const removeWorkExperience = (index: number) => {};
 
   const {
     control,
@@ -88,13 +71,36 @@ export default function ProfileManagement() {
     console.log(data);
     try {
       const update = await axiosInstance.post("/update", data);
+      console.log(update.data.status === 201); setError("User data updated")
+      
     } catch (error) {
       console.log("Error in updating profile", error);
     }
   };
 
   return (
+    <>
+    <nav
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: "10px 20px",
+            backgroundColor: "#fff",
+            color: "#333",
+            borderBottom: '2px solid #333'
+          }}
+        >
+          <div>
+            <h1 style={{ margin: 0 }}>JobHub</h1>
+          </div>
+          <div>
+          
+          </div>
+        </nav>
+  
     <div className="App">
+      <p>{error}</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <h2 className="">Manage your Profile</h2>
         <div className="form-control">
@@ -107,7 +113,9 @@ export default function ProfileManagement() {
             })}
             onChange={(
               e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-            ) => setFname(e.target.value)}
+            ) =>{ setFname(e.target.value)
+            setError('')
+            }}
             value={fname}
           />
           {errors.fname && errors.fname.type === "required" && (
@@ -125,7 +133,10 @@ export default function ProfileManagement() {
             })}
             onChange={(
               e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-            ) => setLname(e.target.value)}
+            ) => {setLname(e.target.value)
+              setError('')
+
+            }}
             value={lname}
           />
           {errors.lname && errors.lname.type === "required" && (
@@ -171,7 +182,7 @@ export default function ProfileManagement() {
             onChange={(
               event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
             ) => setPassword(event.target.value)}
-            value={"●●●●●●"}
+            value={password }
           />
           {errors.password?.type === "required" && (
             <p className="errorMsg">Password is required.</p>
@@ -290,5 +301,6 @@ export default function ProfileManagement() {
         .
       </form>
     </div>
+    </>
   );
 }

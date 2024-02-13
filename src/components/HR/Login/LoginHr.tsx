@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { axiosInstance } from "../../Utils/axios/axios";
+import { axiosInstance } from "../../../Utils/axios/axios";
 
 const LoginHr = () => {
 
@@ -22,7 +22,8 @@ const navigate = useNavigate()
         console.log(response,'res');
         
           if(response?.data?.status === 201) {
-          //  localStorage.setItem('token', response.data.token);
+           localStorage.setItem('hrToken', response.data.token);
+           localStorage.setItem('hrEmail',email)
            navigate('/hr')
           }
           if(response?.data?.status === 400) setError('Passoword does not match ')  
@@ -99,8 +100,9 @@ const navigate = useNavigate()
           )}
        
           <label></label>
-          <button type="submit">Login</button>
+          <button style={{marginTop :' 10px'}} type="submit">Login</button>
         </div>
+        <p>Create new Recruiter account</p>
         </form>
     </div>
   
