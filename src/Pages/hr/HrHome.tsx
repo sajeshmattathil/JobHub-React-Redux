@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axiosInstance from "../../Utils/axios/axios";
+import { axiosHRInstance } from "../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
 
 const Jobs = () => {
@@ -18,12 +18,12 @@ const Jobs = () => {
   const [jobs, setJobs] = useState<jobData[]>([]);
   const [msg, setMsg] = useState<string>("");
 
-  const hrEmail = localStorage.getItem('hrEmail')
+  const HREmail = localStorage.getItem('HREmail')
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchedData = await axiosInstance.get(`/hr/getJobs/${hrEmail}`);
+        const fetchedData = await axiosHRInstance.get(`/hr/getJobs/${HREmail}`);
 
         console.log(fetchedData, "fetchedData");
 
@@ -41,7 +41,7 @@ const Jobs = () => {
     fetchData();
   }, []);
   console.log(msg, "msg");
-  if(!hrEmail){
+  if(!HREmail){
     return (
       <div
           className="container"
@@ -138,7 +138,7 @@ const Jobs = () => {
       }}
     //   onClick={() => handleApply(job)} 
     >
-      Apply
+    Manage
     </button>
   </div>
 ))}

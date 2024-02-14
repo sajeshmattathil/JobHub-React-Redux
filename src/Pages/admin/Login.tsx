@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import BasicTextFields from '../../components/User/SignIn/Input/BasicTextFields'
 import Button from '../../components/User/SignIn/Buttons/Button'
-import axiosInstance from '../../Utils/axios/axios'
+import {axiosInstance} from '../../Utils/axios/axios'
 import { useNavigate } from 'react-router-dom'
 
 

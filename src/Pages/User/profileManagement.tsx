@@ -3,7 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import "./profileManagement.css";
 import Select from "react-select";
 import upload from "../../Utils/Cloudinary/cloudinary";
-import axiosInstance from "../../Utils/axios/axios";
+import { axiosUserInstance } from "../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
 
 export default function ProfileManagement() {
@@ -24,7 +24,7 @@ export default function ProfileManagement() {
         console.log(userId,'userId');
         if(!userId) navigate('/login')
         
-        const response = await axiosInstance.get(`/getUser/${userId}`);
+        const response = await axiosUserInstance.get(`/getUser/${userId}`);
         console.log(response,'responde');
         
         if (response?.data?.status === 201) {
@@ -61,7 +61,7 @@ export default function ProfileManagement() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: { resume: string; skills: { value: string; label: string; }[] | string[]; }) => {
     data.resume = resume;
     if (typeof skills[0] === "object" && !Array.isArray(skills[0])) {
       data.skills = (data.skills as SkillOption[]).map(
@@ -70,7 +70,7 @@ export default function ProfileManagement() {
     }
     console.log(data);
     try {
-      const update = await axiosInstance.post("/update", data);
+      const update = await axiosUserInstance.post("/update", data);
       console.log(update.data.status === 201); setError("User data updated")
       
     } catch (error) {
@@ -150,13 +150,13 @@ export default function ProfileManagement() {
           <input
             type="text"
             {...register("email", {
-              required: true,
               pattern: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
             })}
             onChange={(
               e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
             ) => setEmail(e.target.value)}
             value={email}
+            disabled
           />
           {errors.email && errors.email.type === "required" && (
             <p className="errorMsg">Email is required.</p>
@@ -170,7 +170,7 @@ export default function ProfileManagement() {
             type="password"
             // name="password"
             {...register("password", {
-              required: true,
+              // required: true,
               validate: {
                 checkLength: (value) => value.length >= 6,
                 matchPattern: (value) =>
@@ -183,10 +183,11 @@ export default function ProfileManagement() {
               event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
             ) => setPassword(event.target.value)}
             value={password }
+            disabled
           />
-          {errors.password?.type === "required" && (
+          {/* {errors.password?.type === "required" && (
             <p className="errorMsg">Password is required.</p>
-          )}
+          )} */}
           {errors.password?.type === "checkLength" && (
             <p className="errorMsg">
               Password should be at-least 6 characters.

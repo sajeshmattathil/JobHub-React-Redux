@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 const Navbar = () => {
 
   const navigate = useNavigate()
-  const HrEmail = localStorage.getItem('HrEmail')
+  const HREmail = localStorage.getItem('HREmail')
 
   return (
     <nav
@@ -21,7 +21,7 @@ const Navbar = () => {
             <h1 style={{ margin: 0 }}>JobHub</h1>
           </div>
           <div>
-           { HrEmail && <button
+           { HREmail && <button
               style={{
                 padding: "8px 16px",
                 backgroundColor: "#4CAF50",

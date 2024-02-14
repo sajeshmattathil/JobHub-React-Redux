@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {Controller, useForm } from 'react-hook-form';
-import axiosInstance from '../../Utils/axios/axios';
+import { axiosHRInstance } from '../../Utils/axios/axios';
 import { useNavigate } from 'react-router-dom';
 import Select from "react-select";
 
@@ -51,7 +51,7 @@ interface formData {
   data.qualification = ( data.qualification  as QualificationOption[]).map((option) => option.value);
 }
 
-    const response = await axiosInstance.post('/hr/createJob',data)
+    const response = await axiosHRInstance.post('/hr/createJob',data)
     if(response.data.status === 201){
       navigate('/hr')
     }

@@ -22,8 +22,8 @@ const navigate = useNavigate()
         console.log(response,'res');
         
           if(response?.data?.status === 201) {
-           localStorage.setItem('hrToken', response.data.token);
-           localStorage.setItem('hrEmail',email)
+           localStorage.setItem('HRToken', response.data.token);
+           localStorage.setItem('HREmail',email)
            navigate('/hr')
           }
           if(response?.data?.status === 400) setError('Passoword does not match ')  

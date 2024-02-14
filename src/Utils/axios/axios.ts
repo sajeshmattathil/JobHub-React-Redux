@@ -1,9 +1,39 @@
 import axios from 'axios';
 
+function createAxiosInstance(token : string | null,role : string | null) {
+    const instance = axios.create({
+        baseURL: 'http://localhost:3000'
+    });
+if(token){
+    instance.interceptors.request.use(
+        (config) => {
+            config.headers.Authorization = `Bearer ${token}`;
+            config.headers.role = role;
 
-export  const axiosInstance = axios.create({
-    baseURL  :'http://localhost:3000'
-} )
+            return config;
+        },
+        (error) => {
+            return Promise.reject(error);
+        }
+    );
+}
+   
 
-export default axiosInstance
+    return instance;
+}
 
+const HRToken : string | null= localStorage.getItem('HRToken');
+const userToken : string | null = localStorage.getItem('userToken');
+const adminToken : string | null = localStorage.getItem('adminToken');
+
+const axiosUserInstance = createAxiosInstance(userToken , 'user');
+const axiosHRInstance = createAxiosInstance(HRToken , 'HR');
+const axiosAdminInstance = createAxiosInstance(adminToken , 'admin');
+const axiosInstance = createAxiosInstance(null , null)
+
+export {
+    axiosUserInstance,
+    axiosHRInstance,
+    axiosAdminInstance,
+    axiosInstance
+};

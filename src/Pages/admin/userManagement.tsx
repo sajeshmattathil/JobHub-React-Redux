@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './userManagement.css';
-import axiosInstance from '../../Utils/axios/axios';
+import { axiosAdminInstance } from '../../Utils/axios/axios';
 import { Navbar } from '@material-tailwind/react';
 
 interface UserInterface {
@@ -19,7 +19,7 @@ const UserManagementTable: React.FC = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await axiosInstance.get('/admin/users');
+                const response = await axiosAdminInstance.get('/admin/users');
                 console.log(response.data);
 
                 if (response.data.status === 201) {
@@ -47,7 +47,7 @@ const UserManagementTable: React.FC = () => {
     const onBlock = async (email: string, isBlocked: boolean) => {
         try {
             console.log('Blocking user:', email);
-            const response = await axiosInstance.put('/admin/blockandunblock', { email , isBlocked });
+            const response = await axiosAdminInstance.put('/admin/blockandunblock', { email , isBlocked });
             console.log('Block user response:', response);
 
             if (response.data.status === 201) {
