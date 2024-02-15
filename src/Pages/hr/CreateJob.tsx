@@ -24,7 +24,7 @@ const CreateJobForm = () => {
   ];
   
   const navigate = useNavigate()
-  const hrEmail = localStorage.getItem('hrEmail')
+  const HREmail = localStorage.getItem('HREmail')
 
 interface formData {
   createdBy: string | null;
@@ -43,7 +43,7 @@ interface formData {
 
     if(data){
       data.createdAt = Date.now()
-      data.createdBy = hrEmail
+      data.createdBy = HREmail
     } 
 
 

@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 
 
 
-function LoginNew() {
+function UserLogin() {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [error, setError] = useState('')
@@ -26,8 +26,8 @@ function LoginNew() {
           if(response?.data?.status === 201) {
             console.log(email,'email');
           
-            localStorage.setItem('userId',email)
-           localStorage.setItem('token', response.data.token);
+            localStorage.setItem('userEmail',email)
+           localStorage.setItem('userToken', response.data.token);
            navigate('/')
           } 
           else if (response?.data?.status === 400) setError(response?.data?.message)
@@ -59,8 +59,6 @@ const handleHiringManager = ()=>{
        
         <p style={{ fontFamily: "", fontSize: '30px', marginLeft: '25%' }}>User Login</p>
         <p  style={{color : 'red',fontSize : '15px',alignItems: 'center',justifyItems : 'center',marginLeft:'27%'}}>{error}</p>
-
-     
 
         <div className="form-control">
           <label>Email</label>
@@ -125,4 +123,4 @@ const handleHiringManager = ()=>{
   )
 }
 
-export default LoginNew
+export default UserLogin

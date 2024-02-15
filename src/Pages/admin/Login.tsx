@@ -28,7 +28,7 @@ function LogIn() {
 console.log(response.data.message,'response');
 
             if (response?.data?.status === 201) {
-                localStorage.setItem('token', response?.data?.token);
+                localStorage.setItem('adminToken', response?.data?.token);
                 navigate('/admin')
             }
             else if (response?.data?.status === 400) setError(response?.data?.message)

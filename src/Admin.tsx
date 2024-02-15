@@ -1,8 +1,8 @@
 import { Route,Routes,BrowserRouter as Router } from 'react-router-dom'
 import LogIn from './Pages/admin/Login'
 // import Home from './Pages/admin/Home'
-import UpdateUser from './Pages/User/profileManagement'
-import ProfileManagement from './Pages/User/profileManagement'
+import UpdateUser from './Pages/User/ProfileManagement'
+import ProfileManagement from './Pages/User/ProfileManagement'
 
 function Admin() {
 

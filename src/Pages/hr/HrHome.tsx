@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { axiosHRInstance } from "../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
 const Jobs = () => {
 
@@ -15,6 +17,8 @@ const Jobs = () => {
     company: string;
     createdAt: Date | number;
   }
+  const [pageNumber, setPage] = useState<number>(1);
+  const [totalPages,setTotalpages] = useState<number>(1)
   const [jobs, setJobs] = useState<jobData[]>([]);
   const [msg, setMsg] = useState<string>("");
 
@@ -23,7 +27,9 @@ const Jobs = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchedData = await axiosHRInstance.get(`/hr/getJobs/${HREmail}`);
+        console.log(pageNumber,'---pno.');
+        
+        const fetchedData = await axiosHRInstance.get(`/hr/getJobs/${HREmail}?jobsPerPage=3&page=${pageNumber}`);
 
         console.log(fetchedData, "fetchedData");
 
@@ -31,6 +37,8 @@ const Jobs = () => {
           const data = fetchedData.data;
           console.log(data.jobs, "jobs");
 
+          const pages  =Math.ceil(data.totalPages / 5);
+          setTotalpages(pages)
           setJobs(data.jobs);
         } else setMsg("No jobs found");
       } catch (error) {
@@ -39,7 +47,7 @@ const Jobs = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [pageNumber]);
   console.log(msg, "msg");
   if(!HREmail){
     return (
@@ -142,7 +150,23 @@ const Jobs = () => {
     </button>
   </div>
 ))}
-
+        </div>
+        <div
+          className="pagination"
+          style={{
+            margin: "3%",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Stack spacing={2}>
+            <Pagination
+              count={totalPages}
+              variant="outlined"
+              shape="rounded"
+              onChange={(e, value) => setPage(value)}
+            />
+          </Stack>
         </div>
       </>
     );
