@@ -114,7 +114,7 @@ const handleHiringManager = ()=>{
           <button type="submit">Login</button>
         </div>
         <p style={{ cursor: "pointer" }} onClick={handleCreateNewUser} >Create a new account</p>
-        <p style={{ cursor: "pointer" }} onClick={handleHiringManager} >Recruiter?</p>
+        <p style={{ cursor: "pointer" }} onClick={handleHiringManager} >Hiring Manager ?</p>
 
       
       </form>

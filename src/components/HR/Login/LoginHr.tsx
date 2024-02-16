@@ -102,7 +102,7 @@ const navigate = useNavigate()
           <label></label>
           <button style={{marginTop :' 10px'}} type="submit">Login</button>
         </div>
-        <p>Create new Recruiter account</p>
+        <p>Create new Hiring Manager account</p>
         </form>
     </div>
   

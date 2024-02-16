@@ -161,7 +161,7 @@ function SignupHr() {
         onSubmit={handleSubmit(onSubmit)}
       >
         <p style={{ fontFamily: "", fontSize: "30px", marginLeft: "25%",}}>
-          Recruiter Sign Up
+          Hiring Mangaer Sign Up
         </p>
         <p
           style={{
