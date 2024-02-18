@@ -1,10 +1,12 @@
 import React from 'react'
-import Navbar from '../../components/HR/Navbar/Navbar'
+import AdminNavbar from '../../components/Admin/adminNavbar'
+import AdminHome from '../../components/Admin/AdminHome'
 
 const Home = () => {
   return (
     <div>
-      <Navbar/>
+      <AdminNavbar/>
+      <AdminHome/>
     </div>
   )
 }

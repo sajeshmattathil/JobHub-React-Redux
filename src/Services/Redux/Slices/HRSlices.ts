@@ -13,7 +13,7 @@ const HRAuthSlice = createSlice({
       console.log(action.payload,'payload');
       
       state.isLoggedIn = true;
-      state.hrEmail = action.payload.userEmail;
+      state.hrEmail = action.payload.hrEmail;
 
     },
     HRLogout(state) {

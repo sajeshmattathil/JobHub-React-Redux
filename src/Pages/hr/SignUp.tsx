@@ -1,14 +1,14 @@
 import React from 'react'
 import HRNavbar from '../../components/HR/Navbar/HRNavbar'
-import CreateJobForm from '../../components/HR/CreateJob'
+import SignupHr from '../../components/HR/SignupHr'
 
-const CreateJob = () => {
+const SignUp = () => {
   return (
     <div>
         <HRNavbar/>
-        <CreateJobForm/>
+        <SignupHr/>
     </div>
   )
 }
 
-export default CreateJob
+export default SignUp

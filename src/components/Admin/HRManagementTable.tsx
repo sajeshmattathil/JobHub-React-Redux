@@ -10,7 +10,7 @@ interface HRInterface {
     isApproved ?: boolean 
 }
 
-const HRManagement: React.FC = () => {
+const HRManagementTable: React.FC = () => {
     const [approvalPendingHRs,setRequestPendigHRs] = useState<HRInterface[]>([]);
     const [HRs, setHR] = useState<HRInterface[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -159,4 +159,4 @@ const HRManagement: React.FC = () => {
     );
 };
 
-export default HRManagement;
+export default HRManagementTable;

@@ -1,14 +1,14 @@
 import React from 'react'
+import HrHome from '../../components/HR/HrHome'
 import HRNavbar from '../../components/HR/Navbar/HRNavbar'
-import CreateJobForm from '../../components/HR/CreateJob'
 
-const CreateJob = () => {
+const Home = () => {
   return (
     <div>
         <HRNavbar/>
-        <CreateJobForm/>
+        <HrHome/>
     </div>
   )
 }
 
-export default CreateJob
+export default Home

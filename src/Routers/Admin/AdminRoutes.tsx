@@ -1,24 +1,26 @@
 import { Route,Routes,} from 'react-router-dom'
-import UserManagementTable from '../../Pages/admin/userManagement'
-import HRManagement from '../../components/Admin/HRManagement'
-import AdminHome from '../../components/Admin/AdminHome'
-import AdminLogIn from '../../Pages/admin/AdminLogIn'
+import HRManagement from '../../components/Admin/HRManagementTable'
 import AdminPrivatedRoute from './AdminPrivateRoutes'
-import AdminPublicRoute from './AdminPublicRoutes'
+import Login from '../../Pages/admin/Login'
+import Home from '../../Pages/admin/Home'
+import UserManagement from '../../Pages/admin/UserManagement'
 
 function AdminRoutes() {
 
   return (
+
       <Routes>  
-        <Route path={'usermanagement'} element = {<AdminPrivatedRoute component={UserManagementTable}/>}/>
 
-        <Route path={'/'} element = {<AdminPrivatedRoute component={AdminHome}/>}/>
+        <Route path={'/usermanagement'} element = {<AdminPrivatedRoute component={UserManagement}/>}/>
 
-        <Route path={'/login'} element = {<AdminPublicRoute  component={AdminLogIn}/>}/>
+        <Route path={'/'} element = {<AdminPrivatedRoute component={Home}/>}/>
+
+        <Route path={'/login'} element = {<Login/>}/>
 
         <Route path={'/hrmanagement'} element = {<AdminPrivatedRoute component={HRManagement}/>}/>
 
       </Routes>
+
   )
 }
 

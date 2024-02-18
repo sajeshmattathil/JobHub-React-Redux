@@ -1,11 +1,11 @@
 import React from 'react'
 import LoginHr from '../../components/HR/Login/LoginHr'
-import Navbar from '../../components/HR/Navbar/Navbar'
+import HRNavbar from '../../components/HR/Navbar/HRNavbar'
 
 const HrLogin = () => {
   return (
     <>
-    <Navbar/>
+    <HRNavbar/>
     <LoginHr/>
     </>
   )

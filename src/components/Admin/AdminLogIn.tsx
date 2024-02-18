@@ -2,20 +2,29 @@ import React, { useState } from "react";
 import { axiosAdminInstance } from "../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { adminLogin } from "../../Services/Redux/Slices/AdminSlices";
+import { useDispatch } from "react-redux";
 
 function AdminLogIn() {
+  
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState("");
+
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
+  const dispatch = useDispatch()
+
   const onSubmit = async (data: unknown) => {
+
     console.log(data);
+
     try {
       if (error !== "") return;
 
@@ -23,14 +32,28 @@ function AdminLogIn() {
         "/admin/login_submit",
         data
       );
-
+      console.log(response,'------->');
+      
       if (response?.data?.status === 201) {
+
         localStorage.setItem("adminToken", response?.data?.token);
+
+        dispatch(adminLogin({adminEmail:email}))
+
+        localStorage.setItem('userEmail',email)
+
         navigate("/admin");
-      } else if (response?.data?.status === 400)
+
+      } else if (response?.data?.status === 200)
+
         setError(response?.data?.message);
+
+        console.log(response?.data?.message,'message');
+        
     } catch (err) {
+
       console.log("Error happenend in login submit", err);
+
     }
   };
 
@@ -139,3 +162,5 @@ function AdminLogIn() {
 }
 
 export default AdminLogIn;
+
+

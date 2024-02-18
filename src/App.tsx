@@ -3,10 +3,10 @@ import UserRoutes from './Routers/User/UserRoutes.js'
 import HRRoutes from './Routers/HR/HRRoutes'
 import AdminRoutes from './Routers/Admin/AdminRoutes'
 
-
 function App() {
 
   return (
+
    <Router>
       <Routes>
         <Route path={'/*'} element = {<UserRoutes/>}/>
@@ -14,6 +14,7 @@ function App() {
         <Route path={'/admin*'} element = {<AdminRoutes/>}/>
       </Routes>
    </Router>
+
   )
 }
 

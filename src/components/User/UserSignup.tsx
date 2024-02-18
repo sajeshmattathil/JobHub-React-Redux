@@ -163,6 +163,7 @@ function UserSignup() {
             height: "100vh",
             backgroundColor: "white",
           }}
+          
         >
           <form
             className="signupForm items-center justify-center"
