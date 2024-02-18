@@ -2,14 +2,14 @@ import React, { useState } from 'react'
 import {axiosInstance} from '../../Utils/axios/axios'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from "react-hook-form";
-
-
+import { userLogin } from '../../Services/Redux/Slices/UserSlices';
+import { useDispatch, useSelector } from 'react-redux';
 
 function UserLogin() {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [error, setError] = useState('')
-
+const dispatch = useDispatch()
   const {
     register,
     handleSubmit,
@@ -17,7 +17,6 @@ function UserLogin() {
   } = useForm();
 
   const onSubmit = async (data: unknown) => {
-    console.log(data);
     try{
       if(error !== '') return
  
@@ -25,16 +24,29 @@ function UserLogin() {
         
           if(response?.data?.status === 201) {
             console.log(email,'email');
-          
+
+            dispatch(userLogin({userEmail:email}))
+
             localStorage.setItem('userEmail',email)
-           localStorage.setItem('userToken', response.data.token);
-           navigate('/')
+           
+            localStorage.setItem('userToken', response.data.token);
+          
+            navigate('/')
           } 
           else if (response?.data?.status === 400) setError(response?.data?.message)
       }catch(err){
           console.log('Error happenend in login submit',err);  
       }
   };
+ interface UserState {
+  isLoggedIn : boolean;
+  userEmail : string;
+ }
+ interface RootState {
+  user: UserState;
+}
+  const userEmail = useSelector((state :RootState)=>state.user.userEmail)
+console.log(userEmail,'userEmail');
 
 const navigate = useNavigate()
 

@@ -50,8 +50,12 @@ const HRManagement: React.FC = () => {
             console.log('Block user response:', response);
 
             if (response.data.status === 201) {
+                console.log(HRs);
+                
                 const updatedHR = HRs.map((HR) => {
                     if (HR.email === email) {
+                        console.log(HR,'hrrrr');
+                        
                         return { ...HR, isBlocked: !isBlocked };
                     }
                     return HR;
@@ -75,7 +79,6 @@ const HRManagement: React.FC = () => {
 
                 setRequestPendigHRs(updatedHR);
                 setReload(true)
-
             }
         } catch (error) {
             console.log('Error blocking user:', error);
@@ -137,10 +140,10 @@ const HRManagement: React.FC = () => {
                     <tr key={HR._id}>
                         <td>{`${HR.name} `}</td>
                         <td>{HR.email}</td>
-                        <td>{HR.isApproved ? 'Active' : 'Blocked'}</td>
+                        <td>{HR.isBlocked ? 'Active' : 'Blocked'}</td>
                         <td>
                             <button onClick={() => onBlock(HR.email, HR.isBlocked)}>
-                                {HR.isApproved ? 'Block' : 'Unblock'}
+                                {HR.isBlocked ? 'Block' : 'Unblock'}
                             </button>
                         </td>
                         {/* <td>

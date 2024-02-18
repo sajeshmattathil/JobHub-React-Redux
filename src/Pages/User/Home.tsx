@@ -7,9 +7,9 @@ const Home = () => {
    <>
    <Navbar/>
    <UserHome/>
-   
    </>
   )
 }
 
 export default Home
+

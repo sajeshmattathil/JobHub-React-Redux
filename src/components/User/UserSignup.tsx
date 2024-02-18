@@ -335,7 +335,7 @@ function UserSignup() {
                 Already have a account?
               </p>
               <p style={{ cursor: "pointer" }} onClick={handleExisitinHr}>
-                Recruiter?
+                Hiring Manager?
               </p>
             </div>
           </form>
