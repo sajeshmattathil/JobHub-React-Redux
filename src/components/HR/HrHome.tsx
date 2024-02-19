@@ -11,11 +11,13 @@ const Jobs = () => {
   interface jobData {
     jobRole: string;
     description: string;
-    qualification: string;
+    qualification: [string];
+    locations : [string];
     salaryFrom: string;
     salaryTo: string;
     company: string;
     createdAt: Date | number;
+    jobType : string
   }
   const [pageNumber, setPage] = useState<number>(1);
   const [totalPages,setTotalpages] = useState<number>(1)
@@ -80,7 +82,7 @@ const Jobs = () => {
   if (msg == "") {
     return (
       <>
-        <nav
+        {/* <nav
           style={{
             display: "flex",
             justifyContent: "space-between",
@@ -109,7 +111,7 @@ const Jobs = () => {
               Create Jobs
             </button>
           </div>
-        </nav>
+        </nav> */}
         <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
         {jobs.map((job, index) => (
   <div
@@ -119,17 +121,31 @@ const Jobs = () => {
       padding: "20px",
       borderRadius: "8px",
       boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-      marginBottom: "20px", // Add margin bottom for spacing between job listings
+      marginBottom: "20px", 
     }}
   >
     <h2 style={{ marginBottom: "10px" }}>{job.jobRole}</h2>
+
+    <span style={{ fontSize: "20px", marginBottom: "5px" ,fontWeight:'bold' }}>
+      {job.company}
+      </span>
+
+     
+
     <div style={{ display: "flex", flexDirection: "column" }}>
-      <span style={{ fontSize: "14px", marginBottom: "5px" }}>
-        Qualification: {job.qualification  }
+      
+    <span style={{ fontSize: "20px", marginBottom: "5px" , }}>
+      {job.jobType}
       </span>
+
       <span style={{ fontSize: "14px", marginBottom: "5px" }}>
-        Company: {job.company}
+        Skills Required: {job.qualification.map((skill) => `${skill} ,`) }
       </span>
+
+      <span style={{ fontSize: "14px", marginBottom: "5px" }}>
+        {job.locations.map((location) => `${location} ,`) }
+      </span>
+     
       <span style={{ fontSize: "14px", marginBottom: "5px" }}>
         Posted At: {job.createdAt.toString().split('T')[0]}
       </span>
@@ -173,36 +189,7 @@ const Jobs = () => {
   } else {
     return (
       <>
-        <nav
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "10px 20px",
-            backgroundColor: "#fff",
-            color: "#333",
-          }}
-        >
-          <div>
-            <h1 style={{ margin: 0 }}>JobHub</h1>
-          </div>
-          <div>
-            <button
-              style={{
-                padding: "8px 16px",
-                backgroundColor: "#4CAF50",
-                color: "#fff",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer",
-              }}
-              onClick={()=>navigate('/hr/job')}
-
-            >
-              Create Jobs
-            </button>
-          </div>
-        </nav>
+    
         <div
           className="container"
           style={{

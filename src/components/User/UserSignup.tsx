@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { axiosInstance } from "../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
 import generateOtp from "../../Utils/OtpGenerator/otpGenerator";
-import { Navbar } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
 
 function UserSignup() {
@@ -90,7 +89,8 @@ function UserSignup() {
       setOtp("");
     }
   };
-
+  let timer: number
+  let interval: NodeJS.Timeout;
   const handleResendOTP = async () => {
     console.log(1111);
 
@@ -98,7 +98,13 @@ function UserSignup() {
       setClicked(true);
       const otp = generateOtp();
       const createdAt = Date.now();
-
+      if (interval) {
+        console.log('intervallll');
+        
+        clearInterval(interval);
+        // interval = 0;
+      } 
+      timer = 600
       startTimer();
       const resendOTP = await axiosInstance.post('/resendOTP',{
         userId : email,
@@ -113,9 +119,9 @@ function UserSignup() {
     }
   };
 
-  let timer = 600;
-  let interval: NodeJS.Timeout;
-
+ 
+ 
+  //  timer = 600;
   const updateTimer = () => {
     try {
       const minutes = Math.floor(timer / 60);
@@ -133,7 +139,6 @@ function UserSignup() {
     interval = setInterval(() => {
       timer--;
       updateTimer();
-      console.log("timer--");
 
       if (timer === 0) {
         clearInterval(interval);
@@ -151,17 +156,18 @@ function UserSignup() {
   if (otp.trim() === "") {
     return (
       <div>
-        <Navbar children={"jjj"} placeholder={"undefined"} />
 
         <div
           className="signup"
           style={{
-            marginTop: "80px",
+            marginTop: "10%",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             height: "100vh",
-            backgroundColor: "white",
+            backgroundColor: "rgb(240, 220, 220)",
+            width :'45%',
+            marginLeft : "30%"
           }}
           
         >

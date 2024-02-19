@@ -3,4 +3,11 @@
 @tailwind utilities;
 
 
-
+#root{
+    background-color: rgb(240, 220, 220);
+    font-family: Arial, sans-serif;
+}
+html{
+    background-color: rgb(240, 220, 220);
+    font-family: Arial, sans-serif;
+}

@@ -20,17 +20,18 @@ const HRNavbar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  interface HRState {
-    isLoggedIn : boolean;
-    HREmail : string;
-   }
-   interface RootState {
-    HR: HRState;
-  }
+  // interface HRState {
+  //   isLoggedIn : boolean;
+  //   HREmail : string;
+  //  }
+  //  interface RootState {
+  //   HR: HRState;
+  // }
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const dispatch = useDispatch()
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const HRLoggedIn = useSelector((state :RootState)=>state.HR.isLoggedIn)
+  // const HRLoggedIn = useSelector((state :RootState)=>state.HR.isLoggedIn)
+  const HRLoggedIn = localStorage.getItem('HREmail')
   console.log(HRLoggedIn,'HRLoggedIn');
 
   return (
@@ -48,8 +49,24 @@ const HRNavbar = () => {
       <div>
         <h1 style={{ margin: 0 }}>JobHub</h1>
       </div>
+      
+     { HRLoggedIn && <div>
+            <button
+              style={{
+                padding: "8px 16px",
+                backgroundColor: "#4CAF50",
+                color: "#fff",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+              }}
+              onClick={()=>navigate('/hr/job')}
+            >
+              Create Jobs
+            </button>
+          </div>}
       {
-        HRLoggedIn &&
+        HRLoggedIn ?
         <div>
            <Button
           aria-controls="simple-menu"
@@ -67,6 +84,14 @@ const HRNavbar = () => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
+            <MenuItem
+            onClick={() => {
+              setAnchorEl(null);            
+              navigate('/hr/profilemanagement')
+            }}
+          >
+            Profile Management
+          </MenuItem>
           
           <MenuItem
             onClick={() => {
@@ -74,13 +99,14 @@ const HRNavbar = () => {
               dispatch(HRLogout())
               localStorage.removeItem('HREmail')
               localStorage.removeItem('HRToken')
-              navigate('/hr')
+              navigate('/hr/login')
             }}
           >
             Logout
           </MenuItem>
         </Menu>
         </div>
+        : <div style={{cursor : 'pointer',fontWeight : 'bold'}} onClick={()=>navigate('/hr/login')}>Login</div>
       }
     </nav>
   );

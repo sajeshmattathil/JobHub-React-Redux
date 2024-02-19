@@ -20,6 +20,7 @@ const UserHome = () => {
     salaryTo: string;
     company: string;
     createdAt: Date | number;
+    locations : [string]
   }
  
 
@@ -110,8 +111,11 @@ const UserHome = () => {
               <h2 style={{ marginBottom: "10px" }}>{job.jobRole}</h2>
               <div style={{ display: "flex", flexDirection: "column" }}>
                 <span style={{ fontSize: "14px", marginBottom: "5px" }}>
-                  Skill Needed: {job.qualification.map((skill) => `${skill} ,`)}
+                  Skill Required: {job.qualification.map((skill) => `${skill} ,`)}
                 </span>
+                <span style={{ fontSize: "14px", marginBottom: "5px" }}>
+        {job.locations.map((location) => `${location} ,`) }
+      </span>
                 <span style={{ fontSize: "14px", marginBottom: "5px" }}>
                   Company: {job.company}
                 </span>

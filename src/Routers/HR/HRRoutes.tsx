@@ -5,6 +5,8 @@ import CreateJob from '../../Pages/hr/CreateJob'
 import SignUp from '../../Pages/hr/SignUp'
 import HrLogin from '../../Pages/hr/HrLogin'
 import Home from '../../Pages/hr/Home'
+import ProfileManagement from '../../Pages/hr/ProfileManagement'
+import HRPrivatedRoute from './HRPrivateRoutes'
 
 function HRRoutes() {
 
@@ -12,8 +14,13 @@ function HRRoutes() {
       <Routes>  
         <Route path={'/login'} element = {<HrLogin/>}/>
         <Route path={'/signup'} element = {<SignUp/>}/>
-        <Route path={'/job'} element = {<CreateJob/>}/>
-        <Route path={'/'} element = {<Home/>}/>
+        <Route path={'/job'} element = {<HRPrivatedRoute component={CreateJob}/>}/>
+
+        <Route path={'/'} element = {<HRPrivatedRoute component={Home}/>}/>
+
+        <Route path={'/profilemanagement'} element = {<HRPrivatedRoute component={ProfileManagement}/>}/>
+
+
       </Routes>
   )
 }

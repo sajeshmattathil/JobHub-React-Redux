@@ -1,15 +1,17 @@
-import React, { useState } from 'react'
-import {axiosInstance} from '../../Utils/axios/axios'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from "react";
+import { axiosInstance } from "../../Utils/axios/axios";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { userLogin } from '../../Services/Redux/Slices/UserSlices';
-import { useDispatch, useSelector } from 'react-redux';
+import { userLogin } from "../../Services/Redux/Slices/UserSlices";
+import { useDispatch, useSelector } from "react-redux";
+import generateOtp from "../../Utils/OtpGenerator/otpGenerator";
 
 function UserLogin() {
-  const [email, setEmail] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
-  const [error, setError] = useState('')
-const dispatch = useDispatch()
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState("");
+  const [otp,setOtp] =useState('')
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -17,60 +19,94 @@ const dispatch = useDispatch()
   } = useForm();
 
   const onSubmit = async (data: unknown) => {
-    try{
-      if(error !== '') return
- 
-         const response   =  await axiosInstance.post('/login_submit',data)
-        
-          if(response?.data?.status === 201) {
-            console.log(email,'email');
+    try {
+      if (error !== "") return;
 
-            dispatch(userLogin({userEmail:email}))
+      const response = await axiosInstance.post("/login_submit", data);
 
-            localStorage.setItem('userEmail',email)
-           
-            localStorage.setItem('userToken', response.data.token);
-          
-            navigate('/')
-          } 
-          else if (response?.data?.status === 400) setError(response?.data?.message)
-      }catch(err){
-          console.log('Error happenend in login submit',err);  
-      }
+      if (response?.data?.status === 201) {
+        console.log(email, "email");
+
+        dispatch(userLogin({ userEmail: email }));
+
+        localStorage.setItem("userEmail", email);
+
+        localStorage.setItem("userToken", response.data.token);
+
+        navigate("/");
+      } else if (response?.data?.status === 400)
+        setError(response?.data?.message);
+    } catch (err) {
+      console.log("Error happenend in login submit", err);
+    }
   };
- interface UserState {
-  isLoggedIn : boolean;
-  userEmail : string;
- }
- interface RootState {
-  user: UserState;
-}
-  const userEmail = useSelector((state :RootState)=>state.user.userEmail)
-console.log(userEmail,'userEmail');
+  interface UserState {
+    isLoggedIn: boolean;
+    userEmail: string;
+  }
+  interface RootState {
+    user: UserState;
+  }
+  const userEmail = useSelector((state: RootState) => state.user.userEmail);
+  console.log(userEmail, "userEmail");
 
-const navigate = useNavigate()
+  const navigate = useNavigate();
 
-const handleCreateNewUser = ()=>{
-  navigate('/signup')
-}
+  const handleCreateNewUser = () => {
+    navigate("/signup");
+  };
 
-const handleHiringManager = ()=>{
-  navigate('/hr/login')
-}
+  const handleHiringManager = () => {
+    navigate("/hr/login");
+  };
 
+ const handleForgotOtp = async ()=>{
+  setOtp('otp sended')
+  const otp = generateOtp()
+
+  const sendForgotOtp = await axiosInstance.post('/forgot_otp',{
+    otp : otp,
+    createdAt : Date.now()
+  })
+  console.log(sendForgotOtp);
+  
+  }
+
+if(otp.trim() === '')
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: 'white', }}>
-
-<form className='items-center justify-center' 
-        style={{ backgroundColor: "white",
-                padding: '20px', 
-                borderRadius: '8px', 
-                boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)', }}
-                onSubmit={handleSubmit(onSubmit)} 
-       >
-       
-        <p style={{ fontFamily: "", fontSize: '30px', marginLeft: '25%' }}>User Login</p>
-        <p  style={{color : 'red',fontSize : '15px',alignItems: 'center',justifyItems : 'center',marginLeft:'27%'}}>{error}</p>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        backgroundColor: "white",
+      }}
+    >
+      <form
+        className="items-center justify-center"
+        style={{
+          backgroundColor: "white",
+          padding: "20px",
+          borderRadius: "8px",
+          boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
+        }}
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <p style={{ fontFamily: "", fontSize: "30px", marginLeft: "25%" }}>
+          User Login
+        </p>
+        <p
+          style={{
+            color: "red",
+            fontSize: "15px",
+            alignItems: "center",
+            justifyItems: "center",
+            marginLeft: "27%",
+          }}
+        >
+          {error}
+        </p>
 
         <div className="form-control">
           <label>Email</label>
@@ -80,7 +116,9 @@ const handleHiringManager = ()=>{
               required: true,
               pattern: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
             })}
-            onChange={(e:  React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)=>setEmail(e.target.value)}
+            onChange={(
+              e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+            ) => setEmail(e.target.value)}
             value={email}
           />
           {errors.email && errors.email.type === "required" && (
@@ -89,7 +127,7 @@ const handleHiringManager = ()=>{
           {errors.email && errors.email.type === "pattern" && (
             <p className="errorMsg">Email is not valid.</p>
           )}
-       
+
           <label>Password</label>
           <input
             type="password"
@@ -104,7 +142,9 @@ const handleHiringManager = ()=>{
                   ),
               },
             })}
-            onChange={(event:  React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)=>setPassword(event.target.value)}
+            onChange={(
+              event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+            ) => setPassword(event.target.value)}
             value={password}
           />
           {errors.password?.type === "required" && (
@@ -121,18 +161,96 @@ const handleHiringManager = ()=>{
               letter, digit, and special symbol.
             </p>
           )}
-       
+
           <label></label>
-          <button type="submit">Login</button>
+          <button style={{marginTop : '3%',color : "white",backgroundColor : 'black'}} type="submit">Login</button>
         </div>
-        <p style={{ cursor: "pointer" }} onClick={handleCreateNewUser} >Create a new account</p>
-        <p style={{ cursor: "pointer" }} onClick={handleHiringManager} >Hiring Manager ?</p>
+        <p style={{ cursor: "pointer" }} onClick={handleCreateNewUser}>
+          Create a new account
+        </p>
+      <div style={{display : 'flex',justifyContent :'space-between' }}>
+        <p style={{ cursor: "pointer"}} onClick={handleHiringManager}>
+          Hiring Manager ?
+        </p>
+      <span onClick={handleForgotOtp}>Forgot password?</span>
 
-      
+      </div>
       </form>
-
     </div>
-  )
+  );
+  else {
+    return (
+      <div>
+        <div
+          className="otp"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+            backgroundColor: "white",
+          }}
+        >
+          <div
+            className="otpInner items-center justify-center "
+            style={{
+              backgroundColor: "white",
+              padding: "40px",
+
+              borderRadius: "8px",
+              boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
+            }}
+          >
+            <p style={{ fontWeight: "bolder",fontFamily:'sans-serif',fontSize:"17px" }}>Enter your OTP</p>
+            <p
+              style={{
+                color: "red",
+                fontSize: "15px",
+                alignItems: "center",
+                justifyItems: "center",
+                marginLeft: "27%",
+              }}
+            >
+              {error}
+            </p>
+            {resendClicked && (
+              <p style={{fontWeight:'bold'}}>{`Time Remaining : ${minutes}:${seconds}`}</p>
+            )}
+
+            <span>
+              <input
+                type="text"
+                style={{
+                  border: "solid black 2px",
+                  borderRadius: ".5rem",
+                  margin: ".5rem",
+                }}
+                onChange={(e) => {
+                  setEnteredOtp(e.target.value);
+                  setError("");
+                }}
+              />
+
+              <button
+                style={{
+                  borderRadius: ".5rem",
+                  color: "white",
+                  backgroundColor: "black",
+                  border: "none",
+                }}
+                onClick={handleOtp}
+              >
+                Submit
+              </button>
+            </span>
+            <p style={{ cursor: "pointer" }} onClick={handleResendOTP}>
+              Resend OTP
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
 }
 
-export default UserLogin
+export default UserLogin;

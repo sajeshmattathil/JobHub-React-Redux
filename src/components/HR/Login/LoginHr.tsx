@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../../../Utils/axios/axios";
+import { useDispatch } from "react-redux";
+import { HRLogin } from "../../../Services/Redux/Slices/HRSlices";
 
 const LoginHr = () => {
 
 const [email,setEmail] = useState('')
 const [password,setPassword] = useState('')
 const [error,setError] = useState('')
-
+const dispatch = useDispatch()
 const navigate = useNavigate()
     const {
         register,
@@ -22,6 +24,7 @@ const navigate = useNavigate()
         console.log(response,'res');
         
           if(response?.data?.status === 201) {
+            dispatch(HRLogin({HREmail : email}))
            localStorage.setItem('HRToken', response.data.token);
            localStorage.setItem('HREmail',email)
            navigate('/hr')

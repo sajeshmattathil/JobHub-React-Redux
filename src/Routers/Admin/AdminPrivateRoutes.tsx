@@ -14,9 +14,10 @@ interface adminState {
   }
 const AdminPrivatedRoute: React.FC<RouteProps> = ({ component: Component }) => {
     const admin = useSelector((state: RootState) => state.admin.isLoggedIn);
+    const adminEmail = localStorage.getItem('adminEmail')
 
-    console.log(admin)
-    if (!admin) {
+    console.log(adminEmail)
+    if (!adminEmail) {
 
         return <Navigate to="/admin/login" />;
     }

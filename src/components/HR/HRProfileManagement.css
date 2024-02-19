@@ -1,0 +1,60 @@
+.App {
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .form-control {
+    margin-bottom: 20px;
+  }
+  
+  .label {
+    font-weight: bold;
+  }
+  
+  .errorMsg {
+    color: red;
+    font-size: 12px;
+  }
+  
+  input[type="text"],
+  input[type="password"],
+  input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  button[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+  
+  .select-container {
+    width: 100%;
+  }
+  
+  .select-container .react-select__control {
+    width: 100%;
+  }
+  
+  .select-container .react-select__value-container {
+    padding: 10px;
+  }
+  
+  .select-container .react-select__indicator-separator {
+    display: none;
+  }
+  

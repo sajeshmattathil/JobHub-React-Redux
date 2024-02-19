@@ -20,7 +20,8 @@ const AdminHome = () => {
         fontFamily: 'sans-serif',
         height: "30vh",
         width: '300px',
-        margin: '0 20px', // Adjust margin to create space between cards
+        margin: '0 20px', 
+        cursor : 'pointer'
       }}
       onClick={()=>navigate('/admin/usermanagement')}
 
@@ -37,7 +38,9 @@ const AdminHome = () => {
         fontFamily: 'sans-serif',
         height: "30vh",
         width: '300px',
-        margin: '0 20px', // Adjust margin to create space between cards
+        margin: '0 20px', 
+        cursor : 'pointer'
+
       }}
       onClick={()=>navigate('/admin/hrmanagement')}
 

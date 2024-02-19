@@ -10,7 +10,7 @@ function UserRoutes() {
   return (
     <Routes>
       <Route path="/signup" element={<UserPublicRoutes component={SignUp} />} />
-      <Route path="/login" element={<UserPublicRoutes component={LoginNew} />} />
+      <Route path="/login" element={<LoginNew/>} />
       <Route path="/" element={<UserProtectedRoute component={Home} />} />
       <Route path="/profilemanagement" element={<UserProtectedRoute component={profileManagement} />}
       />

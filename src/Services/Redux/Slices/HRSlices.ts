@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isLoggedIn: false,
-  hrEmail : null
+  HREmail : null
 };
 
 const HRAuthSlice = createSlice({
@@ -13,12 +13,12 @@ const HRAuthSlice = createSlice({
       console.log(action.payload,'payload');
       
       state.isLoggedIn = true;
-      state.hrEmail = action.payload.hrEmail;
+      state.HREmail = action.payload.HREmail;
 
     },
     HRLogout(state) {
       state.isLoggedIn = false;
-      state.hrEmail = null
+      state.HREmail = null
 
     },
   },

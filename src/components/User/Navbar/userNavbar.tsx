@@ -20,17 +20,18 @@ const userNavbar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  interface UserState {
-    isLoggedIn : boolean;
-    userEmail : string;
-   }
-   interface RootState {
-    user: UserState;
-  }
+  // interface UserState {
+  //   isLoggedIn : boolean;
+  //   userEmail : string;
+  //  }
+  //  interface RootState {
+  //   user: UserState;
+  // }
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const dispatch = useDispatch()
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const userLoggenIn = useSelector((state :RootState)=>state.user.isLoggedIn)
+  // // eslint-disable-next-line react-hooks/rules-of-hooks
+  // const userLoggenIn = useSelector((state :RootState)=>state.user.isLoggedIn)
+  const userLoggenIn = localStorage.getItem('userEmail')
   console.log(userLoggenIn,'userLoggenIn');
 
   return (
@@ -49,7 +50,7 @@ const userNavbar = () => {
         <h1 style={{ margin: 0 }}>JobHub</h1>
       </div>
       {
-        userLoggenIn &&
+        userLoggenIn ?
         <div>
            <Button
           aria-controls="simple-menu"
@@ -79,14 +80,18 @@ const userNavbar = () => {
             onClick={() => {
               setAnchorEl(null);
               dispatch(userLogout())
+
               localStorage.removeItem('userEmail')
               localStorage.removeItem('userToken')
+              navigate('/login')
             }}
           >
             Logout
           </MenuItem>
         </Menu>
         </div>
+                : <div style={{cursor : 'pointer',fontWeight : 'bold'}} onClick={()=>navigate('/login')}>Login</div>
+
       }
     </nav>
   );

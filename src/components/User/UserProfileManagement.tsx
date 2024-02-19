@@ -20,7 +20,7 @@ export default function ProfileManagement() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const userId = localStorage.getItem("userId");
+        const userId = localStorage.getItem("userEmail");
         console.log(userId,'userId');
         if(!userId) navigate('/login')
         
@@ -68,7 +68,7 @@ export default function ProfileManagement() {
         (option) => option.value
       );
     }
-    console.log(data);
+    console.log(data,'profile dataaa');
     try {
       const update = await axiosUserInstance.post("/update", data);
       console.log(update.data.status === 201); setError("User data updated")
@@ -108,7 +108,7 @@ export default function ProfileManagement() {
           <input
             type="text"
             {...register("fname", {
-              required: true,
+              required: false,
               pattern: /^[A-Za-z]+$/,
             })}
             onChange={(
@@ -128,7 +128,7 @@ export default function ProfileManagement() {
           <input
             type="text"
             {...register("lname", {
-              required: true,
+              required: false,
               pattern: /^[A-Za-z]+$/,
             })}
             onChange={(
@@ -172,23 +172,23 @@ export default function ProfileManagement() {
             {...register("password", {
               // required: true,
               validate: {
-                checkLength: (value) => value.length >= 6,
-                matchPattern: (value) =>
-                  /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*])/.test(
-                    value
-                  ),
+                // checkLength: (value) => value.length >= 6,
+                // matchPattern: (value) =>
+                //   /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*])/.test(
+                //     value
+                //   ),
               },
             })}
             onChange={(
               event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
             ) => setPassword(event.target.value)}
-            value={password }
+            value={'●●●●●●' }
             disabled
           />
           {/* {errors.password?.type === "required" && (
             <p className="errorMsg">Password is required.</p>
           )} */}
-          {errors.password?.type === "checkLength" && (
+          {/* {errors.password?.type === "checkLength" && (
             <p className="errorMsg">
               Password should be at-least 6 characters.
             </p>
@@ -198,7 +198,7 @@ export default function ProfileManagement() {
               Password should contain at least one uppercase letter, lowercase
               letter, digit, and special symbol.
             </p>
-          )}
+          )} */}
         </div>
         {/* <div className="form-control">
           <label htmlFor="">Work Experience</label>

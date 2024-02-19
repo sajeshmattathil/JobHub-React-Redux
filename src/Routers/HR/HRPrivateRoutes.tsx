@@ -14,9 +14,10 @@ interface HRState {
   }
 const HRPrivatedRoute: React.FC<RouteProps> = ({ component: Component }) => {
     const HR = useSelector((state: RootState) => state.HR.isLoggedIn);
+    const HREmail = localStorage.getItem('HREmail')
 
-    console.log(HR)
-    if (!HR) {
+    console.log(HREmail)
+    if (!HREmail) {
 
         return <Navigate to="/hr/login" />;
     }
