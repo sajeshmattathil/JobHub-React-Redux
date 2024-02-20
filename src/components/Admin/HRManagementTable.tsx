@@ -46,7 +46,7 @@ const HRManagementTable: React.FC = () => {
     const onBlock = async (email: string, isBlocked: boolean | undefined) => {
         try {
             console.log('Blocking user:', email);
-            const response = await axiosAdminInstance.put('/admin/hrblockandunblock', { email , isBlocked });
+            const response = await axiosAdminInstance.patch('/admin/hrblockandunblock', { email , isBlocked });
             console.log('Block user response:', response);
 
             if (response.data.status === 201) {
@@ -71,7 +71,7 @@ const HRManagementTable: React.FC = () => {
     const onApprove = async (email: string) => {
         try {
             console.log('Blocking user:', email);
-            const response = await axiosAdminInstance.put('/admin/hrapprove', { email});
+            const response = await axiosAdminInstance.patch('/admin/hrapprove', { email});
             console.log('Approve HR response:', response);
 
             if (response.data.status === 201) {

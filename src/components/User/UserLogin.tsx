@@ -4,13 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { userLogin } from "../../Services/Redux/Slices/UserSlices";
 import { useDispatch, useSelector } from "react-redux";
-import generateOtp from "../../Utils/OtpGenerator/otpGenerator";
 
 function UserLogin() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState("");
-  const [otp,setOtp] =useState('')
   const dispatch = useDispatch();
   const {
     register,
@@ -60,19 +58,6 @@ function UserLogin() {
     navigate("/hr/login");
   };
 
- const handleForgotOtp = async ()=>{
-  setOtp('otp sended')
-  const otp = generateOtp()
-
-  const sendForgotOtp = await axiosInstance.post('/forgot_otp',{
-    otp : otp,
-    createdAt : Date.now()
-  })
-  console.log(sendForgotOtp);
-  
-  }
-
-if(otp.trim() === '')
   return (
     <div
       style={{
@@ -172,85 +157,14 @@ if(otp.trim() === '')
         <p style={{ cursor: "pointer"}} onClick={handleHiringManager}>
           Hiring Manager ?
         </p>
-      <span onClick={handleForgotOtp}>Forgot password?</span>
+      <span style={{cursor : 'pointer'}} onClick={()=>navigate('/forgotPassword')}>Forgot password?</span>
 
       </div>
       </form>
     </div>
   );
-  else {
-    return (
-      <div>
-        <div
-          className="otp"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-            backgroundColor: "white",
-          }}
-        >
-          <div
-            className="otpInner items-center justify-center "
-            style={{
-              backgroundColor: "white",
-              padding: "40px",
 
-              borderRadius: "8px",
-              boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
-            }}
-          >
-            <p style={{ fontWeight: "bolder",fontFamily:'sans-serif',fontSize:"17px" }}>Enter your OTP</p>
-            <p
-              style={{
-                color: "red",
-                fontSize: "15px",
-                alignItems: "center",
-                justifyItems: "center",
-                marginLeft: "27%",
-              }}
-            >
-              {error}
-            </p>
-            {resendClicked && (
-              <p style={{fontWeight:'bold'}}>{`Time Remaining : ${minutes}:${seconds}`}</p>
-            )}
-
-            <span>
-              <input
-                type="text"
-                style={{
-                  border: "solid black 2px",
-                  borderRadius: ".5rem",
-                  margin: ".5rem",
-                }}
-                onChange={(e) => {
-                  setEnteredOtp(e.target.value);
-                  setError("");
-                }}
-              />
-
-              <button
-                style={{
-                  borderRadius: ".5rem",
-                  color: "white",
-                  backgroundColor: "black",
-                  border: "none",
-                }}
-                onClick={handleOtp}
-              >
-                Submit
-              </button>
-            </span>
-            <p style={{ cursor: "pointer" }} onClick={handleResendOTP}>
-              Resend OTP
-            </p>
-          </div>
-        </div>
-      </div>
-    )
-  }
+  
 }
 
 export default UserLogin;

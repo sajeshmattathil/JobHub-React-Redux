@@ -70,7 +70,7 @@ export default function ProfileManagement() {
     }
     console.log(data,'profile dataaa');
     try {
-      const update = await axiosUserInstance.post("/update", data);
+      const update = await axiosUserInstance.put("/update", data);
       console.log(update.data.status === 201); setError("User data updated")
       
     } catch (error) {

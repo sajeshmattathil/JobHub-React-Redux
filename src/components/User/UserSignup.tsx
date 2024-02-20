@@ -68,7 +68,7 @@ function UserSignup() {
   const handleOtp = async () => {
     try {
       if (enteredOtp.trim().length === 6) {
-        const response = await axiosInstance.post("/verifyOtp", {
+        const response = await axiosInstance.patch("/verifyOtp", {
           otp: enteredOtp,
           userId: email,
         });

@@ -47,7 +47,7 @@ const UserManagementTable: React.FC = () => {
     const onBlock = async (email: string, isBlocked: boolean) => {
         try {
             console.log('Blocking user:', email);
-            const response = await axiosAdminInstance.put('/admin/blockandunblock', { email , isBlocked });
+            const response = await axiosAdminInstance.patch('/admin/blockandunblock', { email , isBlocked });
             console.log('Block user response:', response);
 
             if (response.data.status === 201) {
