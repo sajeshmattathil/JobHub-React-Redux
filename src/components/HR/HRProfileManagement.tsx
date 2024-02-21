@@ -13,20 +13,20 @@ export default function HRProfileManagement() {
   const [experience, setExperience] = useState<string>("0");
   const [company, setCompany] = useState<string>("");
   const [website, setWebsite] = useState<string>("");
-  const [EmployeesNumber, setEmployeesNumber] = useState<string>("");
+  const [EmployeesNumber, setEmployeesNumber] = useState<number | string>(0);
 
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
+  const HRId = localStorage.getItem("HREmail");
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const HRId = localStorage.getItem("HREmail");
         console.log(HRId, "hrId");
-        if (!HRId) navigate("/login");
+        if (!HRId) navigate("/hr/login");
 
-        const response = await axiosHRInstance.get(`/getHR/${HRId}`);
-        console.log(response, "responde");
+        const response = await axiosHRInstance.get(`/hr/getHR/${HRId}`);
+        console.log(response, "response -----------");
 
         if (response?.data?.status === 201) {
           setName(response?.data?.HR?.name);
@@ -35,7 +35,7 @@ export default function HRProfileManagement() {
           setWebsite(response?.data?.HR?.website)
         }
       } catch (error) {
-        console.log("error in fetching user");
+        console.log("error in fetching user",error);
       }
     };
     fetchUser();
@@ -47,15 +47,27 @@ export default function HRProfileManagement() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data: {
-    resume: string;
-    skills: { value: string; label: string }[] | string[];
-  }) => {
+interface HRProfileData {
+  name : string,
+  company : string;
+  website : string;
+resume : string;
+employeesNumber : number |string;
+experience : number;
+email : string;
+}
+
+
+  const onSubmit = async (data: HRProfileData) => {
     data.resume = resume;
-   
+    data.name = name;
+    data.company = company;
+    data.website = website
+   data.employeesNumber = EmployeesNumber
+data.email = email
     console.log(data, "profile dataaa");
     try {
-      const update = await axiosHRInstance.post("/update", data);
+      const update = await axiosHRInstance.post(`/hr/update/${HRId}`, data);
       console.log(update.data.status === 201);
       setError("User data updated");
     } catch (error) {
@@ -187,17 +199,17 @@ export default function HRProfileManagement() {
             value={website}
           />
           {errors.website && errors.website.type === "required" && (
-            <p className="errorMsg">Last Name is required.</p>
+            <p className="errorMsg">Website  is required.</p>
           )}
           {errors.website && errors.website.type === "pattern" && (
-            <p className="errorMsg">Last Name is not valid.</p>
+            <p className="errorMsg">Website not valid.</p>
           )}
           <label htmlFor="">No. of Employees</label>
           <input
             type="text"
             {...register("employeesNumber", {
               required: false,
-              pattern: /^(0|[1-9]\d?)$|^20000$/,
+              pattern: /^(0|[1-9]\d?)$|^200000$/,
             })}
             onChange={(
               e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -219,22 +231,22 @@ export default function HRProfileManagement() {
           <label>Enter your years of Experience</label>
           <input
             type="text"
-            {...register("years", {
+            {...register("experience", {
               required: true,
-              pattern: /^(0|[1-9]\d?)$|^30$/,
+              pattern: /^(0|[1-9]\d?)$|^50$/,
             })}
             onChange={(
               e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
             ) => setExperience(e.target.value)}
             value={experience}
           />
-          {errors.years && errors.years.type === "required" && (
+          {errors.experience && errors.experience.type === "required" && (
             <p className="errorMsg">Experience is required.</p>
           )}
-          {errors.years && errors.years.type === "pattern" && (
+          {errors.experience && errors.experience.type === "pattern" && (
             <p className="errorMsg">
               Experience should be a non-negative number less than or equal to
-              30.
+              50.
             </p>
           )}
           <div>
@@ -245,7 +257,7 @@ export default function HRProfileManagement() {
                 id="resume_upload"
                 accept=".pdf"
                 {...register("resume", {
-                  required: true,
+                  required: false,
                 })}
                 onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
                   setError("");

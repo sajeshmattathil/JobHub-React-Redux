@@ -85,22 +85,26 @@ const UserForgotPassword = () => {
     }
   };
   let timer: number
-  let interval: NodeJS.Timeout;
+  var interval: NodeJS.Timeout;
+
   const handleResendOTP = async () => {
     console.log(1111);
 
     try {
       setClicked(true);
+     console.log(interval,'xxxx1');
+
+     clearInterval(interval)
+     console.log(interval,'xxxx2');
+     
+       timer = 600
+
+      // startTimer();
       const otp = generateOtp();
       const createdAt = Date.now();
-      if (interval) {
-        console.log('intervallll');
-        
-        clearInterval(interval);
-        // interval = 0;
-      } 
-      timer = 600
-      startTimer();
+    
+      // timer = 600
+       startTimer();
       const resendOTP = await axiosInstance.post('/resendOTP',{
         userId : email,
         otp : otp,
@@ -113,9 +117,6 @@ const UserForgotPassword = () => {
       console.log("error in resend otp ", error);
     }
   };
-
- 
- 
   //  timer = 600;
   const updateTimer = () => {
     try {
@@ -128,16 +129,19 @@ const UserForgotPassword = () => {
       console.log("error in otp timer", error);
     }
   };
+console.log(interval,'xxxx5');
+
   function startTimer() {
     console.log("settimer");
 
     interval = setInterval(() => {
       timer--;
       updateTimer();
+console.log(interval,'xxxx3');
 
-      if (timer === 0) {
+      if ( resendClicked || timer === 0) {
         clearInterval(interval);
-        setClicked(false)
+        // setClicked(false)
       }
     }, 1000);
   }
@@ -145,6 +149,7 @@ interface Passwords {
     password : string;
     confirm : string;
 }
+console.log(interval,'xxxx4');
 
   const handleNewPasswords = async (data :Passwords)=>{
     try {

@@ -35,12 +35,13 @@ function AdminLogIn() {
       console.log(response,'------->');
       
       if (response?.data?.status === 201) {
+console.log(response.data,'admin verified data');
 
         localStorage.setItem("adminToken", response?.data?.token);
 
         dispatch(adminLogin({adminEmail:email}))
 
-        localStorage.setItem('userEmail',email)
+        localStorage.setItem('adminEmail',email)
 
         navigate("/admin");
 
