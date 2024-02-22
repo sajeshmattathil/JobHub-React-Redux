@@ -33,6 +33,10 @@ export default function HRProfileManagement() {
           setEmail(response?.data?.HR?.email);
           setCompany(response?.data?.HR?.company)
           setWebsite(response?.data?.HR?.website)
+          setExperience(response?.data?.HR?.experience)
+          setEmployeesNumber(response?.data?.HR?.EmployeesNumber)
+
+
         }
       } catch (error) {
         console.log("error in fetching user",error);

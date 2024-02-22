@@ -47,7 +47,7 @@ const HRNavbar = () => {
       }}
     >
       <div>
-        <h1 style={{ margin: 0 }}>JobHub</h1>
+        <h1 style={{ margin: 0 ,cursor :'pointer' }}  onClick={()=>navigate('/hr')}>JobHub</h1>
       </div>
       
      { HRLoggedIn && <div>
@@ -66,7 +66,7 @@ const HRNavbar = () => {
             </button>
           </div>}
       {
-        HRLoggedIn ?
+        HRLoggedIn &&
         <div>
            <Button
           aria-controls="simple-menu"
@@ -106,7 +106,6 @@ const HRNavbar = () => {
           </MenuItem>
         </Menu>
         </div>
-        : <div style={{cursor : 'pointer',fontWeight : 'bold'}} onClick={()=>navigate('/hr/login')}>Login</div>
       }
     </nav>
   );

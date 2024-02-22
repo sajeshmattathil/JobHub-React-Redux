@@ -47,10 +47,10 @@ const adminLoggedIn = localStorage.getItem('adminEmail')
       }}
     >
       <div>
-        <h1 style={{ margin: 0 }}>JobHub</h1>
+        <h1 style={{ margin: 0 ,cursor :'pointer' }} onClick={()=>navigate('/admin')}>JobHub</h1>
       </div>
       {
-        adminLoggedIn ?
+        adminLoggedIn &&
         <div>
            <Button
           aria-controls="simple-menu"
@@ -82,7 +82,6 @@ const adminLoggedIn = localStorage.getItem('adminEmail')
           </MenuItem>
         </Menu>
         </div>
-                        : <div style={{cursor : 'pointer',fontWeight : 'bold'}} onClick={()=>navigate('/login')}>Login</div>
 
       }
     </nav>

@@ -28,11 +28,11 @@ const userNavbar = () => {
   //   user: UserState;
   // }
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   // // eslint-disable-next-line react-hooks/rules-of-hooks
   // const userLoggenIn = useSelector((state :RootState)=>state.user.isLoggedIn)
-  const userLoggenIn = localStorage.getItem('userEmail')
-  console.log(userLoggenIn,'userLoggenIn');
+  const userLoggenIn = localStorage.getItem("userEmail");
+  console.log(userLoggenIn, "userLoggenIn");
 
   return (
     <nav
@@ -47,56 +47,70 @@ const userNavbar = () => {
       }}
     >
       <div>
-        <h1 style={{ margin: 0 }}>JobHub</h1>
+        <h1
+          style={{ margin: 0, cursor: "pointer" }}
+          onClick={() => navigate("/")}
+        >
+          JobHub
+        </h1>
       </div>
-      {
-        userLoggenIn ?
+      {userLoggenIn ? (
         <div>
-           <Button
-          aria-controls="simple-menu"
-          aria-haspopup="true"
-          onClick={handleClick}
-        >
-          <HiMiniUserCircle
-            style={{ width: "250%", height: "250%", cursor: "pointer" }}
-            
-          />
-        </Button>
-        <Menu
-          id="simple-menu"
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          <MenuItem
-            onClick={() => {
-              setAnchorEl(null);
-              navigate("/profilemanagement");
-            }}
+          <Button
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            onClick={handleClick}
           >
-            Profile
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              setAnchorEl(null);
-              dispatch(userLogout())
+            <HiMiniUserCircle
+              style={{ width: "250%", height: "250%", cursor: "pointer" }}
+            />
+          </Button>
+          <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem
+              onClick={() => {
+                setAnchorEl(null);
+                navigate("/profilemanagement");
+              }}
+            >
+              Profile
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                setAnchorEl(null);
+                dispatch(userLogout());
 
-              localStorage.removeItem('userEmail')
-              localStorage.removeItem('userToken')
-              navigate('/login')
-            }}
-          >
-            Logout
-          </MenuItem>
-        </Menu>
+                localStorage.removeItem("userEmail");
+                localStorage.removeItem("userToken");
+                navigate("/login");
+              }}
+            >
+              Logout
+            </MenuItem>
+          </Menu>
         </div>
-                : <div style={{cursor : 'pointer',fontWeight : 'bold'}} onClick={()=>navigate('/login')}>Login</div>
-
-      }
+      ) : (
+        <div style={{ display: "flex" }}>
+          <button
+            style={{ cursor: "pointer", fontWeight: "bold" }}
+            onClick={() => navigate("/signup")}
+          >
+            Register
+          </button>
+          <button
+            style={{ cursor: "pointer", fontWeight: "bold" }}
+            onClick={() => navigate("/login")}
+          >
+            Login
+          </button>
+        </div>
+      )}
     </nav>
   );
 };
 
 export default userNavbar;
-
-
