@@ -36,6 +36,9 @@ function UserLogin() {
         setError(response?.data?.message);
     } catch (err) {
       console.log("Error happenend in login submit", err);
+      console.log(err.response.data.message,'err message');
+      
+      setError(err.response.data.message)
     }
   };
   interface UserState {
@@ -103,7 +106,9 @@ function UserLogin() {
             })}
             onChange={(
               e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-            ) => setEmail(e.target.value)}
+            ) =>{ 
+              setError('')
+              setEmail(e.target.value)}}
             value={email}
           />
           {errors.email && errors.email.type === "required" && (
@@ -129,7 +134,9 @@ function UserLogin() {
             })}
             onChange={(
               event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-            ) => setPassword(event.target.value)}
+            ) => {
+              setError('')
+              setPassword(event.target.value)}}
             value={password}
           />
           {errors.password?.type === "required" && (

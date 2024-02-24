@@ -9,6 +9,7 @@ const Jobs = () => {
     const navigate = useNavigate()
 
   interface jobData {
+    _id: string;
     jobRole: string;
     description: string;
     qualification: [string];
@@ -122,7 +123,9 @@ const Jobs = () => {
       borderRadius: "8px",
       boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
       marginBottom: "20px", 
+      cursor : 'pointer'
     }}
+onClick={()=>navigate(`/hr/viewJob/${job._id}`)}
   >
     <h2 style={{ marginBottom: "10px" }}>{job.jobRole}</h2>
 

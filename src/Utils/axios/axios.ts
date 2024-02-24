@@ -4,12 +4,13 @@ function createAxiosInstance(token : string | null,role : string | null) {
     const instance = axios.create({
         baseURL: 'http://localhost:3000'
     });
+    console.log(token,role,'token---role');
+    
 if(token){
     instance.interceptors.request.use(
         (config) => {
             config.headers.Authorization = `Bearer ${token}`;
             config.headers.role = role;
-
             return config;
         },
         (error) => {

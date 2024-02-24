@@ -10,23 +10,23 @@ export default function ProfileManagement() {
   const [fname, setFname] = useState<string>("");
   const [lname, setLname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [password,setPassword] =useState<string>('')
+  const [password, setPassword] = useState<string>("");
   const [resume, setResume] = useState<string>("");
   const [experience, setExperience] = useState<string>("0");
 
   const [error, setError] = useState<string>("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const userId = localStorage.getItem("userEmail");
-        console.log(userId,'userId');
-        if(!userId) navigate('/login')
-        
+        console.log(userId, "userId");
+        if (!userId) navigate("/login");
+
         const response = await axiosUserInstance.get(`/getUser/${userId}`);
-        console.log(response,'responde');
-        
+        console.log(response, "responde");
+
         if (response?.data?.status === 201) {
           setFname(response?.data?.user?.fname);
           setLname(response?.data?.user?.lname);
@@ -53,7 +53,6 @@ export default function ProfileManagement() {
     { value: "Angular", label: "Angular" },
   ];
 
-
   const {
     control,
     register,
@@ -61,18 +60,26 @@ export default function ProfileManagement() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data: { resume: string; skills: { value: string; label: string; }[] | string[]; }) => {
+  const onSubmit = async (data: {
+    course: string;
+    education: string;
+    educationalQualification: string;
+    resume: string;
+    skills: { value: string; label: string }[] | string[];
+  }) => {
     data.resume = resume;
+    data.educationalQualification = `${data.education} ${data.course}`;
+
     if (typeof skills[0] === "object" && !Array.isArray(skills[0])) {
       data.skills = (data.skills as SkillOption[]).map(
         (option) => option.value
       );
     }
-    console.log(data,'profile dataaa');
+    console.log(data, "profile dataaa");
     try {
       const update = await axiosUserInstance.put("/update", data);
-      console.log(update.data.status === 201); setError("User data updated")
-      
+      console.log(update.data.status === 201);
+      setError("User data updated");
     } catch (error) {
       console.log("Error in updating profile", error);
     }
@@ -80,228 +87,378 @@ export default function ProfileManagement() {
 
   return (
     <>
-    <nav
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "10px 20px",
-            backgroundColor: "#fff",
-            color: "#333",
-            borderBottom: '2px solid #333'
-          }}
-        >
-          <div>
-            <h1 style={{ margin: 0 }}>JobHub</h1>
-          </div>
-          <div>
-          
-          </div>
-        </nav>
-  
-    <div className="App">
-      <p>{error}</p>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <h2 className="">Manage your Profile</h2>
-        <div className="form-control">
-          <label htmlFor="">First Name</label>
-          <input
-            type="text"
-            {...register("fname", {
-              required: false,
-              pattern: /^[A-Za-z]+$/,
-            })}
-            onChange={(
-              e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-            ) =>{ setFname(e.target.value)
-            setError('')
-            }}
-            value={fname}
-          />
-          {errors.fname && errors.fname.type === "required" && (
-            <p className="errorMsg">First Name is required.</p>
-          )}
-          {errors.fname && errors.fname.type === "pattern" && (
-            <p className="errorMsg">First Name is not valid.</p>
-          )}
-          <label htmlFor="">Last Name</label>
-          <input
-            type="text"
-            {...register("lname", {
-              required: false,
-              pattern: /^[A-Za-z]+$/,
-            })}
-            onChange={(
-              e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-            ) => {setLname(e.target.value)
-              setError('')
-
-            }}
-            value={lname}
-          />
-          {errors.lname && errors.lname.type === "required" && (
-            <p className="errorMsg">Last Name is required.</p>
-          )}
-          {errors.lname && errors.lname.type === "pattern" && (
-            <p className="errorMsg">Last Name is not valid.</p>
-          )}
-
-          <label>Email</label>
-          <input
-            type="text"
-            {...register("email", {
-              pattern: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
-            })}
-            onChange={(
-              e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-            ) => setEmail(e.target.value)}
-            value={email}
-            disabled
-          />
-          {errors.email && errors.email.type === "required" && (
-            <p className="errorMsg">Email is required.</p>
-          )}
-          {errors.email && errors.email.type === "pattern" && (
-            <p className="errorMsg">Email is not valid.</p>
-          )}
-
-          <label>Password</label>
-          <input
-            type="password"
-            // name="password"
-            {...register("password", {
-              // required: true,
-              validate: {
-                // checkLength: (value) => value.length >= 6,
-                // matchPattern: (value) =>
-                //   /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*])/.test(
-                //     value
-                //   ),
-              },
-            })}
-            onChange={(
-              event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-            ) => setPassword(event.target.value)}
-            value={'●●●●●●' }
-            disabled
-          />
-          {/* {errors.password?.type === "required" && (
-            <p className="errorMsg">Password is required.</p>
-          )} */}
-          {/* {errors.password?.type === "checkLength" && (
-            <p className="errorMsg">
-              Password should be at-least 6 characters.
-            </p>
-          )}
-          {errors.password?.type === "matchPattern" && (
-            <p className="errorMsg">
-              Password should contain at least one uppercase letter, lowercase
-              letter, digit, and special symbol.
-            </p>
-          )} */}
-        </div>
-        {/* <div className="form-control">
-          <label htmlFor="">Work Experience</label>
-          {workExperiences.map((workExperience, index) => (
-            <div className="work-entry" key={index}>
-           
-
-              <label htmlFor={`jobRole${index}`}>Job Role:</label>
-              <input
-                type="text"
-                id={`jobRole${index}`}
-                name={`jobRole`}
-                value={workExperience.jobRole}
-                onChange={(e) =>
-                  updateWorkExperience(index, "jobRole", e.target.value)
-                }
-                required
-              />
-              <label htmlFor={`jobRole${index}`}>Years:</label>
-
-                <input
-                type="text"
-                id={`years${index}`}
-                name={`years`}
-                value={workExperience.years}
-                onChange={(e) =>
-                  updateWorkExperience(index, "years", e.target.value)
-                }
-                required
-              />
-
-             {index>1 && <button type="button" onClick={() => removeWorkExperience(index)}>
-                Remove
-              </button>}
-            </div>
-          ))}
-        </div> */}
-        <div className="form-control">
-          <label>Select your skills</label>
-          <Controller
-            name="skills"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <Select {...field} isMulti options={skills} />
-            )}
-          />
-          {errors.skills && (
-            <p className="errorMsg">This is a required field.</p>
-          )}
-        </div>
-        <label>Enter your years of Experience</label>
-        <input
-          type="text"
-          {...register("years", {
-            required: true,
-            pattern: /^(0|[1-9]\d?)$|^30$/,
-          })}
-          onChange={(
-            e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-          ) => setExperience(e.target.value)}
-          value={experience}
-        />
-        {errors.years && errors.years.type === "required" && (
-          <p className="errorMsg">Experience is required.</p>
-        )}
-        {errors.years && errors.years.type === "pattern" && (
-          <p className="errorMsg">
-            Experience should be a non-negative number less than or equal to 30.
-          </p>
-        )}
+      <nav
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "10px 20px",
+          backgroundColor: "#fff",
+          color: "#333",
+          borderBottom: "2px solid #333",
+        }}
+      >
         <div>
+          <h1 style={{ margin: 0 }}>JobHub</h1>
+        </div>
+        <div></div>
+      </nav>
+
+      <div className="App">
+        <p>{error}</p>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <h2 className="">Manage your Profile</h2>
           <div className="form-control">
-            <label htmlFor="resume_upload">Upload Resume (PDF)</label>
+            <label htmlFor="">First Name</label>
             <input
-              type="file"
-              id="resume_upload"
-              accept=".pdf"
-              {...register("resume", {
-                required: true,
+              type="text"
+              {...register("fname", {
+                required: false,
+                pattern: /^[A-Za-z]+$/,
               })}
-              onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+              onChange={(
+                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => {
+                setFname(e.target.value);
                 setError("");
-                const files = e.target.files;
-                if (files) {
-                  const pdf = files[0];
-                  const resumeUrl = await upload(pdf, "resume");
-                  if (resumeUrl) setResume(resumeUrl);
-                }
               }}
+              value={fname}
             />
-            {errors.resume && errors.resume.type === "required" && (
-              <p className="errorMsg">Resume is required.</p>
+            {errors.fname && errors.fname.type === "required" && (
+              <p className="errorMsg">First Name is required.</p>
             )}
+            {errors.fname && errors.fname.type === "pattern" && (
+              <p className="errorMsg">First Name is not valid.</p>
+            )}
+            <label htmlFor="">Last Name</label>
+            <input
+              type="text"
+              {...register("lname", {
+                required: false,
+                pattern: /^[A-Za-z]+$/,
+              })}
+              onChange={(
+                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => {
+                setLname(e.target.value);
+                setError("");
+              }}
+              value={lname}
+            />
+            {errors.lname && errors.lname.type === "required" && (
+              <p className="errorMsg">Last Name is required.</p>
+            )}
+            {errors.lname && errors.lname.type === "pattern" && (
+              <p className="errorMsg">Last Name is not valid.</p>
+            )}
+
+            <label>Email</label>
+            <input
+              type="text"
+              {...register("email", {
+                pattern: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
+              })}
+              onChange={(
+                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => setEmail(e.target.value)}
+              value={email}
+              disabled
+            />
+            {errors.email && errors.email.type === "required" && (
+              <p className="errorMsg">Email is required.</p>
+            )}
+            {errors.email && errors.email.type === "pattern" && (
+              <p className="errorMsg">Email is not valid.</p>
+            )}
+
+            <label>Password</label>
+            <input
+              type="password"
+              // name="password"
+              {...register("password", {
+                // required: true,
+                validate: {
+                  // checkLength: (value) => value.length >= 6,
+                  // matchPattern: (value) =>
+                  //   /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*])/.test(
+                  //     value
+                  //   ),
+                },
+              })}
+              onChange={(
+                event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => setPassword(event.target.value)}
+              value={"●●●●●●"}
+              disabled
+            />
+
+            <label>Select your skills</label>
+            <Controller
+              name="skills"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <Select {...field} isMulti options={skills} />
+              )}
+            />
+            {errors.skills && (
+              <p className="errorMsg">This is a required field.</p>
+            )}
+
+            <div className="" style={{ display: "flex" }}>
+              <div className="form-control">
+                <label htmlFor="education"></label>
+                <Controller
+                  name="education"
+                  control={control}
+                  defaultValue=""
+                  rules={{ required: false }}
+                  render={({ field }) => (
+                    <select
+                      style={{
+                        width: "200px",
+                        padding: "10px",
+                        border: "1px solid #ccc",
+                        borderRadius: "4px",
+                        backgroundColor: "#fff",
+                        color: "#333",
+                        fontSize: "16px",
+                      }}
+                      {...field}
+                    >
+                      <option value="" disabled>
+                        What you have studied
+                      </option>
+                      <option value="Diploma">Matriculation</option>
+                      <option value="BE">Higher Secondary Education</option>
+                      <option value="">Any</option>
+                      <option value="Diploma">Diploma</option>
+                      <option value="Diploma">Matriculation</option>
+                      <option value="BE">Higher Secondary Education</option>
+                      <option value="BE">BE</option>
+                      <option value="B.Tech">B.Tech</option>
+                      <option value="BSc">BSc</option>
+                      <option value="BA">BA</option>
+                      <option value="BCA">BCA</option>
+                      <option value="BCom">BCom</option>
+                      <option value="BBA">BBA</option>
+                      <option value="MBBS">MBBS</option>
+                      <option value="B.Pharm">B.Pharm</option>
+                      <option value="LLB">LLB</option>
+                      <option value="B.Arch">B.Arch</option>
+                      <option value="B.Ed">B.Ed</option>
+                      <option value="BDS">BDS</option>
+                      <option value="BAMS">BAMS</option>
+                      <option value="BHMS">BHMS</option>
+                      <option value="B.V.Sc">B.V.Sc</option>
+                      <option value="BPT">BPT</option>
+                      <option value="BUMS">BUMS</option>
+                      <option value="MCA">MCA</option>
+                      <option value="MCom">MCom</option>
+                      <option value="MBA">MBA</option>
+                      <option value="MD">MD</option>
+                      <option value="MS">MS</option>
+                      <option value="M.Tech">M.Tech</option>
+                      <option value="MSc">MSc</option>
+                      <option value="MA">MA</option>
+                      <option value="MPH">MPH</option>
+                      <option value="M.Arch">M.Arch</option>
+                      <option value="M.Ed">M.Ed</option>
+                      <option value="MDS">MDS</option>
+                      <option value="M.Pharm">M.Pharm</option>
+                      <option value="MDS">MDS</option>
+                      <option value="MAMS">MAMS</option>
+                      <option value="MHMS">MHMS</option>
+                      <option value="M.V.Sc">M.V.Sc</option>
+                      <option value="MPT">MPT</option>
+                      <option value="MUMS">MUMS</option>
+                    </select>
+                  )}
+                />
+                {errors.education && (
+                  <p className="errorMsg">This is a required field.</p>
+                )}
+              </div>
+
+              <div className="form-control">
+                <label htmlFor="course"></label>
+                <Controller
+                  name="course"
+                  control={control}
+                  defaultValue=""
+                  rules={{ required: false }}
+                  render={({ field }) => (
+                    <select
+                      style={{
+                        width: "200px",
+                        padding: "10px",
+                        border: "1px solid #ccc",
+                        borderRadius: "4px",
+                        backgroundColor: "#fff",
+                        color: "#333",
+                        fontSize: "16px",
+                      }}
+                      {...field}
+                    >
+                      <option value="" disabled>
+                        Select course
+                      </option>
+                      <option value="Any graduation">State Board</option>
+                      <option value="Any graduation">CBSE</option>
+                      <option value="Any graduation">ICSE</option>
+                      <option value="Any graduation">Any graduation</option>
+                      <option value="Any graduation">Any graduation</option>
+                      <option value="Any post graduation">
+                        Any post graduation
+                      </option>
+
+                      <option value="Mechanical Engineering">
+                        Mechanical Engineering
+                      </option>
+                      <option value="Computer Science Engineering">
+                        Computer Science Engineering
+                      </option>
+                      <option value="Electrical Engineering">
+                        Electrical Engineering
+                      </option>
+                      <option value="Civil Engineering">
+                        Civil Engineering
+                      </option>
+                      <option value="Information Technology">
+                        Information Technology
+                      </option>
+                      <option value="Electronics and Communication Engineering">
+                        Electronics and Communication Engineering
+                      </option>
+                      <option value="Aeronautical Engineering">
+                        Aeronautical Engineering
+                      </option>
+                      <option value="Chemical Engineering">
+                        Chemical Engineering
+                      </option>
+                      <option value="Automobile Engineering">
+                        Automobile Engineering
+                      </option>
+                      <option value="Biotechnology">Biotechnology</option>
+                      <option value="Agricultural Engineering">
+                        Agricultural Engineering
+                      </option>
+                      <option value="Bioinformatics">Bioinformatics</option>
+                      <option value="Mechatronics Engineering">
+                        Mechatronics Engineering
+                      </option>
+                      <option value="Robotics Engineering">
+                        Robotics Engineering
+                      </option>
+                      <option value="Environmental Engineering">
+                        Environmental Engineering
+                      </option>
+                      <option value="Petroleum Engineering">
+                        Petroleum Engineering
+                      </option>
+                      <option value="Nuclear Engineering">
+                        Nuclear Engineering
+                      </option>
+                      <option value="Textile Engineering">
+                        Textile Engineering
+                      </option>
+                      <option value="Ocean Engineering">
+                        Ocean Engineering
+                      </option>
+                      <option value="Materials Science and Engineering">
+                        Materials Science and Engineering
+                      </option>
+                      <option value="Industrial Engineering">
+                        Industrial Engineering
+                      </option>
+                      <option value="Mining Engineering">
+                        Mining Engineering
+                      </option>
+                      <option value="Metallurgical Engineering">
+                        Metallurgical Engineering
+                      </option>
+                      <option value="Zoology">Zoology</option>
+                      <option value="Botany">Botany</option>
+                      <option value="Chemistry">Chemistry</option>
+                      <option value="Physics">Physics</option>
+                      <option value="Mathematics">Mathematics</option>
+                      <option value="Statistics">Statistics</option>
+                      <option value="Geology">Geology</option>
+                      <option value="Microbiology">Microbiology</option>
+                      <option value="Biochemistry">Biochemistry</option>
+                      <option value="Environmental Science">
+                        Environmental Science
+                      </option>
+                      <option value="Biotechnology">Biotechnology</option>
+                      <option value="Nursing">Nursing</option>
+                      <option value="Physiotherapy">Physiotherapy</option>
+                      <option value="Agriculture">Agriculture</option>
+                      <option value="Veterinary Science">
+                        Veterinary Science
+                      </option>
+                    </select>
+                  )}
+                />
+                {errors.course && (
+                  <p className="errorMsg">This is a required field.</p>
+                )}
+              </div>
+            </div>
+
+            <label>Enter your years of Experience</label>
+            <input
+              type="text"
+              {...register("years", {
+                required: true,
+                pattern: /^(0|[1-9]\d?)$|^30$/,
+              })}
+              onChange={(
+                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => setExperience(e.target.value)}
+              value={experience}
+            />
+            {errors.years && errors.years.type === "required" && (
+              <p className="errorMsg">Experience is required.</p>
+            )}
+            {errors.years && errors.years.type === "pattern" && (
+              <p className="errorMsg">
+                Experience should be a non-negative number less than or equal to
+                30.
+              </p>
+            )}
+            <div>
+              <div className="form-control">
+                <label htmlFor="resume_upload">Upload Resume (PDF)</label>
+                <input
+                  type="file"
+                  id="resume_upload"
+                  accept=".pdf"
+                  {...register("resume", {
+                    required: true,
+                  })}
+                  onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+                    setError("");
+                    const files = e.target.files;
+                    if (files) {
+                      const pdf = files[0];
+                      const resumeUrl = await upload(pdf, "resume");
+                      if (resumeUrl) setResume(resumeUrl);
+                    }
+                  }}
+                />
+                {errors.resume && errors.resume.type === "required" && (
+                  <p className="errorMsg">Resume is required.</p>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="form-control">
-          <label></label>
-          <button type="submit">Update</button>
-        </div>
-        .
-      </form>
-    </div>
+          <div className="form-control">
+            <label></label>
+            <button type="submit">Update</button>
+          </div>
+          .
+        </form>
+      </div>
     </>
   );
 }
