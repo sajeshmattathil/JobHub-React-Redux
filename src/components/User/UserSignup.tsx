@@ -336,7 +336,7 @@ function UserSignup() {
                   lowercase letter, digit, and special symbol.
                 </p>
               )}
-              <button type="submit">Sign up</button>
+              <button type="submit" style={{marginTop:'2%',backgroundColor:'black'}}>Sign up</button>
 
               <p style={{ cursor: "pointer" }} onClick={handleExistingUser}>
                 Already have a account?

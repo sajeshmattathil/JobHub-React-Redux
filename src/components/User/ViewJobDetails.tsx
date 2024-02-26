@@ -8,7 +8,7 @@ import { CiGlobe } from "react-icons/ci";
 import { TiTickOutline } from "react-icons/ti";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-
+import Jobs from "../HR/HrHome";
 
 const ViewJobDetails = () => {
   const [job, setJob] = useState<Job | null>(null);
@@ -61,41 +61,48 @@ const ViewJobDetails = () => {
       }
     };
     fetchJobData();
-  }, [id,shouldRender]);
+  }, [id, shouldRender]);
 
   const handleApplyJob = async () => {
     try {
       if (job && hr) {
-        
         const applyJob = await axiosUserInstance.post("/applyJob", {
           jobId: job._id,
           hrId: hr._id,
           appliedAt: Date.now(),
         });
-        
+        if (applyJob.data.status === 201) {
+          setShouldRender((prev) => !prev);
+          console.log(shouldRender);
+          console.log(job,'jobssss');
+          
+        }
       }
     } catch (error) {
       console.log(error, "error in applying job");
+      console.log(error.response.data.message);
     }
   };
 
-  const handleFollowHiringManager = async (HRId : string,value : string)=>{
+  const handleFollowHiringManager = async (HRId: string, value: string) => {
     try {
-      console.log(HRId,value);
-      setShouldRender(prevState => !prevState);
-      console.log(shouldRender,'kdhshkj');
-      
-      const followAndUnfollowHR =  await axiosUserInstance.patch(`/followAndUnfollow/`,{
-        HRId : HRId,
-        value : value
-      })
+      console.log(HRId, value);
+      setShouldRender((prevState) => !prevState);
+      console.log(shouldRender, "kdhshkj");
 
-      console.log(followAndUnfollowHR.data,'followAndUnfollowHR');
-      
+      const followAndUnfollowHR = await axiosUserInstance.patch(
+        `/followAndUnfollow/`,
+        {
+          HRId: HRId,
+          value: value,
+        }
+      );
+
+      console.log(followAndUnfollowHR.data, "followAndUnfollowHR");
     } catch (error) {
-      console.log(error,'error in follow unfollow hr');   
+      console.log(error, "error in follow unfollow hr");
     }
-  }
+  };
 
   return (
     <>
@@ -112,7 +119,7 @@ const ViewJobDetails = () => {
           alignItems: "center",
         }}
       >
-        {job && (
+        {job && 
           <div
             style={{
               backgroundColor: "#f5f5f5",
@@ -180,18 +187,26 @@ const ViewJobDetails = () => {
                 }}
               >
                 {userEmail ? (
-                  job.appliedUsers.includes(userEmail) ? <div style={{
-                    color : 'green',
-                  border : '2px solid green',
-                  backgroundColor : '#90EE90',
-                  borderRadius : '.5rem',
-                  width : '25%',
-                  padding :'1%',
-                  overflow :'auto'
-                }}> <TiTickOutline />  Applied</div> :
-                  <Button variant="outlined" onClick={handleApplyJob}>
-                    Apply
-                  </Button>
+                  job.appliedUsers.includes(userEmail) ? (
+                    <div
+                      style={{
+                        color: "green",
+                        border: "2px solid green",
+                        backgroundColor: "#90EE90",
+                        borderRadius: ".5rem",
+                        width: "25%",
+                        padding: "1%",
+                        overflow: "auto",
+                      }}
+                    >
+                      {" "}
+                      <TiTickOutline /> Applied
+                    </div>
+                  ) : (
+                    <Button variant="outlined" onClick={handleApplyJob}>
+                      Apply
+                    </Button>
+                  )
                 ) : (
                   <Stack spacing={2} direction="row">
                     <Button
@@ -211,7 +226,7 @@ const ViewJobDetails = () => {
               </div>
             </div>
           </div>
-        )}
+        }
       </div>
 
       <div
@@ -264,9 +279,19 @@ const ViewJobDetails = () => {
               </div>
             </div>
             <div>
-            {userEmail && <Button variant="outlined" onClick={()=>handleFollowHiringManager(hr._id,hr.followers.includes(userEmail) ? 'Unfollow' : 'follow+')} >
-             {hr.followers.includes(userEmail) ? 'Unfollow' : 'follow+'}
-            </Button>}  
+              {userEmail && (
+                <Button
+                  variant="outlined"
+                  onClick={() =>
+                    handleFollowHiringManager(
+                      hr._id,
+                      hr.followers.includes(userEmail) ? "Unfollow" : "follow+"
+                    )
+                  }
+                >
+                  {hr.followers.includes(userEmail) ? "Unfollow" : "follow+"}
+                </Button>
+              )}
             </div>
           </div>
         )}

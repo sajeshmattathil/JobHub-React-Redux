@@ -9,7 +9,6 @@ function SignupHr() {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [resume, setResume] = useState<string>('');
   const [company, setCompany] = useState<string>("");
   const [website, setWebsite] = useState<string>("");
   const [enteredOtp, setEnteredOtp] = useState("");
@@ -26,7 +25,6 @@ function SignupHr() {
     name : string,
     email : string,
     password : string,
-    resume : string | undefined,
     company : string,
     website : string
     otp : string | undefined,
@@ -37,8 +35,7 @@ function SignupHr() {
   const onSubmit = async (data: dataInterface) => {
     try {
       if (error !== "") return;
-      if(resume === '') setError('Resume not selected,try again')
-      data.resume = resume
+    
      console.log(data);
 
      const OneTimePassword = generateOtp();
@@ -104,64 +101,37 @@ function SignupHr() {
   const handleExistingHr = () => {
     navigate("/hr/login");
   };
-
-
   if (otp.trim() === "") {
     return (
       <>
-<nav
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "10px 20px",
-            backgroundColor: "#fff",
-            color: "#333",
-            borderBottom: '2px solid #333'
-          }}
-        >
-          <div>
-            <h1 style={{ margin: 0 }}>JobHub</h1>
-          </div>
-          <div>
-            <button
-              style={{
-                padding: "8px 16px",
-                backgroundColor: "#4CAF50",
-                color: "#fff",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer",
-              }}
-              onClick={()=>navigate('/hr/job')}
-            >
-              Create Jobs
-            </button>
-          </div>
-        </nav>
 
     <div
       style={{
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
         backgroundColor: "white",
-        marginTop:'50px' 
+        width:'50%',
+        marginLeft:'27%',
+        margin : '10%',      
+        borderRadius: "2rem",
+
+
       }}
     >
       <form
         className="items-center justify-center"
-        style={{
+        style={{        
           backgroundColor: "white",
-          padding: "20px",
-          borderRadius: "8px",
+          borderRadius: "2rem",
           boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
+          padding : '8%'
+
         }}
         onSubmit={handleSubmit(onSubmit)}
       >
         <p style={{ fontFamily: "", fontSize: "30px", marginLeft: "25%",}}>
-          Hiring Mangaer Sign Up
+          Hiring Manager Sign Up
         </p>
         <p
           style={{
@@ -169,7 +139,6 @@ function SignupHr() {
             fontSize: "15px",
             alignItems: "center",
             justifyItems: "center",
-            marginLeft: "27%",
           }}
         >
           {error}
@@ -185,7 +154,9 @@ function SignupHr() {
             })}
             onChange={(
               e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-            ) => setName(e.target.value)}
+            ) => {
+              setError('')
+              setName(e.target.value)}}
             value={name}
           />
           {errors.name && errors.name.type === "required" && (
@@ -204,7 +175,9 @@ function SignupHr() {
             })}
             onChange={(
               e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-            ) => setEmail(e.target.value)}
+            ) => {
+              setError('')            
+              setEmail(e.target.value)}}
             value={email}
           />
           {errors.email && errors.email.type === "required" && (
@@ -230,7 +203,9 @@ function SignupHr() {
             })}
             onChange={(
               event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-            ) => setPassword(event.target.value)}
+            ) => {
+              setError('')
+              setPassword(event.target.value)}}
             value={password}
           />
           {errors.password?.type === "required" && (
@@ -247,28 +222,7 @@ function SignupHr() {
               letter, digit, and special symbol.
             </p>
           )}
-          <label htmlFor="resume_upload">Upload Resume (PDF)</label>
-          <input
-            type="file"
-            id="resume_upload"
-            accept=".pdf"
-            {...register("resume", {
-              required: true,
-            })}
-            onChange={ async (e: React.ChangeEvent<HTMLInputElement>) => {
-              setError('')
-              const files = e.target.files;
-            if(files){
-              const pdf = files[0];
-              const resumeUrl = await upload(pdf, "resume");
-            if(resumeUrl) setResume( resumeUrl )
-            }  
-             
-            }}
-          />
-          {errors.resume && errors.resume.type === "required" && (
-            <p className="errorMsg">Resume is required.</p>
-          )}
+
           <label htmlFor="resume_upload">Company Name</label>
           <input
             type="text"
@@ -277,7 +231,10 @@ function SignupHr() {
             })}
             onChange={(
               e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-            ) => setCompany(e.target.value)}
+            ) => {setCompany(e.target.value)
+              setError('')
+            
+            }}
             value={company}
           />
           {errors.company && errors.company.type === "required" && (
@@ -294,7 +251,9 @@ function SignupHr() {
             })}
             onChange={(
               e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-            ) => setWebsite(e.target.value)}
+            ) => {setWebsite(e.target.value)
+              setError('')          
+            }}
             value={website}
           />
           {errors.website && errors.website.type === "required" && (

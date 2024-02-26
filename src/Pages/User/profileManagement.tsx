@@ -1,10 +1,14 @@
-import React from 'react'
-import UserProfileManagement from '../../components/User/UserProfileManagement'
+import React from "react";
+import UserProfileManagement from "../../components/User/UserProfileManagement";
+import Navbar from "../../components/User/Navbar/userNavbar";
 
 const profileManagement = () => {
   return (
-   <UserProfileManagement/>
-  )
-}
+    <>
+      <Navbar />
+      <UserProfileManagement />
+    </>
+  );
+};
 
-export default profileManagement
+export default profileManagement;

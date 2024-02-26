@@ -1,11 +1,59 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { axiosHRInstance } from "../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
+import { CiLocationOn } from "react-icons/ci";
+import { IoBagRemoveOutline } from "react-icons/io5";
 
-const CreateJobForm = () => {
+interface ManageJobPostProps{
+    jobPostData:  JobPostData[];
+}
+interface JobPostData{
+    jobRole: string;
+    description: string;
+    qualification: string[];
+    locations: string[];
+    company: string;
+    experience: string;
+    salaryScale: string;
+    educationalQualification?: string;
+    industry: string;
+    jobType: string;
+    education: string;
+    course: string;
+
+}
+
+const ManageJobPost : React.FC<ManageJobPostProps> = ({jobPostData }) => {
   const [error, setError] = useState<string>("");
+  const [isDisabled,setDisabled] = useState<boolean>(false)
+  const [description, setDescription] = useState<string>("");
+  const [jobRole, setJobRole] = useState<string>("");
+  const [experience, setExperience] = useState<string>("");
+  const [education, setEducation] = useState<string>("");
+  const [jobType, setJobType] = useState<string>("");
+  const [course, setCourse] = useState<string>("");
+  const [salaryScale, setSalaryScale] = useState<string>("");
+  const [industry, setIndustry] = useState<string>("");
+  const [company, setCompany] = useState<string>("");
+  
+
+  console.log(jobPostData,'jobPostData');
+  
+  useEffect(()=>{
+   setDescription(jobPostData[0].description)
+   setJobRole(jobPostData[0].jobRole)
+   setExperience(jobPostData[0].experience)
+   setEducation(jobPostData[0].education)
+   setJobType(jobPostData[0].jobType)
+   setCourse(jobPostData[0].course)
+   setSalaryScale(jobPostData[0].salaryScale)
+   setIndustry(jobPostData[0].industry)
+   setCompany(jobPostData[0].company)
+  },[jobPostData])
+
+console.log(description,jobRole,experience,education,jobType,course,salaryScale,industry,company);
 
   const {
     control,
@@ -13,6 +61,10 @@ const CreateJobForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  console.log(jobPostData,'data----');
+  
+
+ 
 
   type QualificationOption = { value: string; label: string };
   type LocationsInterface = { value: string; label: string };
@@ -90,22 +142,25 @@ const CreateJobForm = () => {
     } else setError(response.data.message);
   };
 
-  return (
+if(isDisabled)  return (
     <div
       style={{
         backgroundColor: "white",
         padding: "20px",
         borderRadius: "8px",
         boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
-        width: "50%",
+        width: "30%",
         margin: "auto",
         marginTop: "50px",
+        marginLeft:'10%',
+        zIndex: '1000',
+        position: 'fixed',
       }}
     >
       <h2
         style={{ fontSize: "30px", textAlign: "center", marginBottom: "20px" }}
       >
-        Create a New Job
+       Edit Your Job
       </h2>
       <p
         style={{
@@ -130,6 +185,8 @@ const CreateJobForm = () => {
             onChange={() => {
               setError("");
             }}
+            disabled
+            value={jobRole}
           />
           {errors.jobRole && errors.jobRole.type === "required" && (
             <span>Job Role is required</span>
@@ -137,7 +194,6 @@ const CreateJobForm = () => {
           {errors.jobRole && errors.jobRole.type === "pattern" && (
             <span>Job Role is not valid</span>
           )}
-          
         </div>
 
         <div style={{ marginBottom: "15px" }}>
@@ -149,9 +205,12 @@ const CreateJobForm = () => {
               required: true,
               // pattern: /^[A-Za-z0-9\s\n]+$/,
             })}
-            onChange={() => {
+            onChange={(e) => {
+                setDescription(e.target.value)
               setError("");
             }}
+            disabled={isDisabled}
+value={description}
           />
           {errors.description && errors.description.type === "required" && (
             <span>Description is required</span>
@@ -169,6 +228,8 @@ const CreateJobForm = () => {
             render={({ field }) => (
               <Select {...field} isMulti options={qualification} />
             )}
+            disabled={isDisabled}
+
           />
           {errors.qualification && (
             <p className="errorMsg">This is a required field.</p>
@@ -195,13 +256,15 @@ const CreateJobForm = () => {
                 {...field}
               >
                 <option value="" disabled>
-                  Select job type
+                  {jobType || 'Select job type'}
                 </option>
                 <option value="remote">Remote</option>
                 <option value="hybrid">Hybrid</option>
                 <option value="office">Office</option>
               </select>
             )}
+            disabled={isDisabled}
+
           />
           {errors.jobType && (
             <p className="errorMsg">This is a required field.</p>
@@ -212,11 +275,14 @@ const CreateJobForm = () => {
           <label>Location</label>
           <Controller
             name="locations"
+            
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
               <Select {...field} isMulti options={locations} />
             )}
+            disabled={isDisabled}
+
           />
           {errors.locations && (
             <p className="errorMsg">This is a required field.</p>
@@ -241,11 +307,12 @@ const CreateJobForm = () => {
                   fontSize: "16px",
                 }}
                 {...field}
+                value={'hhdhhdhdh'}
               >
                 <option value="" disabled>
                   Select years of experience
                 </option>
-                <option value="0">0 Yr</option>
+                <option value={experience || 0}> {experience || 0} Yr</option>
                 <option value="1">1 Yr</option>
                 <option value="2">2 Yrs</option>
                 <option value="3">3 Yrs</option>
@@ -264,6 +331,8 @@ const CreateJobForm = () => {
                 <option value="7-10">7-10 Yr</option>
               </select>
             )}
+            disabled={isDisabled}
+             
           />
           {errors.experience && (
             <p className="errorMsg">This is a required field.</p>
@@ -281,7 +350,7 @@ const CreateJobForm = () => {
               render={({ field }) => (
                 <select
                   style={{
-                    width: "10rem",
+                    width: "200px",
                     padding: "10px",
                     border: "1px solid #ccc",
                     borderRadius: "4px",
@@ -290,11 +359,15 @@ const CreateJobForm = () => {
                     fontSize: "16px",
                   }}
                   {...field}
+                  
                 >
                   <option value="" disabled>
                     Select education level
                   </option>
-                  <option value="">Any</option>
+                  <option value={education ||'Any'}>{education ||'Any'}</option>
+                  <option value="Any">Any</option>
+                  <option value="Any">Any</option>
+
                   <option value="Diploma">Diploma</option>
 
                   <option value="BE">BE</option>
@@ -336,6 +409,8 @@ const CreateJobForm = () => {
                   <option value="MUMS">MUMS</option>
                 </select>
               )}
+            disabled={isDisabled}
+
             />
             {errors.education && (
               <p className="errorMsg">This is a required field.</p>
@@ -352,7 +427,7 @@ const CreateJobForm = () => {
               render={({ field }) => (
                 <select
                   style={{
-                    width: "10rem",
+                    width: "200px",
                     padding: "10px",
                     border: "1px solid #ccc",
                     borderRadius: "4px",
@@ -363,7 +438,7 @@ const CreateJobForm = () => {
                   {...field}
                 >
                   <option value="" disabled>
-                    Select course
+                   {course || 'Select course'}
                   </option>
                   <option value="Any graduation">Any graduation</option>
                   <option value="Any post graduation">
@@ -449,6 +524,8 @@ const CreateJobForm = () => {
                   <option value="Veterinary Science">Veterinary Science</option>
                 </select>
               )}
+            disabled={isDisabled}
+
             />
             {errors.course && (
               <p className="errorMsg">This is a required field.</p>
@@ -477,7 +554,7 @@ const CreateJobForm = () => {
                 {...field}
               >
                 <option value="" disabled>
-                  Select industry type
+                 { industry || 'Select industry type'}
                 </option>
                 <option value="Information Technology">
                   Information Technology
@@ -493,6 +570,8 @@ const CreateJobForm = () => {
                 <option value="Telecommunications">Telecommunications</option>
               </select>
             )}
+            disabled={isDisabled}
+
           />
           {errors.industry && (
             <p className="errorMsg">This is a required field.</p>
@@ -520,7 +599,7 @@ const CreateJobForm = () => {
                 {...field}
               >
                 <option value="" disabled>
-                  Select salary scale
+                 { salaryScale || 'Select salary scale'}
                 </option>
                 <option value="Not Disclosed">Not Disclosed</option>
                 <option value="1-2 LPA">1-2 LPA</option>
@@ -538,6 +617,8 @@ const CreateJobForm = () => {
                 <option value="20+ LPA">20+ LPA</option>
               </select>
             )}
+            disabled={isDisabled}
+
           />
           {errors.salaryScale && (
             <p className="errorMsg">This is a required field.</p>
@@ -553,9 +634,12 @@ const CreateJobForm = () => {
               required: true,
               pattern: /^[a-zA-Z0-9\s]+$/,
             })}
-            onChange={() => {
+            onChange={(e) => {
+                setCompany(e.target.value)
               setError("");
             }}
+            disabled={isDisabled}
+value={company}
           />
           {errors.company && <span>Company is required</span>}
           {errors.company && errors.company.type === "pattern" && (
@@ -574,12 +658,102 @@ const CreateJobForm = () => {
               cursor: "pointer",
             }}
           >
-            Create Job
+            Update Job
           </button>
         </div>
       </form>
     </div>
   );
+  else return(
+    <>
+        <button onClick={()=>setDisabled(prev=>!prev)}>Edit</button>
+        <div
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      gap: "20px",
+      margin: "5%",
+      borderRadius: "2px solid black",
+      backgroundColor: "",
+      justifyContent: "center",
+      alignContent: "center",
+      alignItems: "center",
+    }}
+  >
+    {jobPostData && (
+      <div
+        style={{
+          backgroundColor: "#f5f5f5",
+          padding: "20px",
+          borderRadius: "15px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          marginBottom: "20px",
+          width: "70%",
+          justifyContent: "center",
+          alignContent: "center",
+        }}
+      >
+        <h2 style={{ marginBottom: "10px", marginTop: "4vh" }}>
+          {jobPostData[0].jobRole}
+        </h2>
+        <span style={{ fontSize: "17px", marginBottom: "5px" }}>
+          {jobPostData[0].company}
+        </span>
+        <div style={{ fontSize: "17px", marginBottom: "5px" }}>
+          <span>
+            <IoBagRemoveOutline />
+          </span>{" "}
+          {jobPostData[0].experience} yrs
+        </div>
+        <div style={{ fontSize: "17px", marginBottom: "5px" }}>
+          <span>
+            <CiLocationOn />
+          </span>{" "}
+          {jobPostData[0].locations.map((location: string) => `${location} ,`)}
+        </div>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <span
+            style={{
+              fontSize: "17px",
+              marginBottom: "15px",
+              marginTop: "2vh",
+            }}
+          >
+            Skill Required:{" "}
+            {jobPostData[0].qualification.map((skill: string) => `${skill} ,`)}
+          </span>
+         
+          <div style={{ height: "5vh" }}></div>
+
+          <h5>Job Desciption</h5>
+          <div style={{ fontSize: "17px", marginBottom: "5px" }}>
+            {jobPostData[0].description}
+          </div>
+          <div style={{ height: "10vh" }}></div>
+          <h1></h1>
+          <span style={{ fontSize: "17px", marginBottom: "5px" }}>
+            Education: {jobPostData[0].educationalQualification}
+          </span>
+          <div style={{ fontSize: "17px", marginBottom: "5px" }}>
+            Industry Type: {jobPostData[0].industry}
+          </div>
+          <div
+            style={{
+              marginLeft: "30%",
+              justifyContent: "center",
+              alignContent: "center",
+              alignItems: "center",
+            }}
+          >
+            
+          </div>
+        </div>
+      </div>
+    )}
+  </div>
+    </>
+   
+  )
 };
 
-export default CreateJobForm;
+export default ManageJobPost;

@@ -5,7 +5,6 @@ import SignupHr from '../../components/HR/SignupHr'
 const SignUp = () => {
   return (
     <div>
-        <HRNavbar/>
         <SignupHr/>
     </div>
   )

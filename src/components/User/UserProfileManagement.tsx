@@ -5,6 +5,8 @@ import Select from "react-select";
 import upload from "../../Utils/Cloudinary/cloudinary";
 import { axiosUserInstance } from "../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function ProfileManagement() {
   const [fname, setFname] = useState<string>("");
@@ -13,6 +15,7 @@ export default function ProfileManagement() {
   const [password, setPassword] = useState<string>("");
   const [resume, setResume] = useState<string>("");
   const [experience, setExperience] = useState<string>("0");
+  const [skill,setSkills] = useState<string[]>([])
 
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
@@ -31,9 +34,15 @@ export default function ProfileManagement() {
           setFname(response?.data?.user?.fname);
           setLname(response?.data?.user?.lname);
           setEmail(response?.data?.user?.email);
+          if(response?.data?.user?.resume) setResume(response?.data?.user?.resume)
+          if(response?.data?.user?.skills) setSkills(response?.data?.user?.skills)
+          if(response?.data?.user?.experience) setExperience(response?.data?.user?.experience)
+
         }
       } catch (error) {
         console.log("error in fetching user");
+       
+        
       }
     };
     fetchUser();
@@ -61,13 +70,21 @@ export default function ProfileManagement() {
   } = useForm();
 
   const onSubmit = async (data: {
+    lname: string;
+    fname: string;
     course: string;
     education: string;
     educationalQualification: string;
     resume: string;
     skills: { value: string; label: string }[] | string[];
   }) => {
+    if(data.fname == '')data.fname = fname
+    if(data.lname == '')data.lname = lname
+    if(!data.skills.length)data.skills = skill
+    
     data.resume = resume;
+    if(data.resume == '')data.resume = resume
+
     data.educationalQualification = `${data.education} ${data.course}`;
 
     if (typeof skills[0] === "object" && !Array.isArray(skills[0])) {
@@ -79,30 +96,20 @@ export default function ProfileManagement() {
     try {
       const update = await axiosUserInstance.put("/update", data);
       console.log(update.data.status === 201);
-      setError("User data updated");
+      // setError("User data updated");
+      toast.success("Hello, I'm a toast notification!");
+
     } catch (error) {
       console.log("Error in updating profile", error);
+       // if(error.response.status)
+       console.log(error.response.data.message,'response----errorrr');
+       setError(error.response.data.message)
     }
   };
 
   return (
     <>
-      <nav
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: "10px 20px",
-          backgroundColor: "#fff",
-          color: "#333",
-          borderBottom: "2px solid #333",
-        }}
-      >
-        <div>
-          <h1 style={{ margin: 0 }}>JobHub</h1>
-        </div>
-        <div></div>
-      </nav>
+          <ToastContainer />
 
       <div className="App">
         <p>{error}</p>
@@ -434,7 +441,7 @@ export default function ProfileManagement() {
                   id="resume_upload"
                   accept=".pdf"
                   {...register("resume", {
-                    required: true,
+                    required: resume ? false : true ,
                   })}
                   onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
                     setError("");
@@ -451,10 +458,10 @@ export default function ProfileManagement() {
                 )}
               </div>
             </div>
-          </div>
-          <div className="form-control">
+          {/* </div>
+          <div className="form-control"> */}
             <label></label>
-            <button type="submit">Update</button>
+            <button type="submit" style={{backgroundColor:'black'}}>Update</button>
           </div>
           .
         </form>
