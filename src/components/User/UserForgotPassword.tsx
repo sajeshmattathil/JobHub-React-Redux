@@ -28,6 +28,8 @@ const UserForgotPassword = () => {
     email : string
   }
   const onSubmit = async (data : formData)=>{
+    window.scrollTo(0, 0);
+
     try {
         const otp = generateOtp()
       

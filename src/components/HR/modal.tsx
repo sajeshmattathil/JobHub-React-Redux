@@ -18,7 +18,7 @@ const Modal : React.FC<ModalInterface> = ({ isOpen  , onClose, children }) => {
 if(isOpen) return (
     <div className="modal-overlay" onClick={handleClose}
     style={{
-      marginTop: "10%",
+      marginTop: "5%",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",

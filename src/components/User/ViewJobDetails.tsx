@@ -8,12 +8,26 @@ import { CiGlobe } from "react-icons/ci";
 import { TiTickOutline } from "react-icons/ti";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
+import Timeline from '@mui/lab/Timeline';
+import TimelineItem from '@mui/lab/TimelineItem';
+import TimelineSeparator from '@mui/lab/TimelineSeparator';
+import TimelineConnector from '@mui/lab/TimelineConnector';
+import TimelineContent from '@mui/lab/TimelineContent';
+import TimelineDot from '@mui/lab/TimelineDot';
 import Jobs from "../HR/HrHome";
 
 const ViewJobDetails = () => {
+ 
+  interface AppliedJob {
+    isHRViewed : boolean
+    isReplayed: boolean
+    isShortlisted: boolean
+  }
+   
   const [job, setJob] = useState<Job | null>(null);
   const [hr, setHR] = useState<HRData | null>(null);
   const [err, setError] = useState<string>("");
+  const [appliedJob,setAppliedJob] = useState<AppliedJob>(null)
   const [shouldRender, setShouldRender] = useState(true);
 
   const userEmail = localStorage.getItem("userEmail");
@@ -55,6 +69,7 @@ const ViewJobDetails = () => {
 
         setJob(jobData?.data?.jobDataFetched[0]);
         setHR(jobData?.data?.jobDataFetched[0]?.jobData[0]);
+        setAppliedJob(jobData?.data?.jobDataFetched[0]?.appliedData[0])
       } catch (error) {
         console.log(error, "error in catch");
         setError("Something Went Wrong, Try again");
@@ -72,9 +87,10 @@ const ViewJobDetails = () => {
           appliedAt: Date.now(),
         });
         if (applyJob.data.status === 201) {
+          console.log(applyJob.data.appliedJob,'res------->>>>');
+          setAppliedJob(applyJob.data.appliedJob)
           setShouldRender((prev) => !prev);
           console.log(shouldRender);
-          console.log(job,'jobssss');
           
         }
       }
@@ -106,10 +122,10 @@ const ViewJobDetails = () => {
 
   return (
     <>
+   
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
           gap: "20px",
           margin: "5%",
           borderRadius: "2px solid black",
@@ -192,7 +208,6 @@ const ViewJobDetails = () => {
                       style={{
                         color: "green",
                         border: "2px solid green",
-                        backgroundColor: "#90EE90",
                         borderRadius: ".5rem",
                         width: "25%",
                         padding: "1%",
@@ -227,6 +242,55 @@ const ViewJobDetails = () => {
             </div>
           </div>
         }
+         <div
+     style={{
+      backgroundColor: "#f5f5f5",
+      padding: "20px",
+      borderRadius: "15px",
+      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+      marginBottom: "20px",
+      width: "20%",
+      justifyContent: "center",
+      alignContent: "center",
+    }}
+    >
+
+{
+  appliedJob &&
+    <Timeline position="left">
+      <TimelineItem>
+        <TimelineSeparator>
+        <TimelineDot color={appliedJob ? "success" : "primary"} />
+          <TimelineConnector />
+        </TimelineSeparator>
+        <TimelineContent>Job applied</TimelineContent>
+      </TimelineItem>
+      <TimelineItem>
+        <TimelineSeparator>
+        <TimelineDot color={appliedJob.isHRViewed ? "success" : "primary"} />
+          <TimelineConnector />
+
+        </TimelineSeparator>
+        <TimelineContent>HR viewed application</TimelineContent>
+      </TimelineItem>
+      <TimelineItem>
+        <TimelineSeparator>
+        <TimelineDot color={appliedJob.isShortlisted ? "success" : "primary"} />
+        <TimelineConnector />
+
+        </TimelineSeparator>
+        <TimelineContent>Shortlisted</TimelineContent>
+      </TimelineItem>
+      <TimelineItem>
+        <TimelineSeparator>
+        <TimelineDot color={appliedJob.isReplayed ? "success" : "primary"} />
+
+        </TimelineSeparator>
+        <TimelineContent>Get response</TimelineContent>
+      </TimelineItem>
+    </Timeline>}
+
+    </div>
       </div>
 
       <div

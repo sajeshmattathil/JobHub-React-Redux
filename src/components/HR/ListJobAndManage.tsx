@@ -10,6 +10,7 @@ interface UserData {
   email: string;
   educationalQualification: string;
   experience: string;
+  resume : string;
 }
 
 interface UserInterface {
@@ -24,6 +25,7 @@ interface UserInterface {
   appliedAt: Date;
 }
 interface JobInterface {
+  _id: any;
   createdBy: string | null;
   jobRole: string;
   description: string;
@@ -46,6 +48,7 @@ const ListJobAndManage: React.FC = () => {
   const [isOp, setIsOp] = useState(false);
   const [manageJob, setManageJob] = useState(false);
   const [jobPostData, setJobPostData] = useState<JobInterface[]>([]);
+  const [viewSelectedUsr ,setSelectedUser] = useState<UserInterface>()
 
   const { id } = useParams();
   useEffect(() => {
@@ -83,6 +86,7 @@ const ListJobAndManage: React.FC = () => {
           const extractedJobPostData = response.data.jobData.map(
             (data: {
               jobPostData: {
+                _id : string;
                 jobRole: string;
                 description: string;
                 qualification: string[];
@@ -94,6 +98,7 @@ const ListJobAndManage: React.FC = () => {
                 industry: string;
               }[];
             }) => ({
+              _id : data.jobPostData[0]._id,
               jobRole: data.jobPostData[0].jobRole,
               description: data.jobPostData[0].description,
               qualification: data.jobPostData[0].qualification,
@@ -106,7 +111,7 @@ const ListJobAndManage: React.FC = () => {
             })
           );
           setJobPostData(extractedJobPostData);
-          console.log(extractedJobPostData, "jobpostdata");
+          console.log(extractedUsers, "user");
 
           setUsers(extractedUsers);
           setLoading(false);
@@ -133,7 +138,9 @@ const ListJobAndManage: React.FC = () => {
 
   //   const shortListCandidate = async () => {};
 
-  const handleToggleModal = () => {
+  const handleToggleModal = async (index : number) => {
+    await axiosHRInstance.patch(`/hr/updateJobpostHRViewed/${jobPostData[0]._id}`)
+    setSelectedUser(users[index])
     setIsOpen(!isOpen);
   };
   const handleToggleManageModal = () => {
@@ -143,34 +150,33 @@ const ListJobAndManage: React.FC = () => {
   if (!notFound)
     return (
       <>
-        <button onClick={() => setManageJob((prev) => !prev)}>click me</button>
+        <button style={{marginLeft : '78%',marginTop : ''}} onClick={() => setManageJob((prev) => !prev)}>Manage Job</button>
         {manageJob && <ManageJob jobPostData={jobPostData} />}
         <div>
           <Modal isOpen={isOpen} onClose={handleToggleModal}>
             <div className="">
               <div className="signupForm items-center justify-center">
-                {users.map((user: UserInterface) => (
-                  <>
+                {viewSelectedUsr &&
+                  <div className="resume-container" key={viewSelectedUsr._id}>
                     <p>
-                      <span>Name :</span>
-                      {`${user.fname} ${user.lname}`}
+                      <span>Name:</span> {`${viewSelectedUsr.fname} ${viewSelectedUsr.lname}`}
                     </p>
                     <p>
-                      <span>Education :</span> {user.educationalQualification}
+                      <span>Education:</span> {viewSelectedUsr.educationalQualification}
                     </p>
                     <p>
-                      <span>Years of Experience :</span>
-                      {user.experience}
+                      <span>Years of Experience:</span> {viewSelectedUsr.experience}
                     </p>
                     <a
-                      href={
-                        "https://res.cloudinary.com/dbi1vicyc/image/upload/v1707323738/cld-sample.jpg"
-                      }
+                      href={viewSelectedUsr.resume}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="view-resume-link"
                     >
                       View Resume
                     </a>
-                  </>
-                ))}
+                  </div>
+                }
               </div>
             </div>
           </Modal>
@@ -185,13 +191,13 @@ const ListJobAndManage: React.FC = () => {
             </tr>
           </thead>
           <tbody className="userTableBody">
-            {users.map((user: UserInterface) => (
+            {users.map((user: UserInterface,index :number) => (
               <tr key={user._id}>
                 <td>{`${user.fname} ${user.lname}`}</td>
                 <td>{user.email}</td>
 
                 <td>
-                  <button onClick={() => handleToggleModal()}>
+                  <button onClick={() => handleToggleModal(index)}>
                     View Details
                   </button>
                 </td>

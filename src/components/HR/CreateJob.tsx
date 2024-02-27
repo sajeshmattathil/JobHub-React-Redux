@@ -27,6 +27,8 @@ const CreateJobForm = () => {
     { value: "ExpressJS", label: "ExpressJS" },
     { value: "Vue.js", label: "Vue.js" },
     { value: "Angular", label: "Angular" },
+    { value: "Machine Learning", label: "Machine Learning" },
+
   ];
   const locations: LocationsInterface[] = [
     { value: "Mumbai", label: "Mumbai" },

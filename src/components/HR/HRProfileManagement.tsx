@@ -60,6 +60,8 @@ export default function HRProfileManagement() {
   }
 
   const onSubmit = async (data: HRProfileData) => {
+    window.scrollTo(0, 0);
+
     data.resume = resume;
     data.name = name;
     data.company = company;
