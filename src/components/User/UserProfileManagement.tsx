@@ -78,6 +78,8 @@ export default function ProfileManagement() {
     resume: string;
     skills: { value: string; label: string }[] | string[];
   }) => {
+    window.scrollTo(0, 0);
+
     if (data.fname == "") data.fname = fname;
     if (data.lname == "") data.lname = lname;
     if (!data.skills.length) data.skills = skill;
@@ -95,9 +97,11 @@ export default function ProfileManagement() {
     console.log(data, "profile dataaa");
     try {
       const update = await axiosUserInstance.put("/update", data);
+      console.log(update,'user data updation');
+      
       console.log(update.data.status === 201);
       // setError("User data updated");
-      toast.success("Hello, I'm a toast notification!");
+      toast.success("User data updated");
     } catch (error) {
       console.log("Error in updating profile", error);
       // if(error.response.status)

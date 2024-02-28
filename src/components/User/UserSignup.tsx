@@ -4,6 +4,8 @@ import { axiosInstance } from "../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
 import generateOtp from "../../Utils/OtpGenerator/otpGenerator";
 import { useForm } from "react-hook-form";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function UserSignup() {
   const [fname, setFname] = useState<string>("");
@@ -62,7 +64,9 @@ function UserSignup() {
       // navigate('/login')
     } catch (error) {
       console.log("error found in signup submit", error);
-      setError("User already exists");
+      toast.success("User already exists"); 
+
+      // setError("User already exists");
     }
   }
   const handleOtp = async () => {
@@ -85,12 +89,17 @@ function UserSignup() {
       }
     } catch (error) {
       console.log(error);
-      setError("Something went wrong try again");
+      if(error.response.data.status === 401)setError(error.response.data.message); 
+      if(error.response.data.status === 401) setError(error.response.data.message); 
+      if(error.response.data.status === 401) setError(error.response.data.message); 
+
+      // setError("Something went wrong try again");
       setOtp("");
     }
   };
   let timer: number
   let interval: NodeJS.Timeout;
+  
   const handleResendOTP = async () => {
     console.log(1111);
 
@@ -98,12 +107,12 @@ function UserSignup() {
       setClicked(true);
       const otp = generateOtp();
       const createdAt = Date.now();
-      if (interval) {
-        console.log('intervallll');
+      // if (interval) {
+      //   console.log('intervallll');
         
-        clearInterval(interval);
-        // interval = 0;
-      } 
+      //   clearInterval(interval);
+      //   // interval = 0;
+      // } 
       timer = 600
       startTimer();
       const resendOTP = await axiosInstance.post('/resendOTP',{
@@ -171,6 +180,8 @@ function UserSignup() {
           }}
           
         >
+                <ToastContainer />
+
           <form
             className="signupForm items-center justify-center"
             style={{

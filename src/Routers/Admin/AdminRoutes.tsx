@@ -1,5 +1,5 @@
 import { Route,Routes,} from 'react-router-dom'
-import HRManagement from '../../components/Admin/HRManagementTable'
+import HRManagement from '../../Pages/admin/HRManagement'
 import AdminPrivatedRoute from './AdminPrivateRoutes'
 import Login from '../../Pages/admin/Login'
 import Home from '../../Pages/admin/Home'

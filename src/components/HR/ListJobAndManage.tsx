@@ -139,9 +139,10 @@ const ListJobAndManage: React.FC = () => {
   //   const shortListCandidate = async () => {};
 
   const handleToggleModal = async (index : number) => {
-    await axiosHRInstance.patch(`/hr/updateJobpostHRViewed/${jobPostData[0]._id}`)
     setSelectedUser(users[index])
     setIsOpen(!isOpen);
+    await axiosHRInstance.patch(`/hr/updateJobpostHRViewed/${jobPostData[0]._id}`)
+
   };
   const handleToggleManageModal = () => {
     setIsOp(!isOp);

@@ -3,6 +3,8 @@ import { axiosInstance } from "../../Utils/axios/axios";
 import generateOtp from "../../Utils/OtpGenerator/otpGenerator";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UserForgotPassword = () => {
 
@@ -160,7 +162,14 @@ console.log(interval,'xxxx4');
         if(password !== confirm) setError('Password must match')
         const saveNewPassword = await axiosInstance.put('/resetPassword',data)
     console.log(saveNewPassword,'savenewpassword');
-        if(saveNewPassword.data.status === 201) navigate('/login')
+        if(saveNewPassword.data.status === 201){
+          setTimeout(() => {
+            toast.success("Password changed succesfully.");
+
+          }, 500);
+          navigate('/login')
+        }
+         
     } catch (error) {
         console.log(error,'error in handling new passwords');    
         if(error.response.data.status == 404) setError('Something went wrong ,try again')  
@@ -172,6 +181,8 @@ console.log(interval,'xxxx4');
   if (otp.trim() === "" && newPassword === '') {
     return (
       <div>
+      <ToastContainer />
+
         <div
           className="otp"
           style={{
