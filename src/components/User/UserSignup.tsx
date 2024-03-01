@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { axiosInstance } from "../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
@@ -16,12 +16,15 @@ function UserSignup() {
   const [otp, setOtp] = useState<string>("");
   const [resendClicked, setClicked] = useState<boolean>(false);
   const [minutes, setMinutes] = useState<number>(10);
-  const [seconds, setSeconds] = useState<number | string>('00');
+  const [seconds, setSeconds] = useState<number | string>("00");
 
   const [enteredOtp, setEnteredOtp] = useState("");
   const [error, setError] = useState("");
-
+  const [timer, setTimer] = useState<number>(10);
   const navigate = useNavigate();
+
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -60,11 +63,11 @@ function UserSignup() {
       if (response?.data?.status === 201) {
         setError("");
         if (otp) setOtp(otp);
+        startTimer();
       }
-      // navigate('/login')
     } catch (error) {
       console.log("error found in signup submit", error);
-      toast.success("User already exists"); 
+      toast.success("User already exists");
 
       // setError("User already exists");
     }
@@ -89,72 +92,82 @@ function UserSignup() {
       }
     } catch (error) {
       console.log(error);
-      if(error.response.data.status === 401)setError(error.response.data.message); 
-      if(error.response.data.status === 401) setError(error.response.data.message); 
-      if(error.response.data.status === 401) setError(error.response.data.message); 
+      if (error.response.data.status === 401)
+        setError(error.response.data.message);
+      if (error.response.data.status === 401)
+        setError(error.response.data.message);
+      if (error.response.data.status === 401)
+        setError(error.response.data.message);
 
       // setError("Something went wrong try again");
       setOtp("");
     }
   };
-  let timer: number
-  let interval: NodeJS.Timeout;
-  
-  const handleResendOTP = async () => {
-    console.log(1111);
 
+  const handleResendOTP = async () => {
     try {
       setClicked(true);
       const otp = generateOtp();
       const createdAt = Date.now();
-      // if (interval) {
-      //   console.log('intervallll');
-        
-      //   clearInterval(interval);
-      //   // interval = 0;
-      // } 
-      timer = 600
+      if (intervalRef.current) clearTimer();
       startTimer();
-      const resendOTP = await axiosInstance.post('/resendOTP',{
-        userId : email,
-        otp : otp,
-        createdAt :createdAt
-      })
-      if(resendOTP.data.status === 400) setError('Something went wrong ,try again')
-
-      console.log(resendOTP,'result ----resendotp');
+      const resendOTP = await axiosInstance.post("/resendOTP", {
+        userId: email,
+        otp: otp,
+        createdAt: createdAt,
+      });
+      if (resendOTP.data.status === 400)
+        setError("Something went wrong ,try again");
     } catch (error) {
       console.log("error in resend otp ", error);
     }
   };
 
- 
- 
-  //  timer = 600;
-  const updateTimer = () => {
-    try {
-      const minutes = Math.floor(timer / 60);
-      let seconds: string | number = timer % 60;
-      if (seconds < 10) seconds = "0" + seconds;
-      setMinutes(minutes);
-      setSeconds(seconds);
-    } catch (error) {
-      console.log("error in otp timer", error);
+  useEffect(() => {
+    const updateTimer = () => {
+      try {
+        const minutes = Math.floor(timer / 60);
+        let seconds: string | number = timer % 60;
+        if (seconds < 10) seconds = "0" + seconds;
+        setMinutes(minutes);
+        setSeconds(seconds);
+      } catch (error) {
+        console.log("error in otp timer", error);
+      }
+    };
+    if (intervalRef.current && timer == 0) {
+      clearInterval(intervalRef.current);
+      setClicked(false);
     }
-  };
-  function startTimer() {
+    updateTimer();
+  }, [timer]);
+
+  const startTimer = () => {
     console.log("settimer");
 
-    interval = setInterval(() => {
-      timer--;
-      updateTimer();
+    if (!intervalRef.current) {
+      intervalRef.current = setInterval(() => {
+        console.log(timer, "timer -- inside interval");
 
-      if (timer === 0) {
-        clearInterval(interval);
-        setClicked(false)
-      }
-    }, 1000);
-  }
+        setTimer((prev) => {
+          console.log(prev, "prev");
+          return prev - 1;
+        });
+        console.log(timer, "timer -- inside interval--2");
+        // updateTimer();
+      }, 1000);
+    }
+  };
+
+  const clearTimer = () => {
+    console.log(timer, "timerrrr");
+
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+      setTimer(600);
+    }
+  };
 
   const handleExistingUser = (): void => {
     navigate("/login");
@@ -165,7 +178,6 @@ function UserSignup() {
   if (otp.trim() === "") {
     return (
       <div>
-
         <div
           className="signup"
           style={{
@@ -175,12 +187,11 @@ function UserSignup() {
             alignItems: "center",
             height: "100vh",
             backgroundColor: "rgb(240, 220, 220)",
-            width :'45%',
-            marginLeft : "30%"
+            width: "45%",
+            marginLeft: "30%",
           }}
-          
         >
-                <ToastContainer />
+          <ToastContainer />
 
           <form
             className="signupForm items-center justify-center"
@@ -347,7 +358,12 @@ function UserSignup() {
                   lowercase letter, digit, and special symbol.
                 </p>
               )}
-              <button type="submit" style={{marginTop:'2%',backgroundColor:'black'}}>Sign up</button>
+              <button
+                type="submit"
+                style={{ marginTop: "2%", backgroundColor: "black" }}
+              >
+                Sign up
+              </button>
 
               <p style={{ cursor: "pointer" }} onClick={handleExistingUser}>
                 Already have a account?
@@ -383,7 +399,15 @@ function UserSignup() {
               boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
             }}
           >
-            <p style={{ fontWeight: "bolder",fontFamily:'sans-serif',fontSize:"17px" }}>Enter your OTP</p>
+            <p
+              style={{
+                fontWeight: "bolder",
+                fontFamily: "sans-serif",
+                fontSize: "17px",
+              }}
+            >
+              Enter your OTP
+            </p>
             <p
               style={{
                 color: "red",
@@ -396,7 +420,9 @@ function UserSignup() {
               {error}
             </p>
             {resendClicked && (
-              <p style={{fontWeight:'bold'}}>{`Time Remaining : ${minutes}:${seconds}`}</p>
+              <p
+                style={{ fontWeight: "bold" }}
+              >{`Time Remaining : ${minutes}:${seconds}`}</p>
             )}
 
             <span>

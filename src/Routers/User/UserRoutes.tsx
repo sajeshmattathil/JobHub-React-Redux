@@ -19,7 +19,8 @@ function UserRoutes() {
         path="/profilemanagement"
         element={<UserProtectedRoute component={profileManagement} />}
       />
-      <Route path="/jobPost/:id" element={<ViewJob />} />
+      <Route path="/jobPost/:id" element={<UserProtectedRoute component={ViewJob} />} />
+
 
     </Routes>
   );
