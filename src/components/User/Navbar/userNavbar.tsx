@@ -44,6 +44,7 @@ const userNavbar = () => {
         backgroundColor: "#fff",
         color: "#333",
         borderBottom: "2px solid #333",
+        marginBottom : '4%'
       }}
     >
       <div>

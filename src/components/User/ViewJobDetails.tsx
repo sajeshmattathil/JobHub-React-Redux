@@ -31,6 +31,9 @@ const ViewJobDetails = () => {
   const [shouldRender, setShouldRender] = useState(true);
 
   const userEmail = localStorage.getItem("userEmail");
+if(job)console.log(job.appliedUsers,'applied users');
+if(job && userEmail)console.log(job.appliedUsers.includes(userEmail));
+
 
   const navigate = useNavigate();
 
@@ -124,6 +127,7 @@ const ViewJobDetails = () => {
     <>
    
       <div
+      className="jobContainer"
         style={{
           display: "flex",
           gap: "20px",
@@ -243,6 +247,7 @@ const ViewJobDetails = () => {
           </div>
         }
          <div
+         className="apply"
      style={{
       backgroundColor: "#f5f5f5",
       padding: "20px",
@@ -256,7 +261,7 @@ const ViewJobDetails = () => {
     >
 
 {
-  appliedJob &&
+  job.appliedUsers.includes(userEmail) &&
     <Timeline position="left">
       <TimelineItem>
         <TimelineSeparator>

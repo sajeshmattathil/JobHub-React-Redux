@@ -1,43 +1,44 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 
-const Timer: React.FC = () => {
-  const [count, setCount] = useState<number>(0);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const [timer, setTimer] = useState<number>(600);
+const SearchBar = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
 
-  // Start the timer
-  const startTimer = () => {
-    if (!intervalRef.current) {
-      intervalRef.current = setInterval(() => {
-        setCount(prevCount => prevCount + 1);
-        console.log(timer,'timer');
+  interface SearchResult {
+    id: string;
+    place_name: string;
+    // Add additional properties as needed based on the API response
+  }
 
-        setTimer(prev=>{
-            console.log(prev,'prev');
-                      return prev-1
-                    });
-                    console.log(timer,'timer2');
-                    
-      }, 1000);
-    }
-  };
-
-  // Clear the timer
-  const clearTimer = () => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-      setCount(0);
+  const handleSearch = async () => {
+    try {
+      const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${searchQuery}.json?access_token=YOUR_MAPBOX_ACCESS_TOKEN`);
+      const data = await response.json();
+      console.log(data,'data');
+      
+      setSearchResults(data.features);
+    } catch (error) {
+      console.error('Error fetching search results:', error);
     }
   };
 
   return (
     <div>
-      <h2>Timer: {count}</h2>
-      <button onClick={startTimer}>Start Timer</button>
-      <button onClick={clearTimer}>Clear Timer</button>
+      <input 
+        type="text" 
+        value={searchQuery} 
+        onChange={(e) => setSearchQuery(e.target.value)} 
+        placeholder="Enter location keyword" 
+      />
+      <button onClick={handleSearch}>Search</button>
+
+      <ul>
+        {searchResults.map((result) => (
+          <li key={result.id}>{result.place_name}</li>
+        ))}
+      </ul>
     </div>
   );
-}
+};
 
-export default Timer;
+export default SearchBar;

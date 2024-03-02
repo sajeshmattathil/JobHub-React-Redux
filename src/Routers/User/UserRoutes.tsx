@@ -7,6 +7,7 @@ import profileManagement from "../../Pages/User/ProfileManagement";
 import UserPublicRoutes from "./UserPublicRoutes";
 import UserForgotPassword from "../../components/User/UserForgotPassword";
 import ViewJob from "../../Pages/User/ViewJob";
+import SearchBar from "../../components/User/Timer";
 
 function UserRoutes() {
   return (
@@ -19,6 +20,7 @@ function UserRoutes() {
         path="/profilemanagement"
         element={<UserProtectedRoute component={profileManagement} />}
       />
+      <Route path="/search" element={<SearchBar />} />
       <Route path="/jobPost/:id" element={<UserProtectedRoute component={ViewJob} />} />
 
 

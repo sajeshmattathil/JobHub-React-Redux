@@ -5,16 +5,22 @@ import Stack from "@mui/material/Stack";
 import { axiosInstance, axiosUserInstance } from "../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
 
-const UserHome = () => {
+const UserHome = ({locationData ,sortData} ) => {
+  console.log(locationData,'location');
+  console.log(sortData || 'Date','sort');
+  
   const navigate = useNavigate();
   const [pageNumber, setPage] = useState<number>(1);
   const [totalPages, setTotalpages] = useState<number>(1);
   const [jobs, setJobs] = useState<jobData[]>([]);
   const [msg, setMsg] = useState<string>("");
 
+  
+  
   interface jobData {
     _id: string;
     jobRole: string;
+
     description: string;
     qualification: [string];
     salaryFrom: string;
@@ -30,8 +36,9 @@ const UserHome = () => {
     console.log(pageNumber, typeof pageNumber, "page no.");
 
     const fetchData = async () => {
+
       try {
-        const fetchedData = await axiosInstance.get(
+        const fetchedData = await axiosInstance.post(
           `/getJobs?jobsPerPage=5&page=${pageNumber}`
         );
 
@@ -63,24 +70,54 @@ const handleViewJob = (id : string)=>{
 };
 }
 
-  console.log(msg, "msg");
-
   if (msg != "") {
     return (
       <>
+       <div className="Container"  style={{
+        display:'flex',
+      
+        }}>
+        <div className="leftSideBar"
+        style={ {
+          flex: "0 0 20%",
+          padding: "30px",
+          backgroundColor: "#f0f0f0",
+          borderRadius : '.5rem',
+          margin : '2%',
+          marginBottom :'4%',
+        }}>
+          <h3>Salary</h3>
+        <div>
+          <input type="checkbox" value={'3LPA'} style={{marginRight:'5%'}} />
+          <label htmlFor="filterOption1"> 0-3 Lakhs</label>
+        </div>
+        <div>
+          <input type="checkbox" value={'3-6'} style={{marginRight:'5%'}} />
+          <label htmlFor="filterOption1"> 3-6 Lakhs</label>
+        </div>
+        <div>
+          <input type="checkbox" value={'6-10'} style={{marginRight:'5%'}}/>
+          <label htmlFor="filterOption1"> 6-10 Lakhs</label>
+        </div>
+          <div>
+          <input type="checkbox" value={'10-15'} style={{marginRight:'5%'}} />
+          <label htmlFor="filterOption1"> 10-15 Lakhs</label>
+        </div> <div>
+          <input type="checkbox" value={'15-25'} style={{marginRight:'5%'}}/>
+          <label htmlFor="filterOption1"> 15-25 Lakhs</label>
+        </div> <div>
+          <input type="checkbox" value={'25-50'} style={{marginRight:'5%'}} />
+          <label htmlFor="filterOption1"> 25-50 Lakhs</label>
+        </div><div>
+          <input type="checkbox" value={'50-75'} style={{marginRight:'5%'}}/>
+          <label htmlFor="filterOption1"> 50-75 Lakhs</label>
+        </div> <div>
+          <input type="checkbox" value={'75-100'} style={{marginRight:'5%'}}/>
+          <label htmlFor="filterOption1"> 75-100 Lakhs</label>
+        </div> 
+        </div>
         <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "20px",
-            margin: "5%",
-            borderRadius: "2px solid black",
-            backgroundColor: "",
-            justifyContent: "center",
-            alignContent: "center",
-            alignItems: "center",
-           
-          }}
+          style={{ flex: "0 0 65%", padding: "20px" }}
         >
           {jobs.map((job, index) => (
             <div
@@ -91,10 +128,7 @@ const handleViewJob = (id : string)=>{
                 borderRadius: "8px",
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                 marginBottom: "20px",
-                width: "70%",
-                justifyContent: "center",
-                alignContent: "center",
-                cursor: "pointer"
+                cursor: "pointer",
               }}
               onClick={handleViewJob(job._id)}
             >
@@ -116,6 +150,7 @@ const handleViewJob = (id : string)=>{
               </div>
             </div>
           ))}
+        </div>
         </div>
         <div
           className="pagination"
