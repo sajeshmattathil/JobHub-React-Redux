@@ -15,7 +15,7 @@ interface UserState {
 const UserProtectedRoute: React.FC<RouteProps> = ({ component: Component }) => {
     const user = useSelector((state: RootState) => state.user.isLoggedIn);
 const userEmail = localStorage.getItem('userEmail')
-    console.log(user)
+    console.log(userEmail,'protected route--->')
     if (!userEmail) {
 
         return <Navigate to="/login" />;

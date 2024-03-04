@@ -22,7 +22,10 @@ const upload = async (pdf :File,foldername : string)=>{
                 })
                 console.log(response,'upload response');
                 
-        return response.data.secure_url
+        return {url : response.data.secure_url,
+        fileName : response.data.original_filename,
+        size : response.data.bytes
+        }
     } catch (error) {
         console.log('Uploading pdf file failed ',error);
         

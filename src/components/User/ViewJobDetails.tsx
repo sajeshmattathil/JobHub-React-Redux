@@ -27,7 +27,11 @@ const ViewJobDetails = () => {
   const [job, setJob] = useState<Job | null>(null);
   const [hr, setHR] = useState<HRData | null>(null);
   const [err, setError] = useState<string>("");
-  const [appliedJob,setAppliedJob] = useState<AppliedJob>(null)
+  const [appliedJob,setAppliedJob] = useState<AppliedJob >({
+    isHRViewed : false,
+    isReplayed: false,
+    isShortlisted: false
+  })
   const [shouldRender, setShouldRender] = useState(true);
 
   const userEmail = localStorage.getItem("userEmail");
@@ -66,6 +70,8 @@ if(job && userEmail)console.log(job.appliedUsers.includes(userEmail));
   const { id } = useParams();
 
   useEffect(() => {
+    console.log('useeffect');
+    
     const fetchJobData = async () => {
       try {
         const jobData = await axiosInstance(`/getJobData/${id}`);
@@ -92,6 +98,8 @@ if(job && userEmail)console.log(job.appliedUsers.includes(userEmail));
         if (applyJob.data.status === 201) {
           console.log(applyJob.data.appliedJob,'res------->>>>');
           setAppliedJob(applyJob.data.appliedJob)
+          console.log(appliedJob,'applies job--->');
+          
           setShouldRender((prev) => !prev);
           console.log(shouldRender);
           
@@ -261,7 +269,7 @@ if(job && userEmail)console.log(job.appliedUsers.includes(userEmail));
     >
 
 {
-  job.appliedUsers.includes(userEmail) &&
+  job !== null &&  userEmail !== null && job.appliedUsers.includes(userEmail) &&
     <Timeline position="left">
       <TimelineItem>
         <TimelineSeparator>

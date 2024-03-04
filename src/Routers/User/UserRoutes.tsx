@@ -8,6 +8,12 @@ import UserPublicRoutes from "./UserPublicRoutes";
 import UserForgotPassword from "../../components/User/UserForgotPassword";
 import ViewJob from "../../Pages/User/ViewJob";
 import SearchBar from "../../components/User/Timer";
+// import socketIO from 'socket.io-client';
+import { io } from 'socket.io-client';
+import ChatHomeUser from "../../components/User/Chat/ChatHomeUser";
+import ChatPageUser from "../../components/User/Chat/ChatPageUser";
+
+const socket = io('http://localhost:3000');
 
 function UserRoutes() {
   return (
@@ -22,6 +28,8 @@ function UserRoutes() {
       />
       <Route path="/search" element={<SearchBar />} />
       <Route path="/jobPost/:id" element={<UserProtectedRoute component={ViewJob} />} />
+      <Route path="/chatSignin" element={<ChatHomeUser />} />
+      <Route path="/chatPage" element={<ChatPageUser socket={socket} />} />
 
 
     </Routes>

@@ -8,6 +8,11 @@ import Home from '../../Pages/hr/Home'
 import ProfileManagement from '../../Pages/hr/ProfileManagement'
 import HRPrivatedRoute from './HRPrivateRoutes'
 import ViewJob from '../../Pages/hr/ViewJob'
+import ChatPageUser from '../../components/HR/Chat/ChatPageUser'
+import ChatHomeUser from '../../components/HR/Chat/ChatHomeUser'
+import { io } from 'socket.io-client'
+const socket = io('http://localhost:3000');
+
 
 function HRRoutes() {
 
@@ -21,6 +26,8 @@ function HRRoutes() {
 
         <Route path={'/profilemanagement'} element = {<HRPrivatedRoute component={ProfileManagement}/>}/>
         <Route path={'/viewJob/:id'} element = {<HRPrivatedRoute component={ViewJob}/>}/>
+        <Route path="/chatSignin" element={<ChatHomeUser />} />
+      <Route path="/chatPage" element={<ChatPageUser socket={socket} />} />
       </Routes>
   )
 }

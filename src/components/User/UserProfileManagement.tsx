@@ -452,7 +452,7 @@ export default function ProfileManagement() {
                     if (files) {
                       const pdf = files[0];
                       const resumeUrl = await upload(pdf, "resume");
-                      if (resumeUrl) setResume(resumeUrl);
+                      if (resumeUrl) setResume(resumeUrl.url);
                     }
                   }}
                 />
