@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { axiosHRInstance } from "../../Utils/axios/axios";
+import { useNavigate, useParams } from "react-router-dom";
+import { axiosHRInstance, axiosUserInstance } from "../../Utils/axios/axios";
 import Modal from "./modal";
 import ManageJob from "./ManageJobPost";
 
@@ -10,7 +10,7 @@ interface UserData {
   email: string;
   educationalQualification: string;
   experience: string;
-  resume : string;
+  resume: string;
 }
 
 interface UserInterface {
@@ -25,7 +25,7 @@ interface UserInterface {
   appliedAt: Date;
 }
 interface JobInterface {
-  _id: any;
+  _id: string;
   createdBy: string | null;
   jobRole: string;
   description: string;
@@ -48,9 +48,12 @@ const ListJobAndManage: React.FC = () => {
   const [isOp, setIsOp] = useState(false);
   const [manageJob, setManageJob] = useState(false);
   const [jobPostData, setJobPostData] = useState<JobInterface[]>([]);
-  const [viewSelectedUsr ,setSelectedUser] = useState<UserInterface>()
+  const [viewSelectedUsr, setSelectedUser] = useState<UserInterface>();
+  const [shortListed,setShortListed] = useState<boolean>(false)
 
   const { id } = useParams();
+  const navigate = useNavigate()
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -86,7 +89,7 @@ const ListJobAndManage: React.FC = () => {
           const extractedJobPostData = response.data.jobData.map(
             (data: {
               jobPostData: {
-                _id : string;
+                _id: string;
                 jobRole: string;
                 description: string;
                 qualification: string[];
@@ -98,7 +101,7 @@ const ListJobAndManage: React.FC = () => {
                 industry: string;
               }[];
             }) => ({
-              _id : data.jobPostData[0]._id,
+              _id: data.jobPostData[0]._id,
               jobRole: data.jobPostData[0].jobRole,
               description: data.jobPostData[0].description,
               qualification: data.jobPostData[0].qualification,
@@ -138,35 +141,63 @@ const ListJobAndManage: React.FC = () => {
 
   //   const shortListCandidate = async () => {};
 
-  const handleToggleModal = async (index : number) => {
-    setSelectedUser(users[index])
+  const handleToggleModal = async (index: number) => {
+    setSelectedUser(users[index]);
     setIsOpen(!isOpen);
-    await axiosHRInstance.patch(`/hr/updateJobpostHRViewed/${jobPostData[0]._id}`)
-
+    await axiosHRInstance.patch(
+      `/hr/updateJobpostHRViewed/${jobPostData[0]._id}`
+    );
   };
-  const handleToggleManageModal = () => {
+  const handleToggleManageModal = async (userId: string) => {
     setIsOp(!isOp);
+    console.log(userId, "userid");
+    try {
+      const shortListUser = await axiosHRInstance.patch(
+        "/hr/shortListUser",
+       { userId,
+        jobId :jobPostData[0]._id}
+      );
+      console.log(shortListUser, "shortlistresult");
+      if(shortListUser.data.status === 200) setShortListed(true)
+
+    } catch (error) {
+      console.log(error, "error in shortlisting");
+    }
   };
 
   if (!notFound)
     return (
       <>
-        <button style={{marginLeft : '78%',marginTop : ''}} onClick={() => setManageJob((prev) => !prev)}>Manage Job</button>
+      <button
+          style={{ marginLeft: "68%", marginTop: "" }}
+          onClick={() => navigate(`/shortListedUsers/${jobPostData[0]._id}`)}
+        >
+          Short Listed Users
+        </button>
+        <button
+          style={{ marginLeft: "78%", marginTop: "" }}
+          onClick={() => setManageJob((prev) => !prev)}
+        >
+          Manage Job
+        </button>
         {manageJob && <ManageJob jobPostData={jobPostData} />}
         <div>
           <Modal isOpen={isOpen} onClose={handleToggleModal}>
             <div className="">
               <div className="signupForm items-center justify-center">
-                {viewSelectedUsr &&
+                {viewSelectedUsr && (
                   <div className="resume-container" key={viewSelectedUsr._id}>
                     <p>
-                      <span>Name:</span> {`${viewSelectedUsr.fname} ${viewSelectedUsr.lname}`}
+                      <span>Name:</span>{" "}
+                      {`${viewSelectedUsr.fname} ${viewSelectedUsr.lname}`}
                     </p>
                     <p>
-                      <span>Education:</span> {viewSelectedUsr.educationalQualification}
+                      <span>Education:</span>{" "}
+                      {viewSelectedUsr.educationalQualification}
                     </p>
                     <p>
-                      <span>Years of Experience:</span> {viewSelectedUsr.experience}
+                      <span>Years of Experience:</span>{" "}
+                      {viewSelectedUsr.experience}
                     </p>
                     <a
                       href={viewSelectedUsr.resume}
@@ -177,7 +208,7 @@ const ListJobAndManage: React.FC = () => {
                       View Resume
                     </a>
                   </div>
-                }
+                )}
               </div>
             </div>
           </Modal>
@@ -192,7 +223,7 @@ const ListJobAndManage: React.FC = () => {
             </tr>
           </thead>
           <tbody className="userTableBody">
-            {users.map((user: UserInterface,index :number) => (
+            {users.map((user: UserInterface, index: number) => (
               <tr key={user._id}>
                 <td>{`${user.fname} ${user.lname}`}</td>
                 <td>{user.email}</td>
@@ -203,9 +234,12 @@ const ListJobAndManage: React.FC = () => {
                   </button>
                 </td>
                 <td>
-                  <button onClick={() => handleToggleManageModal()}>
+                 {shortListed ? <button onClick={() => handleToggleManageModal(user._id)}>
                     Short List
                   </button>
+                :
+                'Short Listed'  
+                }
                 </td>
               </tr>
             ))}

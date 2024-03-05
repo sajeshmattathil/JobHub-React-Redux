@@ -11,6 +11,7 @@ import ViewJob from '../../Pages/hr/ViewJob'
 import ChatPageUser from '../../components/HR/Chat/ChatPageUser'
 import ChatHomeUser from '../../components/HR/Chat/ChatHomeUser'
 import { io } from 'socket.io-client'
+import ShowShortListedUsrers from '../../components/HR/ShowShortListedUsrers'
 const socket = io('http://localhost:3000');
 
 
@@ -21,11 +22,10 @@ function HRRoutes() {
         <Route path={'/login'} element = {<HrLogin/>}/>
         <Route path={'/signup'} element = {<SignUp/>}/>
         <Route path={'/job'} element = {<HRPrivatedRoute component={CreateJob}/>}/>
-        {/* <Route path={'/'} element = {<HRPrivatedRoute component={Home}/>}/> */}
         <Route path={'/'} element = {<HRPrivatedRoute component={Home}/>}/>
-
         <Route path={'/profilemanagement'} element = {<HRPrivatedRoute component={ProfileManagement}/>}/>
         <Route path={'/viewJob/:id'} element = {<HRPrivatedRoute component={ViewJob}/>}/>
+        <Route path={'/shortListedUsers/:jobId'} element = {<HRPrivatedRoute component={ShowShortListedUsrers}/>}/>
         <Route path="/chatSignin" element={<ChatHomeUser />} />
       <Route path="/chatPage" element={<ChatPageUser socket={socket} />} />
       </Routes>
