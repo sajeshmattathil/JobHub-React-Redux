@@ -1,82 +1,100 @@
-import React, { useEffect, useState } from 'react'
-import './ShowShortListedUsrers.css'
-import { axiosHRInstance } from '../../Utils/axios/axios';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import "./ShowShortListedUsrers.css";
+import { axiosHRInstance } from "../../Utils/axios/axios";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface UserInterface {
-    _id?: string;
-    fname: string | undefined;
-    lname: string;
-    email: string;
-    password: string;
-    isBlocked: boolean;
+  shortListedUsers: any;
+  resume: string;
+  skills: string[];
+  educationalQualification: string;
+  _id?: string;
+  fname: string | undefined;
+  lname: string;
+  email: string;
+  password: string;
+  isBlocked: boolean;
 }
-const ShowShortListedUsrers = () => {
-    const [users, setUsers] = useState<UserInterface[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-const {jobId } = useParams()
-    useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const response = await axiosHRInstance.get(`/hr/shortListedUsers${jobId}`);
-                console.log(response.data);
+const ShowShortListedUsers = () => {
+  const [users, setUsers] = useState<UserInterface[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  
+  const { jobId } = useParams();
+  console.log(jobId, "jobIdddd");
+const navigate = useNavigate()
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axiosHRInstance.get(
+          `/hr/shortListedUsers/${jobId}`
+        );
+        console.log(response.data, "res----dataaa>>>>>");
+        if (response.data.status === 200) {
+          const extractedUsers: UserInterface[] = response.data.usersData.map(
+            (user: UserInterface) => ({
+              _id: user._id,
+              fname: user.shortListedUsers.fname,
+              lname: user.shortListedUsers.lname,
+              email: user.shortListedUsers.email,
+              password: user.shortListedUsers.password,
+              resume: user.shortListedUsers.resume,
+              skills: user.shortListedUsers.skills,
+              educationalQualification:
+                user.shortListedUsers.educationalQualification,
+            })
+          );
 
-                if (response.data.status === 201) {
-                    const extractedUsers: UserInterface[] = response.data.usersData.map((user: UserInterface) => ({
-                        _id: user._id,
-                        fname: user.fname,
-                        lname: user.lname,
-                        email: user.email,
-                        password: user.password,
-                        isBlocked: user.isBlocked,
-                    }));
+          setUsers(extractedUsers);
+          console.log(users, "users");
 
-                    setUsers(extractedUsers);
-                    setLoading(false);
-                }
-            } catch (error) {
-                console.log('Error fetching users:', error);
-                setLoading(false);
-            }
-        };
+          setLoading(false);
+        }
+      } catch (error) {
+        console.log("Error fetching users:", error);
+        setLoading(false);
+      }
+    };
 
-        fetchUsers();
-    }, []);
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-    return (
+    fetchUsers();
+  }, [jobId]);
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  return (
     <>
-     <table>
-            <thead className="userHead">
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody className="userTableBody">
-                {users.map((user: UserInterface) => (
-                    <tr key={user._id}>
-                        <td>{`${user.fname} ${user.lname}`}</td>
-                        <td>{user.email}</td>
-                        <td>{user.isBlocked ? 'Blocked' : 'Active'}</td>
-                        <td>
-                            <button onClick={() => onBlock(user.email, user.isBlocked)}>
-                                {user.isBlocked ? 'Unblock' : 'Block'}
-                            </button>
-                        </td>
-                        {/* <td>
-                        <button onClick={() => onViewDetails()}>View Details</button>
+    <h1 style={{marginLeft : '35%',marginTop : '5%'}}>Short Listed Users</h1>
 
-                        </td> */}
-                    </tr>
-                ))}
-            </tbody>
-        </table>
+      <table>
+        <thead className="userHead">
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>View Resume</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody className="userTableBody">
+          {users.map((user: UserInterface) => (
+            <tr key={user._id}>
+              <td>{`${user.fname} ${user.lname}`}</td>
+              <td>{user.email}</td>
+              <td>
+              <a
+                      href={user.resume}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="view-resume-link"
+                    >
+                      View Resume
+                    </a>
+              </td>
+              <td><button onClick={()=>navigate(`/hr/chatPage/${user.email}`)}>Send Messsage</button></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </>
-  )
-}
+  );
+};
 
-export default ShowShortListedUsrers
+export default ShowShortListedUsers;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiMiniUserCircle } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
@@ -6,11 +6,29 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogout } from "../../../Services/Redux/Slices/UserSlices";
+import { IoIosNotificationsOutline } from "react-icons/io";
+import { Socket } from "socket.io-client";
 
-const userNavbar = () => {
+const UserNavbar = ({ socket } : {socket : Socket}) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const navigate = useNavigate();
-
+  const [notification,setNotification] = useState<boolean>(false)
+  
+  interface ChatMessage {
+    text: string;
+    file: File | null;
+    name: string | null;
+    id: string;
+    socketID: string;
+  }
+useEffect(() => {
+    if(socket){
+      socket.on('messageResponse', (data :ChatMessage) => {
+        if(data.recipient === localStorage.getItem('userEmail')) setNotification(true)
+      });
+    }
+    }, [socket]);
+  
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const handleClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
@@ -44,7 +62,7 @@ const userNavbar = () => {
         backgroundColor: "#fff",
         color: "#333",
         borderBottom: "2px solid #333",
-        marginBottom : '4%'
+        marginBottom: "4%",
       }}
     >
       <div>
@@ -55,8 +73,14 @@ const userNavbar = () => {
           JobHub
         </h1>
       </div>
+      <div  >
       {userLoggenIn ? (
-        <div>
+        <div className="container" style={{display: 'flex'}}>
+         {
+        notification &&  <div className="inside" > <IoIosNotificationsOutline               style={{ width: "250%", height: "100%", cursor: "pointer",padding :'10%' }}
+        onClick={()=>navigate('/chatPage')}/> </div>
+         } 
+        
           <Button
             aria-controls="simple-menu"
             aria-haspopup="true"
@@ -93,7 +117,8 @@ const userNavbar = () => {
               Logout
             </MenuItem>
           </Menu>
-        </div>
+          </div>
+
       ) : (
         <div style={{ display: "flex" }}>
           <button
@@ -110,8 +135,10 @@ const userNavbar = () => {
           </button>
         </div>
       )}
+        </div>
+
     </nav>
   );
 };
 
-export default userNavbar;
+export default UserNavbar;

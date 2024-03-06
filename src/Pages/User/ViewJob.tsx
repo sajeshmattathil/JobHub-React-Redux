@@ -1,5 +1,5 @@
 import React from 'react'
-import Navbar from '../../components/User/Navbar/userNavbar'
+import Navbar from '../../components/User/Navbar/UserNavbar'
 import ViewJobDetails from '../../components/User/ViewJobDetails'
 
 const ViewJob = () => {

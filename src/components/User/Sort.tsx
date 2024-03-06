@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 const Sort = ({onSortChange}) => {
     const handleSort = (e)=>{
@@ -10,7 +10,7 @@ const sortValue = e.target.value
        
          <select
                 style={{
-                  width: "15%",
+                  width: "20%",
                   padding: "10px",
                   border: "none",
                   borderRadius: "4px",
@@ -22,8 +22,10 @@ const sortValue = e.target.value
                 }}
                 onChange={handleSort}
               > 
-                <option value="Date">Time</option>
-                <option value="Relevance">Relevance</option>
+                <option value="old-new">Time (Old - New)</option>
+                <option value="new-old">Time (New - Old)</option>
+
+                {/* <option value="Relevance">Relevance</option> */}
               </select>
     </div>
   )

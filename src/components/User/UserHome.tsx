@@ -5,8 +5,8 @@ import Stack from "@mui/material/Stack";
 import { axiosInstance, axiosUserInstance } from "../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
 
-const UserHome = ({locationData ,sortData} ) => {
-  console.log(locationData,'location');
+const UserHome = ({searchData ,sortData } ) => {
+  console.log(searchData,'location');
   console.log(sortData || 'Date','sort');
   
   const navigate = useNavigate();
@@ -39,7 +39,7 @@ const UserHome = ({locationData ,sortData} ) => {
 
       try {
         const fetchedData = await axiosInstance.post(
-          `/getJobs?jobsPerPage=5&page=${pageNumber}`
+          `/getJobs?jobsPerPage=5&page=${pageNumber}`,searchData
         );
 
         console.log(fetchedData, "fetchedData");
@@ -61,7 +61,17 @@ const UserHome = ({locationData ,sortData} ) => {
       }
     };
     fetchData();
-  }, [pageNumber]);
+  }, [pageNumber,searchData]);
+  useEffect(()=>{
+   if(sortData == 'old-new') {
+    const jobsSorted = jobs.reverse()
+    setJobs(jobsSorted)
+  }else {
+    const jobsSorted = jobs
+    setJobs(jobsSorted)
+  }
+ 
+  },[sortData])
 
 const handleViewJob = (id : string)=>{
   return (event: React.MouseEvent<HTMLDivElement>) => {

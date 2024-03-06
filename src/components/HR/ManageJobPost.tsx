@@ -33,7 +33,6 @@ const ManageJobPost: React.FC<ManageJobPostProps> = ({ jobPostData }) => {
   const [description, setDescription] = useState<string>("");
   const [jobRole, setJobRole] = useState<string>("");
   const [skills, setSkills] = useState<string[]>([]);
-
   const [experience, setExperience] = useState<string>("");
   const [education, setEducation] = useState<string>("");
   const [jobType, setJobType] = useState<string>("");
@@ -43,9 +42,6 @@ const ManageJobPost: React.FC<ManageJobPostProps> = ({ jobPostData }) => {
   const [company, setCompany] = useState<string>("");
   const [location, setLocations] = useState<string[]>([]);
   const [educationalQualification, setEducationalQualification] = useState<string>("");
-
-
-  // console.log(jobPostData, "jobPostData");
 
   useEffect(() => {
     setDescription(jobPostData[0].description);
@@ -63,17 +59,7 @@ const ManageJobPost: React.FC<ManageJobPostProps> = ({ jobPostData }) => {
 
   }, [jobPostData]);
 
-  // console.log(
-  //   description,
-  //   jobRole,
-  //   experience,
-  //   education,
-  //   jobType,
-  //   course,
-  //   salaryScale,
-  //   industry,
-  //   company
-  // );
+ 
 
   const {
     control,
@@ -81,7 +67,6 @@ const ManageJobPost: React.FC<ManageJobPostProps> = ({ jobPostData }) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  // console.log(jobPostData, "data----");
 
   type QualificationOption = { value: string; label: string };
   type LocationsInterface = { value: string; label: string };

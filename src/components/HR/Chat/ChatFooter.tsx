@@ -4,7 +4,7 @@ import { GrAttachment } from "react-icons/gr";
 import upload from "../../../Utils/Cloudinary/cloudinary";
 import { useForm } from "react-hook-form";
 
-const ChatFooter = ({ socket }: { socket: Socket }) => {
+const ChatFooter = ({ socket,recipient }: { socket: Socket,recipient : string }) => {
   interface File {
     url: string;
     size: number;
@@ -25,7 +25,8 @@ const ChatFooter = ({ socket }: { socket: Socket }) => {
       socket.emit("message", {
         text: message,
         file: file?.url.trim() ? file : null,
-        name: localStorage.getItem("HRName"),
+        name: localStorage.getItem("HREmail"),
+        recipient : recipient,
         id: `${socket.id}${Math.random()}`,
         socketID: socket.id,
       });

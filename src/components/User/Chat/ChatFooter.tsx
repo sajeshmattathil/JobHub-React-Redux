@@ -3,6 +3,7 @@ import { Socket } from "socket.io-client";
 import upload from "../../../Utils/Cloudinary/cloudinary";
 import { useForm } from "react-hook-form";
 import { GrAttachment } from "react-icons/gr";
+import { useParams } from "react-router-dom";
 
 const ChatFooter = ({ socket }: { socket: Socket }) => {
   interface File {
@@ -25,8 +26,7 @@ const ChatFooter = ({ socket }: { socket: Socket }) => {
       socket.emit("message", {
         text: message,
         file: file?.url.trim() ? file : null,
-
-        name: localStorage.getItem("userName"),
+        name: localStorage.getItem("userEmail"),
         id: `${socket.id}${Math.random()}`,
         socketID: socket.id,
       });

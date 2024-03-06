@@ -8,7 +8,6 @@ import UserPublicRoutes from "./UserPublicRoutes";
 import UserForgotPassword from "../../components/User/UserForgotPassword";
 import ViewJob from "../../Pages/User/ViewJob";
 import SearchBar from "../../components/User/Timer";
-// import socketIO from 'socket.io-client';
 import { io } from 'socket.io-client';
 import ChatHomeUser from "../../components/User/Chat/ChatHomeUser";
 import ChatPageUser from "../../components/User/Chat/ChatPageUser";
@@ -21,7 +20,7 @@ function UserRoutes() {
       <Route path="/signup" element={<UserPublicRoutes component={SignUp} />} />
       <Route path="/login" element={<LoginNew />} />
       <Route path="/forgotPassword" element={<UserForgotPassword />} />
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Home socket={socket}  />} />
       <Route
         path="/profilemanagement"
         element={<UserProtectedRoute component={profileManagement} />}

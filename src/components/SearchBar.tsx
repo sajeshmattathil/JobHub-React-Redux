@@ -1,14 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 
-const SearchBar = ({ onLocationChange }) => {
-  const handleLocation = async (e: {
-    target: { value: React.SetStateAction<string> };
-  }) => {
-    const location = e.target.value;
+const SearchBar = ({ onSearchChange  } :{onSearchChange :(x: string,y: string)=>void}) => {
+  const [option,setOption] = useState<string>('')
+  const [value,setValue] = useState<string>('')
 
-    console.log(location, "locaa-<>");
+  const handleSearch = async () => {
+  
 
-    onLocationChange(location);
+    onSearchChange(option.trim() ? option : 'location',value.trim());
   };
   return (
     <div style={styles.container}>
@@ -16,11 +15,11 @@ const SearchBar = ({ onLocationChange }) => {
         style={styles.input}
         type="text"
         placeholder="Enter location / skill / job role..."
-        onChange={handleLocation}
+        onChange={((e)=>setValue(e.target.value))}
       />
        <select
                 style={{
-                  width: "15%",
+                  width: "20%",
                   padding: "10px",
                   border: "none",
                   borderRadius: "4px",
@@ -28,17 +27,14 @@ const SearchBar = ({ onLocationChange }) => {
                   color: "#333",
                   fontSize: "16px",
                 }}
-              >
-               
-                <option value="Location">Location</option>
+                onChange={(e)=>setOption(e.target.value)}
+              >             
+                <option value="location">Location</option>
                 <option value="jobRole">Job Role</option>
                 <option value="jobType">Job Type</option>
                 <option value="skills">Skill</option>
-
               </select>
-            
-          
-      <button style={styles.button}>Search</button>
+      <button style={styles.button} onClick = {handleSearch}>Search</button>
     </div>
   );
 };

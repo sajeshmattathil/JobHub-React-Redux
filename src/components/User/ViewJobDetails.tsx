@@ -8,36 +8,42 @@ import { CiGlobe } from "react-icons/ci";
 import { TiTickOutline } from "react-icons/ti";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-import Timeline from '@mui/lab/Timeline';
-import TimelineItem from '@mui/lab/TimelineItem';
-import TimelineSeparator from '@mui/lab/TimelineSeparator';
-import TimelineConnector from '@mui/lab/TimelineConnector';
-import TimelineContent from '@mui/lab/TimelineContent';
-import TimelineDot from '@mui/lab/TimelineDot';
+import Timeline from "@mui/lab/Timeline";
+import TimelineItem from "@mui/lab/TimelineItem";
+import TimelineSeparator from "@mui/lab/TimelineSeparator";
+import TimelineConnector from "@mui/lab/TimelineConnector";
+import TimelineContent from "@mui/lab/TimelineContent";
+import TimelineDot from "@mui/lab/TimelineDot";
 import Jobs from "../HR/HrHome";
 
 const ViewJobDetails = () => {
- 
   interface AppliedJob {
-    isHRViewed : boolean
-    isReplayed: boolean
-    isShortlisted: boolean
+    isHRViewed: boolean;
+    isReplayed: boolean;
+    isShortlisted: boolean;
   }
-   
+
   const [job, setJob] = useState<Job | null>(null);
   const [hr, setHR] = useState<HRData | null>(null);
   const [err, setError] = useState<string>("");
-  const [appliedJob,setAppliedJob] = useState<AppliedJob >({
-    isHRViewed : false,
+  const [appliedJob, setAppliedJob] = useState<AppliedJob>({
+    isHRViewed: false,
     isReplayed: false,
-    isShortlisted: false
-  })
+    isShortlisted: false,
+  });
   const [shouldRender, setShouldRender] = useState(true);
+  // const [isApplied, setIsApplied] = useState<string>("");
 
   const userEmail = localStorage.getItem("userEmail");
-if(job)console.log(job.appliedUsers,'applied users');
-if(job && userEmail)console.log(job.appliedUsers.includes(userEmail));
+  if (job) console.log(job.appliedUsers, "applied users");
+  if (job && userEmail) console.log(job.appliedUsers.includes(userEmail));
 
+  const checkApplied = job?.appliedUsers.filter(
+    (user) => user.email === userEmail
+  );
+  let isApplied : string;
+ if(checkApplied?.length)  isApplied = checkApplied[0].email
+  // if(checkApplied) setIsApplied(checkApplied[0].email)
 
   const navigate = useNavigate();
 
@@ -48,9 +54,13 @@ if(job && userEmail)console.log(job.appliedUsers.includes(userEmail));
     website: string;
     employeesNumber: string;
   }
+  interface AppliedArray {
+    email: string;
+    isShortListed: boolean;
+  }
 
   interface Job {
-    appliedUsers: string[];
+    appliedUsers: AppliedArray[];
     industry: string;
     educationalQualification: string;
     experience: string;
@@ -70,15 +80,20 @@ if(job && userEmail)console.log(job.appliedUsers.includes(userEmail));
   const { id } = useParams();
 
   useEffect(() => {
-    console.log('useeffect');
-    
+    console.log("useeffect");
+
     const fetchJobData = async () => {
       try {
         const jobData = await axiosInstance(`/getJobData/${id}`);
 
         setJob(jobData?.data?.jobDataFetched[0]);
+        const checkApplied = job?.appliedUsers.filter(
+          (user) => user.email === userEmail
+        );
+        let isApplied : string;
+       if(checkApplied?.length)  isApplied = checkApplied[0].email
         setHR(jobData?.data?.jobDataFetched[0]?.jobData[0]);
-        setAppliedJob(jobData?.data?.jobDataFetched[0]?.appliedData[0])
+        setAppliedJob(jobData?.data?.jobDataFetched[0]?.appliedData[0]);
       } catch (error) {
         console.log(error, "error in catch");
         setError("Something Went Wrong, Try again");
@@ -96,13 +111,12 @@ if(job && userEmail)console.log(job.appliedUsers.includes(userEmail));
           appliedAt: Date.now(),
         });
         if (applyJob.data.status === 201) {
-          console.log(applyJob.data.appliedJob,'res------->>>>');
-          setAppliedJob(applyJob.data.appliedJob)
-          console.log(appliedJob,'applies job--->');
-          
+          console.log(applyJob.data.appliedJob, "res------->>>>");
+          setAppliedJob(applyJob.data.appliedJob);
+          console.log(appliedJob, "applies job--->");
+
           setShouldRender((prev) => !prev);
           console.log(shouldRender);
-          
         }
       }
     } catch (error) {
@@ -133,9 +147,8 @@ if(job && userEmail)console.log(job.appliedUsers.includes(userEmail));
 
   return (
     <>
-   
       <div
-      className="jobContainer"
+        className="jobContainer"
         style={{
           display: "flex",
           gap: "20px",
@@ -147,7 +160,7 @@ if(job && userEmail)console.log(job.appliedUsers.includes(userEmail));
           alignItems: "center",
         }}
       >
-        {job && 
+        {job && (
           <div
             style={{
               backgroundColor: "#f5f5f5",
@@ -215,7 +228,7 @@ if(job && userEmail)console.log(job.appliedUsers.includes(userEmail));
                 }}
               >
                 {userEmail ? (
-                  job.appliedUsers.includes(userEmail) ? (
+                 isApplied ? (
                     <div
                       style={{
                         color: "green",
@@ -253,57 +266,60 @@ if(job && userEmail)console.log(job.appliedUsers.includes(userEmail));
               </div>
             </div>
           </div>
-        }
-         <div
-         className="apply"
-     style={{
-      backgroundColor: "#f5f5f5",
-      padding: "20px",
-      borderRadius: "15px",
-      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-      marginBottom: "20px",
-      width: "20%",
-      justifyContent: "center",
-      alignContent: "center",
-    }}
-    >
-
-{
-  job !== null &&  userEmail !== null && job.appliedUsers.includes(userEmail) &&
-    <Timeline position="left">
-      <TimelineItem>
-        <TimelineSeparator>
-        <TimelineDot color={appliedJob ? "success" : "primary"} />
-          <TimelineConnector />
-        </TimelineSeparator>
-        <TimelineContent>Job applied</TimelineContent>
-      </TimelineItem>
-      <TimelineItem>
-        <TimelineSeparator>
-        <TimelineDot color={appliedJob.isHRViewed ? "success" : "primary"} />
-          <TimelineConnector />
-
-        </TimelineSeparator>
-        <TimelineContent>HR viewed application</TimelineContent>
-      </TimelineItem>
-      <TimelineItem>
-        <TimelineSeparator>
-        <TimelineDot color={appliedJob.isShortlisted ? "success" : "primary"} />
-        <TimelineConnector />
-
-        </TimelineSeparator>
-        <TimelineContent>Shortlisted</TimelineContent>
-      </TimelineItem>
-      <TimelineItem>
-        <TimelineSeparator>
-        <TimelineDot color={appliedJob.isReplayed ? "success" : "primary"} />
-
-        </TimelineSeparator>
-        <TimelineContent>Get response</TimelineContent>
-      </TimelineItem>
-    </Timeline>}
-
-    </div>
+        )}
+        <div
+          className="apply"
+          style={{
+            backgroundColor: "#f5f5f5",
+            padding: "20px",
+            borderRadius: "15px",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            marginBottom: "20px",
+            width: "20%",
+            justifyContent: "center",
+            alignContent: "center",
+          }}
+        >
+          {job !== null &&
+            userEmail !== null &&
+            isApplied && (
+              <Timeline position="left">
+                <TimelineItem>
+                  <TimelineSeparator>
+                    <TimelineDot color={appliedJob ? "success" : "primary"} />
+                    <TimelineConnector />
+                  </TimelineSeparator>
+                  <TimelineContent>Job applied</TimelineContent>
+                </TimelineItem>
+                <TimelineItem>
+                  <TimelineSeparator>
+                    <TimelineDot
+                      color={appliedJob.isHRViewed ? "success" : "primary"}
+                    />
+                    <TimelineConnector />
+                  </TimelineSeparator>
+                  <TimelineContent>HR viewed application</TimelineContent>
+                </TimelineItem>
+                <TimelineItem>
+                  <TimelineSeparator>
+                    <TimelineDot
+                      color={appliedJob.isShortlisted ? "success" : "primary"}
+                    />
+                    <TimelineConnector />
+                  </TimelineSeparator>
+                  <TimelineContent>Shortlisted</TimelineContent>
+                </TimelineItem>
+                <TimelineItem>
+                  <TimelineSeparator>
+                    <TimelineDot
+                      color={appliedJob.isReplayed ? "success" : "primary"}
+                    />
+                  </TimelineSeparator>
+                  <TimelineContent>Get response</TimelineContent>
+                </TimelineItem>
+              </Timeline>
+            )}
+        </div>
       </div>
 
       <div
