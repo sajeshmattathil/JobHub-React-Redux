@@ -61,103 +61,99 @@ const ListJobAndManage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axiosHRInstance.get(`/hr/getJobDetails/${id}`);
-        console.log(response, "response");
-
-        if (response.data.status == 201) {
-          const extractedUsers = response.data.jobData.map(
-            (user: {
-              _id: string;
-              appliedAt: Date;
-              userData: {
-                resume: string;
-                educationalQualification: string;
-                email: string;
-                lname: string;
-                fname: string;
-                experience: number;
-              }[];
-            }) => ({
-              _id: user._id,
-              appliedAt: user.appliedAt,
-              fname: user.userData[0].fname,
-              lname: user.userData[0].lname,
-              email: user.userData[0].email,
-              educationalQualification:
-                user.userData[0].educationalQualification,
-              experience: user.userData[0].experience,
-              resume: user.userData[0].resume,
-            })
-          );
-          interface AppliedArray {
-            email: string;
-            isShortListed: boolean;
-          }
-
-          const extractedJobPostData = response.data.jobData.map(
-            (data: {
-              jobPostData: {
-                _id: string;
-                jobRole: string;
-                description: string;
-                qualification: string[];
-                locations: string[];
-                company: string;
-                experience: string;
-                salaryScale: string;
-                educationalQualification?: string;
-                industry: string;
-                appliedUsers: AppliedArray[];
-              }[];
-            }) => ({
-              _id: data.jobPostData[0]._id,
-              jobRole: data.jobPostData[0].jobRole,
-              description: data.jobPostData[0].description,
-              qualification: data.jobPostData[0].qualification,
-              locations: data.jobPostData[0].locations,
-              company: data.jobPostData[0].company,
-              salaryScale: data.jobPostData[0].salaryScale,
-              industry: data.jobPostData[0].industry,
-              educationalQualification:
-                data.jobPostData[0].educationalQualification,
-              appliedUsers: data.jobPostData[0].appliedUsers,
-            })
-          );
-          setJobPostData(extractedJobPostData);
-          console.log(extractedUsers, "user");
-          console.log(jobPostData[0],'jobPostData[0]?.appliedUsers');
-
-          const checkApplied : string[] = jobPostData[0]?.appliedUsers.filter(
-            (user: AppliedArray) => user.isShortListed === true ).map((user : AppliedArray) => user.email );
-          console.log(checkApplied,'checkApplied1');
-          
-          setShortListed(checkApplied);
-          console.log(shortListed,'shortListed');
-
-
-          setUsers(extractedUsers);
-          setLoading(false);
-        } else {
-          setLoading(false);
-          setNotFound(true);
-        }
-      } catch (error) {
-        console.log("Error fetching users:", error);
-        setLoading(false);
-      }
-    };
-
     fetchUsers();
   }, []);
 
-  
+  const fetchUsers = async () => {
+    try {
+      const response = await axiosHRInstance.get(`/hr/getJobDetails/${id}`);
+      console.log(response, "response");
+
+      if (response.data.status == 201) {
+        const extractedUsers = response.data.jobData.map(
+          (user: {
+            _id: string;
+            appliedAt: Date;
+            userData: {
+              resume: string;
+              educationalQualification: string;
+              email: string;
+              lname: string;
+              fname: string;
+              experience: number;
+            }[];
+          }) => ({
+            _id: user._id,
+            appliedAt: user.appliedAt,
+            fname: user.userData[0].fname,
+            lname: user.userData[0].lname,
+            email: user.userData[0].email,
+            educationalQualification: user.userData[0].educationalQualification,
+            experience: user.userData[0].experience,
+            resume: user.userData[0].resume,
+          })
+        );
+        interface AppliedArray {
+          email: string;
+          isShortListed: boolean;
+        }
+
+        const extractedJobPostData = response.data.jobData.map(
+          (data: {
+            jobPostData: {
+              _id: string;
+              jobRole: string;
+              description: string;
+              qualification: string[];
+              locations: string[];
+              company: string;
+              experience: string;
+              salaryScale: string;
+              educationalQualification?: string;
+              industry: string;
+              appliedUsers: AppliedArray[];
+            }[];
+          }) => ({
+            _id: data.jobPostData[0]._id,
+            jobRole: data.jobPostData[0].jobRole,
+            description: data.jobPostData[0].description,
+            qualification: data.jobPostData[0].qualification,
+            locations: data.jobPostData[0].locations,
+            company: data.jobPostData[0].company,
+            salaryScale: data.jobPostData[0].salaryScale,
+            industry: data.jobPostData[0].industry,
+            educationalQualification:
+              data.jobPostData[0].educationalQualification,
+            appliedUsers: data.jobPostData[0].appliedUsers,
+          })
+        );
+        setJobPostData(extractedJobPostData);
+        console.log(extractedUsers, "user");
+        console.log(jobPostData, "11111");
+
+        const checkApplied: string[] = jobPostData[0]?.appliedUsers
+          .filter((user: AppliedArray) => user.isShortListed === true)
+          .map((user: AppliedArray) => user.email);
+        console.log(checkApplied, "checkApplied1");
+
+        setShortListed(checkApplied);
+        console.log(shortListed, "shortListed");
+
+        setUsers(extractedUsers);
+        setLoading(false);
+      } else {
+        setLoading(false);
+        setNotFound(true);
+      }
+    } catch (error) {
+      console.log("Error fetching users:", error);
+      setLoading(false);
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
   }
-
 
   const handleToggleModal = async (index: number) => {
     setSelectedUser(users[index]);
@@ -166,6 +162,7 @@ const ListJobAndManage: React.FC = () => {
       `/hr/updateJobpostHRViewed/${jobPostData[0]._id}`
     );
   };
+
   const handleToggleManageModal = async (userId: string) => {
     setIsOp(!isOp);
     console.log(userId, "userid");
@@ -174,6 +171,7 @@ const ListJobAndManage: React.FC = () => {
         userId,
         jobId: jobPostData[0]._id,
       });
+      await fetchUsers();
       console.log(shortListUser, "shortlistresult");
     } catch (error) {
       console.log(error, "error in shortlisting");
@@ -183,20 +181,22 @@ const ListJobAndManage: React.FC = () => {
   if (!notFound)
     return (
       <>
-      <div style={{display : 'flex',marginTop : '2%'}}>
-      <button
-          style={{ marginLeft: "10%", marginTop: "" }}
-          onClick={() => navigate(`/hr/shortListedUsers/${jobPostData[0]._id}`)}
-        >
-          Short Listed Users
-        </button>
-        <button
-          style={{ marginLeft: "60%", marginTop: "" }}
-          onClick={() => setManageJob((prev) => !prev)}
-        >
-          Manage Job
-        </button>
-      </div>
+        <div style={{ display: "flex", marginTop: "2%" }}>
+          <button
+            style={{ marginLeft: "10%", marginTop: "" }}
+            onClick={() =>
+              navigate(`/hr/shortListedUsers/${jobPostData[0]._id}`)
+            }
+          >
+            Short Listed Users
+          </button>
+          <button
+            style={{ marginLeft: "60%", marginTop: "" }}
+            onClick={() => setManageJob((prev) => !prev)}
+          >
+            Manage Job
+          </button>
+        </div>
         {manageJob && <ManageJob jobPostData={jobPostData} />}
         <div>
           <Modal isOpen={isOpen} onClose={handleToggleModal}>
@@ -251,13 +251,27 @@ const ListJobAndManage: React.FC = () => {
                   </button>
                 </td>
                 <td>
-                  { shortListed && shortListed.includes(user.email) ? (
-                  <div>{  "Short Listed"}</div>
+                  {shortListed && shortListed.includes(user.email) ? (
+                    <div>{"Short Listed"}</div>
                   ) : (
                     <button onClick={() => handleToggleManageModal(user.email)}>
                       Short List
                     </button>
                   )}
+                  {/* {shortListed && (
+                    <div>
+                      {shortListed.includes(user.email) ? (
+                        <div>{"Short Listed"}</div>
+                      ) : (
+                        <button
+                          onClick={() => handleToggleManageModal(user.email)}
+                        >
+                          Short List
+                        </button>
+                      )}
+                    </div>
+                  )} */}
+                  {!shortListed && <div>{" "}</div>}
                 </td>
               </tr>
             ))}

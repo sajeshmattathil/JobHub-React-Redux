@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineDownloadForOffline } from "react-icons/md";
 import { axiosUserInstance } from "../../../Utils/axios/axios";
@@ -18,15 +18,36 @@ interface ChatMessage {
 interface ChatBodyProps {
   messages: ChatMessage[];
   lastMessageRef: React.RefObject<HTMLDivElement>;
+  recipient: string;
 }
-const ChatBody: React.FC<ChatBodyProps> = ({ messages }) => {
+const ChatBody: React.FC<ChatBodyProps> = ({ messages, recipient }) => {
   const navigate = useNavigate();
+  const [previousChat, setPreviousChat] = useState<ChatMessage[] | null>(null);
+
+  console.log(messages, "msg");
+  console.log(recipient, "recipient");
 
   const handleLeaveChat = () => {
     localStorage.removeItem("userName");
     navigate("/");
     window.location.reload();
   };
+  const userEmail = localStorage.getItem("userEmail");
+  console.log(userEmail, recipient, "____<<<<<<");
+
+  useEffect(() => {
+    const fetchPreviousChat = async () => {
+      if (userEmail && recipient) {
+        const response = await axiosUserInstance.get(
+          `/hr/getChat?recipient1=${recipient}&recipient2=${userEmail}`
+        );
+        console.log(response, "res---<< chat");
+        if (response.data.status === 201)
+          setPreviousChat(response.data.chatData);
+      }
+    };
+    fetchPreviousChat();
+  }, []);
 
   const handleFile = async (fileUrl: string, fileName: string) => {
     try {
@@ -40,24 +61,23 @@ const ChatBody: React.FC<ChatBodyProps> = ({ messages }) => {
       console.log(downloadFile, "download---->user");
 
       const blob = new Blob([downloadFile.data], { type: "application/pdf" });
-      console.log(blob,'blob-user');
-      
+      console.log(blob, "blob-user");
+
       const url = window.URL.createObjectURL(blob);
-      console.log(url,'url-user');
+      console.log(url, "url-user");
 
       const a = document.createElement("a");
       a.href = url;
-      a.download = fileName; 
+      a.download = fileName;
       document.body.appendChild(a);
-      console.log(a,'a-user');
-      
+      console.log(a, "a-user");
+
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     } catch (error) {
       console.log(error, "errrorss");
     }
-
   };
 
   return (
@@ -70,14 +90,60 @@ const ChatBody: React.FC<ChatBodyProps> = ({ messages }) => {
       </header>
 
       <div className="message__container">
+
+        {previousChat &&
+          previousChat.map((message: ChatMessage) =>
+            message.name === localStorage.getItem("userEmail") ? (
+              <div className="message__chats" key={message.id}>
+                <p className="sender__name">You</p>
+                <div className="message__sender">
+                  <p>{message.text}</p>
+                </div>
+                {message.file?.url.trim() && (
+                  <div className="message__sender">
+                    <p style={{ fontSize: "1.1rem" }}>
+                      {message.file.fileName}{" "}
+                      <MdOutlineDownloadForOffline
+                        style={{ width: "9%", height: "9%", cursor: "pointer" }}
+                        onClick={() =>
+                          handleFile(message.file.url, message.file?.fileName)
+                        }
+                      />
+                    </p>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="message__chats" key={message.id}>
+                <p>{message.name}</p>
+                <div className="message__recipient" ref={lastMessageRef}>
+                  <p>{message.text}</p>
+                </div>
+                {message.file?.url.trim() && (
+                  <div className="message__recipient">
+                    <p>
+                      {message.file.fileName}{" "}
+                      <MdOutlineDownloadForOffline
+                        style={{ width: "9%", height: "9%", cursor: "pointer" }}
+                        onClick={() =>
+                          handleFile(message.file.url, message.file?.fileName)
+                        }
+                      />
+                    </p>
+                  </div>
+                )}
+              </div>
+            )
+          )}
+
         {messages.map((message: ChatMessage) =>
-          message.name === localStorage.getItem("userName") ? (
+          message.name === localStorage.getItem("userEmail") ? (
             <div className="message__chats" key={message.id}>
               <p className="sender__name">You</p>
               <div className="message__sender">
                 {message.text && <p>{message.text}</p>}
               </div>
-              {message.file && (
+              {message.file?.url.trim() && (
                 <div className="message__sender">
                   <p>
                     {message.file.fileName}{" "}
@@ -102,9 +168,9 @@ const ChatBody: React.FC<ChatBodyProps> = ({ messages }) => {
         )}
 
         {/*This is triggered when a user is typing*/}
-        <div className="message__status">
+        {/* <div className="message__status">
           <p>Someone is typing...</p>
-        </div>
+        </div> */}
       </div>
     </>
   );

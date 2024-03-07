@@ -19,14 +19,18 @@ const ChatFooter = ({ socket,recipient }: { socket: Socket,recipient : string })
     e.preventDefault();
     console.log(message, "message---<");
 
-    console.log({ userName: localStorage.getItem("HRName"), message });
+    console.log({ userName: localStorage.getItem("HREmail"), message });
     setMessage("");
+    const HREmail = localStorage.getItem("HREmail")
+console.log(HREmail,'hr email');
+
     if (message.trim() || file?.url.trim()) {
       socket.emit("message", {
         text: message,
-        file: file?.url.trim() ? file : null,
+        file: file?.url.trim() ? file : {url :'',size : 0,fileName : ''},
         name: localStorage.getItem("HREmail"),
-        recipient : recipient,
+        recipient1 : HREmail,
+        recipient2 : recipient,
         id: `${socket.id}${Math.random()}`,
         socketID: socket.id,
       });

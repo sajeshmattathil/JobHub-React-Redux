@@ -6,8 +6,10 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useDispatch, useSelector } from "react-redux";
 import { HRLogout } from "../../../Services/Redux/Slices/HRSlices";
+import { Socket } from "socket.io-client";
 
-const HRNavbar = () => {
+
+const HRNavbar = ({ socket } : {socket : Socket}) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const navigate = useNavigate();
 

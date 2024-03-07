@@ -29,7 +29,7 @@ const ChatPageUser = ({socket} :{socket : Socket}) => {
     <div className="chat">
       <ChatBar />
       <div className="chat__main">
-        <ChatBody messages={messages} lastMessageRef={lastMessageRef} />
+        <ChatBody messages={messages} recipient = {recipient} lastMessageRef={lastMessageRef} />
         <ChatFooter  socket = {socket} recipient = {recipient}/>
       </div>
     </div>

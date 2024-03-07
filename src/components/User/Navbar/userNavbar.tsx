@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { HiMiniUserCircle } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { userLogout } from "../../../Services/Redux/Slices/UserSlices";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { Socket } from "socket.io-client";
+import messageImage from '../../../../public/message.gif'
 
 const UserNavbar = ({ socket } : {socket : Socket}) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -18,16 +19,24 @@ const UserNavbar = ({ socket } : {socket : Socket}) => {
     text: string;
     file: File | null;
     name: string | null;
+    recipient2 : string;
     id: string;
     socketID: string;
   }
+  const notificationRef = useRef<boolean>(false)
+
 useEffect(() => {
     if(socket){
       socket.on('messageResponse', (data :ChatMessage) => {
-        if(data.recipient === localStorage.getItem('userEmail')) setNotification(true)
+        if(data.recipient2 === localStorage.getItem('userEmail')) {
+          notificationRef.current =true
+          console.log(notificationRef.current,'notification')
+          setNotification(true)}
       });
     }
     }, [socket]);
+    
+    console.log(notificationRef.current,'notification')
   
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -76,9 +85,19 @@ useEffect(() => {
       <div  >
       {userLoggenIn ? (
         <div className="container" style={{display: 'flex'}}>
-         {
-        notification &&  <div className="inside" > <IoIosNotificationsOutline               style={{ width: "250%", height: "100%", cursor: "pointer",padding :'10%' }}
-        onClick={()=>navigate('/chatPage')}/> </div>
+         {/* {
+        notification &&  <div className="inside" > <IoIosNotificationsOutline style={{ width: "250%", height: "100%", cursor: "pointer",padding :'10%' }}
+        onClick={()=>{
+          setNotification(false)
+          navigate('/chatPage')}
+        }/> </div>
+         }  */}
+          {
+         notificationRef.current &&  <div className="inside" style={{ width : '10%',marginRight : '40%',cursor : 'pointer'}} > <img src={messageImage} style={{width : '300%'}}  onClick={()=>{
+          setNotification(false)
+          navigate('/chatPage')} 
+        }
+         /> </div>
          } 
         
           <Button

@@ -164,6 +164,8 @@ function UserSignup() {
 
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
+      console.log(intervalRef.current,'interval');
+      
       intervalRef.current = null;
       setTimer(600);
     }

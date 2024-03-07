@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { GrAttachment } from "react-icons/gr";
 import { useParams } from "react-router-dom";
 
-const ChatFooter = ({ socket }: { socket: Socket }) => {
+const ChatFooter = ({ socket,recipient }: { socket: Socket ,recipient : string}) => {
   interface File {
     url: string;
     size: number;
@@ -21,12 +21,15 @@ const ChatFooter = ({ socket }: { socket: Socket }) => {
     // console.log({ userName: localStorage.getItem('userName'), message });
     setMessage("");
     setFile(null);
+    const userEmail = localStorage.getItem("userEmail")
 
     if (message.trim() || file?.url.trim()) {
       socket.emit("message", {
         text: message,
-        file: file?.url.trim() ? file : null,
+        file: file?.url.trim() ? file : {url :'',size : 0,fileName : ''},
         name: localStorage.getItem("userEmail"),
+        recipient1 : recipient,
+        recipient2 : userEmail,
         id: `${socket.id}${Math.random()}`,
         socketID: socket.id,
       });

@@ -27,7 +27,7 @@ function HRRoutes() {
         <Route path={'/viewJob/:id'} element = {<HRPrivatedRoute component={ViewJob}/>}/>
         <Route path={'/shortListedUsers/:jobId'} element = {<HRPrivatedRoute component={ShowShortListedUsers}/>}/>
         <Route path="/chatSignin" element={<ChatHomeUser />} />
-      <Route path="/chatPage/:recipient" element={<ChatPageUser socket={socket} />} />
+        <Route path="/chatPage/:recipient" element={<ChatPageUser socket={socket} />} />
       </Routes>
   )
 }
