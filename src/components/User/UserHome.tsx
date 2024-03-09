@@ -62,6 +62,7 @@ const UserHome = ({searchData ,sortData } ) => {
     };
     fetchData();
   }, [pageNumber,searchData]);
+  
   useEffect(()=>{
    if(sortData == 'old-new') {
     const jobsSorted = jobs.reverse()

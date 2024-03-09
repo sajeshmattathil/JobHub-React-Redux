@@ -7,10 +7,13 @@ import MenuItem from "@mui/material/MenuItem";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogout } from "../../../Services/Redux/Slices/UserSlices";
 import { IoIosNotificationsOutline } from "react-icons/io";
-import { Socket } from "socket.io-client";
+// import { Socket } from "socket.io-client";
 import messageImage from '../../../../public/message.gif'
+import { io } from 'socket.io-client';
 
-const UserNavbar = ({ socket } : {socket : Socket}) => {
+const socket = io('http://localhost:3000');
+
+const UserNavbar = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const navigate = useNavigate();
   const [notification,setNotification] = useState<boolean>(false)

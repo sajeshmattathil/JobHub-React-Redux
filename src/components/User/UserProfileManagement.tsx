@@ -27,7 +27,7 @@ export default function ProfileManagement() {
         console.log(userId, "userId");
         if (!userId) navigate("/login");
 
-        const response = await axiosUserInstance.get(`/getUser/${userId}`);
+        const response = await axiosUserInstance.get(`/getUser`);
         console.log(response, "responde");
 
         if (response?.data?.status === 201) {

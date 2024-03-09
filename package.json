@@ -17,6 +17,7 @@
     "@mui/material": "^5.15.6",
     "@reduxjs/toolkit": "^2.1.0",
     "@types/socket.io-client": "^3.0.0",
+    "antd": "^5.15.1",
     "bootstrap": "^5.3.2",
     "cloudinary-react": "^1.8.1",
     "nodemailer": "^6.9.9",

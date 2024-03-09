@@ -9,7 +9,7 @@ interface SearchValue {
   option : string;
   value : string;
 }
-const Home = ({socket } : { socket: Socket }) => {
+const Home = () => {
   const [searchValue, setSearchValue] = useState<SearchValue | null>(null);
   const [sort, setSort] = useState<string>('');
   const handleSearch =  (option : string,value: string) => {
@@ -20,7 +20,7 @@ const Home = ({socket } : { socket: Socket }) => {
   }
   return (
     <>
-      <Navbar socket={socket} />
+      <Navbar/>
       <SearchBar onSearchChange={handleSearch}  />
       <Sort onSortChange={handleSort}/>
       <UserHome searchData={searchValue}   sortData = {sort} />

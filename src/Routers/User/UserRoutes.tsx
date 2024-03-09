@@ -11,6 +11,7 @@ import SearchBar from "../../components/User/Timer";
 import { io } from 'socket.io-client';
 import ChatHomeUser from "../../components/User/Chat/ChatHomeUser";
 import ChatPageUser from "../../components/User/Chat/ChatPageUser";
+import VideoCall from "../../components/VideoCall.tsx/videoCall";
 
 const socket = io('http://localhost:3000');
 
@@ -20,7 +21,7 @@ function UserRoutes() {
       <Route path="/signup" element={<UserPublicRoutes component={SignUp} />} />
       <Route path="/login" element={<LoginNew />} />
       <Route path="/forgotPassword" element={<UserForgotPassword />} />
-      <Route path="/" element={<Home socket={socket}  />} />
+      <Route path="/" element={<Home   />} />
       <Route
         path="/profilemanagement"
         element={<UserProtectedRoute component={profileManagement} />}
@@ -29,6 +30,8 @@ function UserRoutes() {
       <Route path="/jobPost/:id" element={<UserProtectedRoute component={ViewJob} />} />
       <Route path="/chatSignin" element={<ChatHomeUser />} />
       <Route path="/chatPage" element={<ChatPageUser socket={socket} />} />
+      <Route path="/vdo" element={<VideoCall />} />
+
 
 
     </Routes>

@@ -25,7 +25,7 @@ export default function HRProfileManagement() {
         console.log(HRId, "hrId");
         if (!HRId) navigate("/hr/login");
 
-        const response = await axiosHRInstance.get(`/hr/getHR/${HRId}`);
+        const response = await axiosHRInstance.get('/hr/getHR');
         console.log(response, "response -----------");
 
         if (response?.data?.status === 201) {
