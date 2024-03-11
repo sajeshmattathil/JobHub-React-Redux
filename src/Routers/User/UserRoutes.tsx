@@ -11,12 +11,19 @@ import SearchBar from "../../components/User/Timer";
 import { io } from 'socket.io-client';
 import ChatHomeUser from "../../components/User/Chat/ChatHomeUser";
 import ChatPageUser from "../../components/User/Chat/ChatPageUser";
-import VideoCall from "../../components/VideoCall.tsx/videoCall";
+import VideoCall from "../../components/VideoCall.tsx/VideoCall";
+import { SocketProvider } from "../../Providers/Socket";
+import RoomPage from "../../components/VideoCall.tsx/RoomPage";
+import PeerProvider from "../../Providers/Peer";
 
-const socket = io('http://localhost:3000');
+const socket = io('http://localhost:3001');
 
 function UserRoutes() {
   return (
+    <SocketProvider>
+      <PeerProvider>
+
+ 
     <Routes>
       <Route path="/signup" element={<UserPublicRoutes component={SignUp} />} />
       <Route path="/login" element={<LoginNew />} />
@@ -31,10 +38,13 @@ function UserRoutes() {
       <Route path="/chatSignin" element={<ChatHomeUser />} />
       <Route path="/chatPage" element={<ChatPageUser socket={socket} />} />
       <Route path="/vdo" element={<VideoCall />} />
-
-
+      <Route path="/chat/:roomId" element={<RoomPage/>} />
 
     </Routes>
+    </PeerProvider>
+
+    </SocketProvider>
+
   );
 }
 

@@ -12,7 +12,7 @@ import ChatPageUser from '../../components/HR/Chat/ChatPageUser'
 import ChatHomeUser from '../../components/HR/Chat/ChatHomeUser'
 import { io } from 'socket.io-client'
 import ShowShortListedUsers from '../../components/HR/ShowShortListedUsrers'
-const socket = io('http://localhost:3000');
+const socket = io('http://localhost:3001');
 
 
 function HRRoutes() {

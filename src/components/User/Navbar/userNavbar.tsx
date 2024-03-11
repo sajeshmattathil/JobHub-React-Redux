@@ -11,7 +11,7 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 import messageImage from '../../../../public/message.gif'
 import { io } from 'socket.io-client';
 
-const socket = io('http://localhost:3000');
+const socket = io('http://localhost:3001');
 
 const UserNavbar = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
