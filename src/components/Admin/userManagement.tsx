@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './userManagement.css';
 import { axiosAdminInstance } from '../../Utils/axios/axios';
-import { Navbar } from '@material-tailwind/react';
 
 interface UserInterface {
     _id?: string;
@@ -75,7 +74,6 @@ const UserManagementTable: React.FC = () => {
 
     return (
         <>
-        <Navbar children={'jjj'} placeholder={'undefined'}/>
          <table>
             <thead className="userHead">
                 <tr>

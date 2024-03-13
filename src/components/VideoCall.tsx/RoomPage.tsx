@@ -1,37 +1,82 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSocket } from "../../Providers/Socket";
 import { usePeer } from "../../Providers/Peer";
+import ReactPlayer from "react-player";
 
 const RoomPage = () => {
   const { socket } = useSocket();
-  const { peer, createOffer } = usePeer() || {};  console.log(peer, createOffer, "offer and peer");
+  const { createOffer, createAnswer, setRemoteAns } = usePeer() || {};
 
   const handleNewUser = useCallback(
-    async (data: { emaiId: string; }) => {
+    async (data: { emailId: string }) => {
       const { emailId } = data;
-      console.log(data,'data user-joined');
-      
-      console.log(emailId, "new user");
       const offer = await createOffer();
       socket?.emit("call-user", { emailId, offer });
     },
     [createOffer, socket]
   );
-  
-  const handleIncommingCall = useCallback((data) => {
-    const { offer, from } = data;
-    console.log(from,'from');
-    
-    console.log("incoming from", from, offer);
+
+  const handleIncommingCall = useCallback(
+    async (data) => {
+      const { offer, from } = data;
+      if (createAnswer) {
+        const ans = await createAnswer(offer);
+        socket?.emit("call-accepted", { emailId: from, ans });
+      }
+    },
+    [createAnswer, socket]
+  );
+
+  const handleCallAccepted = useCallback(
+    async (data) => {
+      const { ans } = data;
+      if (setRemoteAns) await setRemoteAns(ans);
+    },
+    [setRemoteAns]
+  );
+
+  const getUserMediaStream = useCallback(async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: true,
+      });
+      setMyStream(stream);
+    } catch (error) {
+      console.error("Error accessing media devices:", error);
+    }
   }, []);
 
-  
+  const [myStream, setMyStream] = useState<MediaStream | null>(null);
+
   useEffect(() => {
     socket?.on("user-joined", handleNewUser);
     socket?.on("incomming-call", handleIncommingCall);
-  }, [socket, handleNewUser]);
+    socket?.on("call-accepted", handleCallAccepted);
 
-  return <div>RoomPage</div>;
+    return () => {
+      socket?.off("user-joined", handleNewUser);
+      socket?.off("incomming-call", handleIncommingCall);
+      socket?.off("call-accepted", handleCallAccepted);
+    };
+  }, [socket, handleNewUser, handleIncommingCall, handleCallAccepted]);
+
+  useEffect(() => {
+    getUserMediaStream();
+  }, []);
+
+  return (
+    <div className="room-page-container">
+      <h1>Room Page</h1>
+      {myStream && (
+        <ReactPlayer
+          url={window.URL.createObjectURL(myStream)}
+          controls
+          playing
+        />
+      )}
+    </div>
+  );
 };
 
 export default RoomPage;
