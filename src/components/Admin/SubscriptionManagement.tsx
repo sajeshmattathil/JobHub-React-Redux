@@ -16,10 +16,11 @@ const SubscriptionManagement = () => {
     _id: string;
   }
   const [subscriptions, setSubscriptions] = useState([]);
+  const [shouldRender,setShouldRender] = useState<boolean>(false)
 
   useEffect(() => {
     fetchPlans();
-  }, []);
+  }, [shouldRender]);
   const fetchPlans = async () => {
     try {
       const getSubscriptionPlans = await axiosAdminInstance.get(
@@ -38,7 +39,8 @@ const SubscriptionManagement = () => {
     try {
         const deletePlan = await axiosAdminInstance.delete(`/admin/deletePlan/${id}`)
         console.log(deletePlan,'delete plan');
-        if(deletePlan.data.status === 200)   toast.success("Plan deleted succesfully");  
+        if(deletePlan.data.status === 200)   toast.success("Plan deleted succesfully"); 
+        setShouldRender(prev=>!prev) 
     } catch (error) {
         toast.success("Something went wrong");   
     }

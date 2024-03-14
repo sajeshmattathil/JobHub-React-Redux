@@ -17,6 +17,8 @@ const HRPrivatedRoute: React.FC<RouteProps> = ({ component: Component }) => {
     const HR = useSelector((state: RootState) => state.HR.isLoggedIn);
     // const HREmail = localStorage.getItem('HREmail')
     const [HREmail,setHREmail] = useState<string | null>(null)
+    const [loading, setLoading] = useState<boolean>(true);
+
     useEffect(() => {
         const fetchData = async () => {
           try {
@@ -26,9 +28,15 @@ const HRPrivatedRoute: React.FC<RouteProps> = ({ component: Component }) => {
           } catch (error) {
             console.log(error, "error");
           }
+        finally{
+          setLoading(false)
+        }
         };
         fetchData();
       }, []);
+      if (loading) {
+        return <div>Loading...</div>; 
+    }
     console.log(HREmail)
     if (!HREmail) {
 

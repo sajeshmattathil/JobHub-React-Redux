@@ -15,6 +15,7 @@ import VideoCall from "../../components/VideoCall.tsx/VideoCall";
 import { SocketProvider } from "../../Providers/Socket";
 import RoomPage from "../../components/VideoCall.tsx/RoomPage";
 import PeerProvider from "../../Providers/Peer";
+import Subscriptions from "../../Pages/User/Subscriptions";
 
 const socket = io('http://localhost:3001');
 
@@ -34,12 +35,19 @@ function UserRoutes() {
         element={<UserProtectedRoute component={profileManagement} />}
       />
       <Route path="/search" element={<SearchBar />} />
-      <Route path="/jobPost/:id" element={<UserProtectedRoute component={ViewJob} />} />
+      <Route path="/jobPost/:id" element={<UserPublicRoutes component={ViewJob} />} />
       <Route path="/chatSignin" element={<ChatHomeUser />} />
       <Route path="/chatPage" element={<ChatPageUser socket={socket} />} />
       <Route path="/vdo" element={<VideoCall />} />
       <Route path="/chat/:roomId" element={<RoomPage/>} />
-
+      <Route
+        path="/subscriptionPlans"
+        element={<UserProtectedRoute component={Subscriptions} />}
+      />
+       <Route
+        path="/payment/:id"
+        element={<UserProtectedRoute component={Subscriptions} />}
+      />
     </Routes>
     </PeerProvider>
 

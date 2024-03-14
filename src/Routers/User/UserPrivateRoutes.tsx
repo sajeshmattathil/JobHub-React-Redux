@@ -14,8 +14,12 @@ interface RootState {
   user: UserState;
 }
 const UserProtectedRoute: React.FC<RouteProps> = ({ component: Component }) => {
+ 
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
   const user = useSelector((state: RootState) => state.user.isLoggedIn);
+
   // const userEmail = localStorage.getItem('userEmail')
 
   console.log(userEmail, "protected route--->");
@@ -27,10 +31,15 @@ const UserProtectedRoute: React.FC<RouteProps> = ({ component: Component }) => {
           setUserEmail(response.data.user.email);
       } catch (error) {
         console.log(error, "error");
+      }finally{
+        setLoading(false)
       }
     };
     fetchData();
   }, []);
+  if (loading) {
+    return <div>Loading...</div>; 
+}
   if (!userEmail) {
     return <Navigate to="/login" />;
   }

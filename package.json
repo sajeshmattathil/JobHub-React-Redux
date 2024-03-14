@@ -21,6 +21,7 @@
     "bootstrap": "^5.3.2",
     "cloudinary-react": "^1.8.1",
     "nodemailer": "^6.9.9",
+    "razorpay": "^2.9.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.50.1",

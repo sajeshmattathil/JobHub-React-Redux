@@ -14,6 +14,7 @@ import TimelineSeparator from "@mui/lab/TimelineSeparator";
 import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineDot from "@mui/lab/TimelineDot";
+import { BsSend } from "react-icons/bs";
 import Jobs from "../HR/HrHome";
 
 const ViewJobDetails = () => {
@@ -41,13 +42,14 @@ const ViewJobDetails = () => {
   const checkApplied = job?.appliedUsers.filter(
     (user) => user.email === userEmail
   );
-  let isApplied : string;
- if(checkApplied?.length)  isApplied = checkApplied[0].email
+  let isApplied: string;
+  if (checkApplied?.length) isApplied = checkApplied[0].email;
   // if(checkApplied) setIsApplied(checkApplied[0].email)
 
   const navigate = useNavigate();
 
   interface HRData {
+    name: string;
     followers: string[];
     _id: string;
     company: string;
@@ -90,8 +92,8 @@ const ViewJobDetails = () => {
         const checkApplied = job?.appliedUsers.filter(
           (user) => user.email === userEmail
         );
-        let isApplied : string;
-       if(checkApplied?.length)  isApplied = checkApplied[0].email
+        let isApplied: string;
+        if (checkApplied?.length) isApplied = checkApplied[0].email;
         setHR(jobData?.data?.jobDataFetched[0]?.jobData[0]);
         setAppliedJob(jobData?.data?.jobDataFetched[0]?.appliedData[0]);
       } catch (error) {
@@ -142,6 +144,20 @@ const ViewJobDetails = () => {
       console.log(followAndUnfollowHR.data, "followAndUnfollowHR");
     } catch (error) {
       console.log(error, "error in follow unfollow hr");
+    }
+  };
+
+  const handleSendMessage = async () => {
+    try {
+      const verifyUserSubscribed = await axiosUserInstance.get("/getUser");
+      console.log(verifyUserSubscribed, "verify");
+      if (verifyUserSubscribed?.data?.user?.subscription?.isSubscribed)
+        navigate("/chatPage");
+      else {
+        navigate("/subscriptionPlans");
+      }
+    } catch (error) {
+      console.log('error in sending message');
     }
   };
 
@@ -228,7 +244,7 @@ const ViewJobDetails = () => {
                 }}
               >
                 {userEmail ? (
-                 isApplied ? (
+                  isApplied ? (
                     <div
                       style={{
                         color: "green",
@@ -280,45 +296,43 @@ const ViewJobDetails = () => {
             alignContent: "center",
           }}
         >
-          {job !== null &&
-            userEmail !== null &&
-            isApplied && (
-              <Timeline position="left">
-                <TimelineItem>
-                  <TimelineSeparator>
-                    <TimelineDot color={appliedJob ? "success" : "primary"} />
-                    <TimelineConnector />
-                  </TimelineSeparator>
-                  <TimelineContent>Job applied</TimelineContent>
-                </TimelineItem>
-                <TimelineItem>
-                  <TimelineSeparator>
-                    <TimelineDot
-                      color={appliedJob.isHRViewed ? "success" : "primary"}
-                    />
-                    <TimelineConnector />
-                  </TimelineSeparator>
-                  <TimelineContent>HR viewed application</TimelineContent>
-                </TimelineItem>
-                <TimelineItem>
-                  <TimelineSeparator>
-                    <TimelineDot
-                      color={appliedJob.isShortlisted ? "success" : "primary"}
-                    />
-                    <TimelineConnector />
-                  </TimelineSeparator>
-                  <TimelineContent>Shortlisted</TimelineContent>
-                </TimelineItem>
-                <TimelineItem>
-                  <TimelineSeparator>
-                    <TimelineDot
-                      color={appliedJob.isReplayed ? "success" : "primary"}
-                    />
-                  </TimelineSeparator>
-                  <TimelineContent>Get response</TimelineContent>
-                </TimelineItem>
-              </Timeline>
-            )}
+          {job !== null && userEmail !== null && isApplied && (
+            <Timeline position="left">
+              <TimelineItem>
+                <TimelineSeparator>
+                  <TimelineDot color={appliedJob ? "success" : "primary"} />
+                  <TimelineConnector />
+                </TimelineSeparator>
+                <TimelineContent>Job applied</TimelineContent>
+              </TimelineItem>
+              <TimelineItem>
+                <TimelineSeparator>
+                  <TimelineDot
+                    color={appliedJob.isHRViewed ? "success" : "primary"}
+                  />
+                  <TimelineConnector />
+                </TimelineSeparator>
+                <TimelineContent>HR viewed application</TimelineContent>
+              </TimelineItem>
+              <TimelineItem>
+                <TimelineSeparator>
+                  <TimelineDot
+                    color={appliedJob.isShortlisted ? "success" : "primary"}
+                  />
+                  <TimelineConnector />
+                </TimelineSeparator>
+                <TimelineContent>Shortlisted</TimelineContent>
+              </TimelineItem>
+              <TimelineItem>
+                <TimelineSeparator>
+                  <TimelineDot
+                    color={appliedJob.isReplayed ? "success" : "primary"}
+                  />
+                </TimelineSeparator>
+                <TimelineContent>Get response</TimelineContent>
+              </TimelineItem>
+            </Timeline>
+          )}
         </div>
       </div>
 
@@ -368,6 +382,31 @@ const ViewJobDetails = () => {
                 <span style={{ fontSize: "15px", marginBottom: "5px" }}>
                   <FaPeopleGroup />
                   <span></span> {hr.employeesNumber} employees
+                </span>
+              </div>
+              <div>
+                <BsSend />{" "}
+                <span style={{ padding: "2%", fontSize: "1rem" }}>
+                  {hr.name}(Hiring Manager)
+                </span>
+                <span
+                  style={{
+                    marginRight: "1%",
+                  }}
+                >
+                  {userEmail?.trim() && (
+                    <button
+                      style={{
+                        border: "2px solid black",
+                        borderRadius: ".5rem",
+                        padding: "1%",
+                        cursor: "pointer",
+                      }}
+                      onClick={handleSendMessage}
+                    >
+                      Send Message
+                    </button>
+                  )}
                 </span>
               </div>
             </div>

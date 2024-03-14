@@ -40,7 +40,7 @@ const AdminPrivatedRoute: React.FC<RouteProps> = ({ component: Component }) => {
         fetchData();
       }, []);
       if (loading) {
-        return <div>Loading...</div>; // Render a loading indicator while fetching data
+        return <div>Loading...</div>; 
     }
     console.log(adminEmail)
     if (!adminEmail.trim()) {
