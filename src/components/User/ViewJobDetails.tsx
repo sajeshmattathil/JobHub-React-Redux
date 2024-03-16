@@ -296,7 +296,7 @@ const ViewJobDetails = () => {
             alignContent: "center",
           }}
         >
-          {job !== null && userEmail !== null && isApplied && (
+          {job !== null && userEmail !== null && isApplied &&  (
             <Timeline position="left">
               <TimelineItem>
                 <TimelineSeparator>

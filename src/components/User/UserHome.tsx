@@ -42,7 +42,6 @@ const UserHome = ({searchData ,sortData } ) => {
           `/getJobs?jobsPerPage=5&page=${pageNumber}`,searchData
         );
 
-        console.log(fetchedData, "fetchedData");
 
         if (fetchedData.data.status === 201) {
           const data = fetchedData.data;
@@ -50,7 +49,6 @@ const UserHome = ({searchData ,sortData } ) => {
           setTotalpages(pages);
           setJobs(data.jobData);
           setMsg("jobs found");
-          console.log(jobs, "jobssss");
         } else {
           console.log("elseeee");
           setMsg("");
@@ -86,13 +84,13 @@ const handleViewJob = (id : string)=>{
       <>
        <div className="Container"  style={{
         display:'flex',
-      
+      marginLeft : '6%'
         }}>
-        <div className="leftSideBar"
+        {/* <div className="leftSideBar"
         style={ {
           flex: "0 0 20%",
           padding: "30px",
-          backgroundColor: "#f0f0f0",
+          backgroundColor: "#82b182",
           borderRadius : '.5rem',
           margin : '2%',
           marginBottom :'4%',
@@ -126,9 +124,9 @@ const handleViewJob = (id : string)=>{
           <input type="checkbox" value={'75-100'} style={{marginRight:'5%'}}/>
           <label htmlFor="filterOption1"> 75-100 Lakhs</label>
         </div> 
-        </div>
+        </div> */}
         <div
-          style={{ flex: "0 0 65%", padding: "20px" }}
+          style={{ flex: "0 0 90%", padding: "20px" }}
         >
           {jobs.map((job, index) => (
             <div
@@ -139,6 +137,7 @@ const handleViewJob = (id : string)=>{
                 borderRadius: "8px",
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                 marginBottom: "20px",
+                marginLeft:'10%',
                 cursor: "pointer",
               }}
               onClick={handleViewJob(job._id)}

@@ -4,6 +4,7 @@ import upload from "../../../Utils/Cloudinary/cloudinary";
 import { useForm } from "react-hook-form";
 import { GrAttachment } from "react-icons/gr";
 import { useParams } from "react-router-dom";
+import FileUploadComponent from "../../FileUploadComponent/FileUploadComponent";
 
 const ChatFooter = ({ socket,recipient }: { socket: Socket ,recipient : string}) => {
   interface File {
@@ -26,6 +27,7 @@ const ChatFooter = ({ socket,recipient }: { socket: Socket ,recipient : string})
     if (message.trim() || file?.url.trim()) {
       socket.emit("message", {
         text: message,
+        time : Date.now(),
         file: file?.url.trim() ? file : {url :'',size : 0,fileName : ''},
         name: localStorage.getItem("userEmail"),
         recipient1 : recipient,
@@ -62,6 +64,7 @@ const ChatFooter = ({ socket,recipient }: { socket: Socket ,recipient : string})
             }
           }}
         />
+        {/* <FileUploadComponent register={register} upload={upload} setFile={setFile} /> */}
         <input
           type="text"
           placeholder="Write message"

@@ -9,10 +9,7 @@ const upload = async (pdf :File,foldername : string)=>{
                 formData.append("upload_preset", cloudPreset);
                 formData.append('folder',foldername)
 
-                for (const entry of formData.entries()) {
-                    const [key, value] = entry;
-                    console.log(key, value);
-                  }
+               
                   
                 
                 const response = await axios.post(`https://api.cloudinary.com/v1_1/${cloudName}/upload/`,formData,{

@@ -7,6 +7,7 @@ import UserManagement from '../../Pages/admin/UserManagement'
 import SubscriptionManagement from '../../components/Admin/SubscriptionManagement'
 import CreateNewPlan from '../../components/Admin/CreateNewPlan'
 import EditPlans from '../../components/Admin/EditPlans'
+import Plans from '../../Pages/admin/Plans'
 
 function AdminRoutes() {
 
@@ -22,7 +23,7 @@ function AdminRoutes() {
 
         <Route path={'/hrmanagement'} element = {<AdminPrivatedRoute component={HRManagement}/>}/>
 
-        <Route path={'/subscriptionManagement'} element = {<AdminPrivatedRoute component={SubscriptionManagement}/>}/>
+        <Route path={'/subscriptionManagement'} element = {<AdminPrivatedRoute component={Plans}/>}/>
 
         <Route path={'/createNewPlan'} element = {<AdminPrivatedRoute component={CreateNewPlan}/>}/>
 

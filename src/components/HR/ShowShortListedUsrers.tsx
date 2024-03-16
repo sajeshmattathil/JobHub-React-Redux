@@ -28,7 +28,6 @@ const navigate = useNavigate()
         const response = await axiosHRInstance.get(
           `/hr/shortListedUsers/${jobId}`
         );
-        console.log(response.data, "res----dataaa>>>>>");
         if (response.data.status === 200) {
           const extractedUsers: UserInterface[] = response.data.usersData.map(
             (user: UserInterface) => ({
@@ -71,6 +70,8 @@ const navigate = useNavigate()
             <th>Email</th>
             <th>View Resume</th>
             <th></th>
+            <th></th>
+
           </tr>
         </thead>
         <tbody className="userTableBody">
@@ -89,6 +90,8 @@ const navigate = useNavigate()
                     </a>
               </td>
               <td><button onClick={()=>navigate(`/hr/chatPage/${user.email}`)}>Send Messsage</button></td>
+              <td><button onClick={()=>navigate(`/hr/videoCall/${user.email}`)}>Video Call</button></td>
+
             </tr>
           ))}
         </tbody>

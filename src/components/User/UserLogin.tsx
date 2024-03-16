@@ -51,7 +51,6 @@ function UserLogin() {
     user: UserState;
   }
   const userEmail = useSelector((state: RootState) => state.user.userEmail);
-  console.log(userEmail, "userEmail");
 
   const navigate = useNavigate();
 

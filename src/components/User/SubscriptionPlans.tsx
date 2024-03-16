@@ -65,6 +65,11 @@ const SubscriptionPlans = () => {
         order_id: response.data.order.id,
         handler: async function (response) {
           console.log(response);
+          response.subscribedAt = Date.now()
+          response.duration= selectedPlan?.duration
+          response.planName = selectedPlan?.planName
+          console.log(response,'2');
+
           await axiosUserInstance.post('/savePayment',response)
         },
         prefill: {

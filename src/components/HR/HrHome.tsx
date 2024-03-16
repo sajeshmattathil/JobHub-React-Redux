@@ -30,11 +30,9 @@ const Jobs = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log(pageNumber,'---pno.');
         
         const fetchedData = await axiosHRInstance.get(`/hr/getJobs/${HREmail}?jobsPerPage=3&page=${pageNumber}`);
 
-        console.log(fetchedData, "fetchedData");
 
         if (fetchedData.data.status === 201) {
           const data = fetchedData.data;

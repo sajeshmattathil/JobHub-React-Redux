@@ -3,8 +3,15 @@ import { Socket } from "socket.io-client";
 import { GrAttachment } from "react-icons/gr";
 import upload from "../../../Utils/Cloudinary/cloudinary";
 import { useForm } from "react-hook-form";
+import FileUploadComponent from "../../FileUploadComponent/FileUploadComponent";
 
-const ChatFooter = ({ socket,recipient }: { socket: Socket,recipient : string }) => {
+const ChatFooter = ({
+  socket,
+  recipient,
+}: {
+  socket: Socket;
+  recipient: string;
+}) => {
   interface File {
     url: string;
     size: number;
@@ -21,16 +28,17 @@ const ChatFooter = ({ socket,recipient }: { socket: Socket,recipient : string })
 
     console.log({ userName: localStorage.getItem("HREmail"), message });
     setMessage("");
-    const HREmail = localStorage.getItem("HREmail")
-console.log(HREmail,'hr email');
+    const HREmail = localStorage.getItem("HREmail");
+    console.log(HREmail, "hr email");
 
     if (message.trim() || file?.url.trim()) {
       socket.emit("message", {
         text: message,
-        file: file?.url.trim() ? file : {url :'',size : 0,fileName : ''},
+        time: Date.now(),
+        file: file?.url.trim() ? file : { url: "", size: 0, fileName: "" },
         name: localStorage.getItem("HREmail"),
-        recipient1 : HREmail,
-        recipient2 : recipient,
+        recipient1: HREmail,
+        recipient2: recipient,
         id: `${socket.id}${Math.random()}`,
         socketID: socket.id,
       });
@@ -43,7 +51,7 @@ console.log(HREmail,'hr email');
   return (
     <div className="chat__footer">
       <form className="form">
-        <div style={{ margin: "3%" }} >
+        <div style={{ margin: "3%" }}>
           <GrAttachment style={{ width: "300%", height: "100%" }} />
         </div>
         <input
@@ -61,7 +69,9 @@ console.log(HREmail,'hr email');
               if (fileUrl) setFile(fileUrl);
             }
           }}
-         />
+        />
+        {/* <FileUploadComponent register={register} upload={upload} setFile={setFile} /> */}
+
         <input
           type="text"
           placeholder="Write message"

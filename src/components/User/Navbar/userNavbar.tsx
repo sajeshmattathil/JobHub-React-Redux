@@ -7,16 +7,17 @@ import MenuItem from "@mui/material/MenuItem";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogout } from "../../../Services/Redux/Slices/UserSlices";
 import { IoIosNotificationsOutline } from "react-icons/io";
-// import { Socket } from "socket.io-client";
+import { Socket } from "socket.io-client";
 import messageImage from '../../../../public/message.gif'
 import { io } from 'socket.io-client';
+import { FcVideoCall } from "react-icons/fc";
 
-const socket = io('http://localhost:3001');
 
-const UserNavbar = () => {
+const UserNavbar = ({socket} :{socket : Socket}) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const navigate = useNavigate();
   const [notification,setNotification] = useState<boolean>(false)
+  const [link,setLink] = useState<string>('')
   
   interface ChatMessage {
     text: string;
@@ -27,19 +28,41 @@ const UserNavbar = () => {
     socketID: string;
   }
   const notificationRef = useRef<boolean>(false)
+  const notificationVdoCallRef = useRef<boolean>(false)
 
-useEffect(() => {
-    if(socket){
-      socket.on('messageResponse', (data :ChatMessage) => {
-        if(data.recipient2 === localStorage.getItem('userEmail')) {
-          notificationRef.current =true
-          console.log(notificationRef.current,'notification')
-          setNotification(true)}
-      });
+
+  useEffect(() => {
+    console.log('message reached',socket);
+  
+    if (socket) {
+      const handleMessageResponse = (data: ChatMessage) => {
+        if (data.recipient2 === localStorage.getItem('userEmail')) {
+          notificationRef.current = true;
+          console.log(notificationRef.current, 'notification inside');
+          setNotification(true);
+        }
+      };
+  
+      const handleJoinVdoCall = (data: any) => {
+        console.log('message reached 222');
+        console.log(data, 'data-vdo-user');
+
+        if (data.recipient === localStorage.getItem('userEmail')) {
+          notificationVdoCallRef.current = true;
+          setLink(data.message)
+        }
+        console.log(notificationVdoCallRef,'video ref');
+        
+      };
+      socket.on('join-vdo-call', handleJoinVdoCall);
+      socket.on('messageResponse', handleMessageResponse);
+  
+      return () => {
+        socket.off('messageResponse', handleMessageResponse);
+        socket.off('join-vdo-call', handleJoinVdoCall);
+      };
     }
-    }, [socket]);
-    
-    console.log(notificationRef.current,'notification')
+  }, [socket]);
   
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -88,19 +111,19 @@ useEffect(() => {
       <div  >
       {userLoggenIn ? (
         <div className="container" style={{display: 'flex'}}>
-         {/* {
-        notification &&  <div className="inside" > <IoIosNotificationsOutline style={{ width: "250%", height: "100%", cursor: "pointer",padding :'10%' }}
-        onClick={()=>{
-          setNotification(false)
-          navigate('/chatPage')}
-        }/> </div>
-         }  */}
+       
           {
          notificationRef.current &&  <div className="inside" style={{ width : '10%',marginRight : '40%',cursor : 'pointer'}} > <img src={messageImage} style={{width : '300%'}}  onClick={()=>{
-          setNotification(false)
           navigate('/chatPage')} 
         }
          /> </div>
+         } 
+          {
+         notificationVdoCallRef.current &&  <div className="inside" style={{ width : '100%',marginRight : '40%',cursor : 'pointer'}} ><a href={link}> <FcVideoCall 
+         style={{fontSize : '300%'}}  onClick={()=>{
+          navigate('/chatPage')} 
+        }
+         /></a> </div>
          } 
         
           <Button

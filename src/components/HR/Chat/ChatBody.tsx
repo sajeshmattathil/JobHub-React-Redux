@@ -79,10 +79,19 @@ const ChatBody: React.FC<ChatBodyProps> = ({
       console.log(error, "errrorss");
     }
   };
+  const formatTime = (timestamp : Date)=>{
+    const date = new Date(timestamp);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    return `${hours}:${formattedMinutes}`;
+  }
 
   return (
     <>
       <header className="chat__mainHeader">
+      {HREmail && <h6 style={{fontStyle:'italic'}}>Online</h6>}
+
         <button className="leaveChat__btn" onClick={handleLeaveChat}>
           LEAVE CHAT
         </button>
@@ -142,6 +151,8 @@ const ChatBody: React.FC<ChatBodyProps> = ({
                 <div className="message__sender">
                   <p>{message.text}</p>
                 </div>
+              <p className="sender__name">{formatTime(message.time)}</p>
+
                 {message.file?.url.trim() && (
                   <div className="message__sender">
                     <p style={{ fontSize: "1.1rem" }}>
@@ -162,6 +173,7 @@ const ChatBody: React.FC<ChatBodyProps> = ({
                 <div className="message__recipient" ref={lastMessageRef}>
                   <p>{message.text}</p>
                 </div>
+                <p className="message__chats">{formatTime(message.time)}</p>
 
                 {message.file.url.trim() && (
                   <div className="message__recipient">

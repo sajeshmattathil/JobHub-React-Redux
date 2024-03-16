@@ -9,6 +9,7 @@ interface File {
   fileName: string;
 }
 interface ChatMessage {
+  time: ReactNode;
   text: string;
   file: File | null;
   name: string | null;
@@ -80,10 +81,19 @@ const ChatBody: React.FC<ChatBodyProps> = ({ messages, recipient }) => {
     }
   };
 
+  const formatTime = (timestamp : Date)=>{
+    const date = new Date(timestamp);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    return `${hours}:${formattedMinutes}`;
+  }
+
   return (
     <>
       <header className="chat__mainHeader">
         <p>Hangout with Colleagues</p>
+        {userEmail && <h6 style={{fontStyle:'italic'}}>Online</h6>}
         <button className="leaveChat__btn" onClick={handleLeaveChat}>
           LEAVE CHAT
         </button>
@@ -140,9 +150,12 @@ const ChatBody: React.FC<ChatBodyProps> = ({ messages, recipient }) => {
           message.name === localStorage.getItem("userEmail") ? (
             <div className="message__chats" key={message.id}>
               <p className="sender__name">You</p>
+
               <div className="message__sender">
                 {message.text && <p>{message.text}</p>}
               </div>
+              <p className="sender__name">{formatTime(message.time)}</p>
+
               {message.file?.url.trim() && (
                 <div className="message__sender">
                   <p>
@@ -163,6 +176,8 @@ const ChatBody: React.FC<ChatBodyProps> = ({ messages, recipient }) => {
               <div className="message__recipient">
                 <p>{message.text}</p>
               </div>
+              <p className="message__chats">{formatTime(message.time)}</p>
+
             </div>
           )
         )}
