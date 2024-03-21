@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { axiosHRInstance } from "../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
@@ -48,19 +48,19 @@ const CreateJobForm = () => {
   const HREmail = localStorage.getItem("HREmail");
 
   interface formData {
-    createdBy: string | null;
-    jobRole: string;
-    description: string;
-    qualification: QualificationOption[] | string[];
-    locations: LocationsInterface[] | string[];
-    company: string;
-    experience: string;
-    salaryScale: string;
-    education: string;
-    course: string;
-    educationalQualification?: string;
-    industry : string;
-    createdAt: Date | number;
+    createdBy ?: string | null;
+    jobRole ?: string;
+    description ?: string;
+    qualification ?: QualificationOption[] | string[];
+    locations ?:  LocationsInterface[] | string[];
+    company ?: string;
+    experience ?: string;
+    salaryScale ?:  string;
+    education ?: string;
+    course ?: string;
+    educationalQualification ?: string;
+    industry ?: string;
+    createdAt ?: Date | number;
   }
 
   const onSubmit = async (data: formData): Promise<void> => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { axiosInstance, axiosUserInstance } from "../../Utils/axios/axios";
 import { CiLocationOn } from "react-icons/ci";
@@ -15,7 +15,7 @@ import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineDot from "@mui/lab/TimelineDot";
 import { BsSend } from "react-icons/bs";
-import Jobs from "../HR/HrHome";
+// import Jobs from "../HR/HrHome";
 
 const ViewJobDetails = () => {
   interface AppliedJob {
@@ -32,19 +32,22 @@ const ViewJobDetails = () => {
     isReplayed: false,
     isShortlisted: false,
   });
+  const [isApplied,setIsApplied] = useState<string>('')
   const [shouldRender, setShouldRender] = useState(true);
   // const [isApplied, setIsApplied] = useState<string>("");
+console.log(err,'error');
 
   const userEmail = localStorage.getItem("userEmail");
-  if (job) console.log(job.appliedUsers, "applied users");
-  if (job && userEmail) console.log(job.appliedUsers.includes(userEmail));
 
-  const checkApplied = job?.appliedUsers.filter(
-    (user) => user.email === userEmail
-  );
-  let isApplied: string;
-  if (checkApplied?.length) isApplied = checkApplied[0].email;
-  // if(checkApplied) setIsApplied(checkApplied[0].email)
+  if (job) console.log(job.appliedUsers, "applied users");
+  if (job && userEmail) console.log(job.appliedUsers,'job.appliedUsers');
+
+  // const checkApplied = job?.appliedUsers.filter(
+  //   (user) => user.email === userEmail
+  // );
+  
+  // if (checkApplied?.length) isApplied = checkApplied[0].email;
+  // if(checkApplied?.length) setIsApplied(checkApplied[0].email)
 
   const navigate = useNavigate();
 
@@ -92,8 +95,12 @@ const ViewJobDetails = () => {
         const checkApplied = job?.appliedUsers.filter(
           (user) => user.email === userEmail
         );
-        let isApplied: string;
-        if (checkApplied?.length) isApplied = checkApplied[0].email;
+        if (checkApplied?.length){
+          setIsApplied(checkApplied[0].email);
+        console.log(isApplied,'isApplied');
+
+        } 
+        
         setHR(jobData?.data?.jobDataFetched[0]?.jobData[0]);
         setAppliedJob(jobData?.data?.jobDataFetched[0]?.appliedData[0]);
       } catch (error) {
@@ -102,7 +109,7 @@ const ViewJobDetails = () => {
       }
     };
     fetchJobData();
-  }, [id, shouldRender]);
+  }, [id, isApplied, job?.appliedUsers, shouldRender, userEmail]);
 
   const handleApplyJob = async () => {
     try {
@@ -121,7 +128,8 @@ const ViewJobDetails = () => {
           console.log(shouldRender);
         }
       }
-    } catch (error) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error:any) {
       console.log(error, "error in applying job");
       console.log(error.response.data.message);
     }
@@ -255,7 +263,7 @@ const ViewJobDetails = () => {
                         overflow: "auto",
                       }}
                     >
-                      {" "}
+                    
                       <TiTickOutline /> Applied
                     </div>
                   ) : (

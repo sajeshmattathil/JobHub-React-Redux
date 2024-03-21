@@ -3,8 +3,8 @@ import { Socket } from "socket.io-client";
 import upload from "../../../Utils/Cloudinary/cloudinary";
 import { useForm } from "react-hook-form";
 import { GrAttachment } from "react-icons/gr";
-import { useParams } from "react-router-dom";
-import FileUploadComponent from "../../FileUploadComponent/FileUploadComponent";
+// import { useParams } from "react-router-dom";
+// import FileUploadComponent from "../../FileUploadComponent/FileUploadComponent";
 
 const ChatFooter = ({ socket,recipient }: { socket: Socket ,recipient : string}) => {
   interface File {
@@ -17,7 +17,7 @@ const ChatFooter = ({ socket,recipient }: { socket: Socket ,recipient : string})
 
   const { register } = useForm();
 
-  const handleSendMessage = (e) => {
+  const handleSendMessage = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     // console.log({ userName: localStorage.getItem('userName'), message });
     setMessage("");
@@ -64,7 +64,7 @@ const ChatFooter = ({ socket,recipient }: { socket: Socket ,recipient : string})
             }
           }}
         />
-        {/* <FileUploadComponent register={register} upload={upload} setFile={setFile} /> */}
+        {/* <FileUploadComponent  upload={upload} setFile={setFile} /> */}
         <input
           type="text"
           placeholder="Write message"

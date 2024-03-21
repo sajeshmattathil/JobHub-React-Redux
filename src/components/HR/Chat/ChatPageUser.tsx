@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import  { useEffect, useRef, useState } from "react";
 import ChatBar from "./ChatBar";
 import ChatBody from "./ChatBody";
 import ChatFooter from "./ChatFooter";
@@ -10,6 +10,7 @@ const ChatPageUser = ({socket} :{socket : Socket}) => {
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const lastMessageRef = useRef<HTMLDivElement>(null)
     interface ChatMessage {
+      time:Date;
         text: string; 
         name: string | null; 
         id: string;

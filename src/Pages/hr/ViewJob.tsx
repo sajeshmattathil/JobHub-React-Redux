@@ -1,4 +1,3 @@
-import React from 'react'
 import HRNavbar from '../../components/HR/Navbar/HRNavbar'
 import ListJobAndManage from '../../components/HR/ListJobAndManage'
 

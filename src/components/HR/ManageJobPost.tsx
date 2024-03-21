@@ -20,7 +20,7 @@ interface JobPostData {
   company: string;
   experience: string;
   salaryScale: string;
-  educationalQualification: string;
+  educationalQualification ?: string;
   industry: string;
   jobType: string;
   education: string;
@@ -44,20 +44,37 @@ const ManageJobPost: React.FC<ManageJobPostProps> = ({ jobPostData }) => {
   const [educationalQualification, setEducationalQualification] = useState<string>("");
 
   useEffect(() => {
-    setDescription(jobPostData[0].description);
-    setJobRole(jobPostData[0].jobRole);
-    setExperience(jobPostData[0].experience);
-    setEducation(jobPostData[0].education);
-    setJobType(jobPostData[0].jobType);
-    setCourse(jobPostData[0].course);
-    setSalaryScale(jobPostData[0].salaryScale);
-    setIndustry(jobPostData[0].industry);
-    setCompany(jobPostData[0].company);
-    setSkills(jobPostData[0].qualification)
-    setLocations(jobPostData[0].locations)
-    setEducationalQualification(jobPostData[0].educationalQualification)
+    const {
+        description,
+        jobRole,
+        experience,
+        education,
+        jobType,
+        course,
+        salaryScale,
+        industry,
+        company,
+        qualification,
+        locations,
+        educationalQualification
+    } = jobPostData[0];
 
-  }, [jobPostData]);
+    setDescription(description);
+    setJobRole(jobRole);
+    setExperience(experience);
+    setEducation(education);
+    setJobType(jobType);
+    setCourse(course);
+    setSalaryScale(salaryScale);
+    setIndustry(industry);
+    setCompany(company);
+    setSkills(qualification);
+    setLocations(locations);
+
+    if (educationalQualification) {
+        setEducationalQualification(educationalQualification);
+    }
+}, [jobPostData]);
 
  
 
@@ -99,21 +116,21 @@ const ManageJobPost: React.FC<ManageJobPostProps> = ({ jobPostData }) => {
   const navigate = useNavigate();
 
   interface formData {
-    jobType: string;
-    jobId: string;
-    createdBy: string | null;
-    jobRole: string;
-    description: string;
-    qualification: QualificationOption[] | string[];
-    locations: LocationsInterface[] | string[];
-    company: string;
-    experience: string;
-    salaryScale: string;
-    education: string;
-    course: string;
+    jobType ?: string;
+    jobId ?: string;
+    createdBy ?: string | null;
+    jobRole ?: string;
+    description ?: string;
+    qualification ?: QualificationOption[] | string[];
+    locations ?: LocationsInterface[] | string[];
+    company ?: string;
+    experience ?: string;
+    salaryScale ?: string;
+    education ?: string;
+    course ?: string;
     educationalQualification?: string;
-    industry: string;
-    createdAt: Date | number;
+    industry ?: string;
+    createdAt ?: Date | number;
   }
 
   const onSubmit = async (data: formData): Promise<void> => {

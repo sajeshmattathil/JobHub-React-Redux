@@ -1,4 +1,4 @@
-import React, { ReactNode, createContext, useContext, useMemo } from "react";
+import  { ReactNode, createContext, useContext, useMemo } from "react";
 import { Socket, io } from "socket.io-client";
 
 interface SocketContextType {
@@ -7,6 +7,7 @@ interface SocketContextType {
 
 const SocketContext = createContext<SocketContextType>({ socket: null });
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useSocket = () => {
   return useContext(SocketContext);
 };

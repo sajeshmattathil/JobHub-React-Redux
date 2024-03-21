@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import { axiosUserInstance } from "../../Utils/axios/axios";
 
 interface RouteProps {
   component: React.FC;
 }
-interface UserState {
-  isLoggedIn: boolean;
-  userEmail: string;
-}
-interface RootState {
-  user: UserState;
-}
+// interface UserState {
+//   isLoggedIn: boolean;
+//   userEmail: string;
+// }
+// interface RootState {
+//   user: UserState;
+// }
 const UserProtectedRoute: React.FC<RouteProps> = ({ component: Component }) => {
  
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const user = useSelector((state: RootState) => state.user.isLoggedIn);
+  // const user = useSelector((state: RootState) => state.user.isLoggedIn);
 
   // const userEmail = localStorage.getItem('userEmail')
 

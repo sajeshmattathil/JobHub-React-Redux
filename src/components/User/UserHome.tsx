@@ -2,10 +2,14 @@
 import React, { useEffect, useState } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { axiosInstance, axiosUserInstance } from "../../Utils/axios/axios";
+import { axiosInstance } from "../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
 
-const UserHome = ({searchData ,sortData } ) => {
+interface SearchValue {
+  option : string;
+  value : string;
+}
+const UserHome  = ({searchData ,sortData } :{ searchData :SearchValue | null, sortData : string} ) => {
   console.log(searchData,'location');
   console.log(sortData || 'Date','sort');
   
@@ -30,7 +34,6 @@ const UserHome = ({searchData ,sortData } ) => {
     locations: [string];
   }
 
-  const userEmail = localStorage.getItem("userEmail");
 
   useEffect(() => {
     console.log(pageNumber, typeof pageNumber, "page no.");
@@ -70,10 +73,10 @@ const UserHome = ({searchData ,sortData } ) => {
     setJobs(jobsSorted)
   }
  
-  },[sortData])
+  },[jobs, sortData])
 
 const handleViewJob = (id : string)=>{
-  return (event: React.MouseEvent<HTMLDivElement>) => {
+  return (_event: React.MouseEvent<HTMLDivElement>) => {
   navigate(`/jobPost/${id}`)
 
 };
@@ -175,7 +178,7 @@ const handleViewJob = (id : string)=>{
               count={totalPages}
               variant="outlined"
               shape="rounded"
-              onChange={(e, value) => setPage(value)}
+              onChange={(_e, value) => setPage(value)}
             />
           </Stack>
         </div>

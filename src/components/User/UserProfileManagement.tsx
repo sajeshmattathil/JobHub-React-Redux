@@ -19,6 +19,8 @@ export default function ProfileManagement() {
 
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
+  console.log(password,'pwd');
+  
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -46,7 +48,7 @@ export default function ProfileManagement() {
       }
     };
     fetchUser();
-  }, []);
+  }, [navigate]);
 
   type SkillOption = { value: string; label: string };
 
@@ -70,19 +72,19 @@ export default function ProfileManagement() {
   } = useForm();
 
   const onSubmit = async (data: {
-    lname: string;
-    fname: string;
-    course: string;
-    education: string;
-    educationalQualification: string;
-    resume: string;
-    skills: { value: string; label: string }[] | string[];
+    lname ?: string;
+    fname ?: string;
+    course ?: string;
+    education ?: string;
+    educationalQualification ?: string;
+    resume ?: string;
+    skills ?: { value: string; label: string }[] | string[];
   }) => {
     window.scrollTo(0, 0);
 
     if (data.fname == "") data.fname = fname;
     if (data.lname == "") data.lname = lname;
-    if (!data.skills.length) data.skills = skill;
+    if (data.skills && !data.skills.length ) data.skills = skill;
 
     data.resume = resume;
     if (data.resume == "") data.resume = resume;
@@ -102,10 +104,10 @@ export default function ProfileManagement() {
       console.log(update.data.status === 201);
       // setError("User data updated");
       toast.success("User data updated");
-    } catch (error) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error:any) {
       console.log("Error in updating profile", error);
       // if(error.response.status)
-      console.log(error.response.data.message, "response----errorrr");
       setError(error.response.data.message);
     }
   };

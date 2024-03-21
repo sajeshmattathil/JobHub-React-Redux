@@ -1,4 +1,3 @@
-import { duration } from "@mui/material";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
@@ -19,9 +18,9 @@ const CreateNewPlan = () => {
     formState: { errors },
   } = useForm();
   interface planData {
-    name: string;
-    amount: string;
-    duration: string;
+    name ?: string;
+    amount ?: string;
+    duration ?: string;
   }
   const onSubmit = async (data: planData) => {
     console.log(data, "dataaaa");

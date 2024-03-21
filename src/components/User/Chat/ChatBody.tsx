@@ -9,9 +9,9 @@ interface File {
   fileName: string;
 }
 interface ChatMessage {
-  time: ReactNode;
+  time: Date;
   text: string;
-  file: File | null;
+  file ?: File | null;
   name: string | null;
   id: string;
   socketID: string;
@@ -21,7 +21,7 @@ interface ChatBodyProps {
   lastMessageRef: React.RefObject<HTMLDivElement>;
   recipient: string;
 }
-const ChatBody: React.FC<ChatBodyProps> = ({ messages, recipient }) => {
+const ChatBody: React.FC<ChatBodyProps> = ({ messages, recipient,lastMessageRef }) => {
   const navigate = useNavigate();
   const [previousChat, setPreviousChat] = useState<ChatMessage[] | null>(null);
 
@@ -115,9 +115,13 @@ const ChatBody: React.FC<ChatBodyProps> = ({ messages, recipient }) => {
                       {message.file.fileName}{" "}
                       <MdOutlineDownloadForOffline
                         style={{ width: "9%", height: "9%", cursor: "pointer" }}
-                        onClick={() =>
-                          handleFile(message.file.url, message.file?.fileName)
-                        }
+                        onClick={() => {
+                          if (message.file)
+                            return handleFile(
+                              message.file.url,
+                              message.file?.fileName
+                            );
+                        }}
                       />
                     </p>
                   </div>
@@ -135,9 +139,13 @@ const ChatBody: React.FC<ChatBodyProps> = ({ messages, recipient }) => {
                       {message.file.fileName}{" "}
                       <MdOutlineDownloadForOffline
                         style={{ width: "9%", height: "9%", cursor: "pointer" }}
-                        onClick={() =>
-                          handleFile(message.file.url, message.file?.fileName)
-                        }
+                        onClick={() => {
+                          if (message.file)
+                            return handleFile(
+                              message.file.url,
+                              message.file?.fileName
+                            );
+                        }}
                       />
                     </p>
                   </div>
@@ -162,9 +170,13 @@ const ChatBody: React.FC<ChatBodyProps> = ({ messages, recipient }) => {
                     {message.file.fileName}{" "}
                     <MdOutlineDownloadForOffline
                       style={{ width: "9%", height: "9%", cursor: "pointer" }}
-                      onClick={() =>
-                        handleFile(message.file.url, message.file?.fileName)
-                      }
+                      onClick={() => {
+                        if (message.file)
+                          return handleFile(
+                            message.file.url,
+                            message.file?.fileName
+                          );
+                      }}
                     />
                   </p>
                 </div>

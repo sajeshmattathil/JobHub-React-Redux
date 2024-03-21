@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
 
-const Sort = ({onSortChange}) => {
-    const handleSort = (e)=>{
+const Sort = ({onSortChange}:{onSortChange:(value:string)=>void}) => {
+    const handleSort = (e: { target: { value: string } })=>{
 const sortValue = e.target.value
         onSortChange(sortValue)
     }

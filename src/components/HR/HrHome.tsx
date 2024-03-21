@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { axiosHRInstance } from "../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
@@ -151,7 +151,7 @@ onClick={()=>navigate(`/hr/viewJob/${job._id}`)}
               count={totalPages}
               variant="outlined"
               shape="rounded"
-              onChange={(e, value) => setPage(value)}
+              onChange={(_e, value) => setPage(value)}
             />
           </Stack>
         </div>

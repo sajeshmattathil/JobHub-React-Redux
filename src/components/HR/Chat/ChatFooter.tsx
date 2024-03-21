@@ -3,14 +3,14 @@ import { Socket } from "socket.io-client";
 import { GrAttachment } from "react-icons/gr";
 import upload from "../../../Utils/Cloudinary/cloudinary";
 import { useForm } from "react-hook-form";
-import FileUploadComponent from "../../FileUploadComponent/FileUploadComponent";
+// import FileUploadComponent from "../../FileUploadComponent/FileUploadComponent";
 
 const ChatFooter = ({
   socket,
   recipient,
 }: {
   socket: Socket;
-  recipient: string;
+  recipient: string | undefined;
 }) => {
   interface File {
     url: string;
@@ -22,7 +22,7 @@ const ChatFooter = ({
   console.log(socket, "socketttt");
   const { register } = useForm();
 
-  const handleSendMessage = (e) => {
+  const handleSendMessage = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     console.log(message, "message---<");
 
@@ -70,7 +70,7 @@ const ChatFooter = ({
             }
           }}
         />
-        {/* <FileUploadComponent register={register} upload={upload} setFile={setFile} /> */}
+        {/* <FileUploadComponent  upload={upload} setFile={setFile} /> */}
 
         <input
           type="text"

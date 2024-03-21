@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { axiosHRInstance, axiosUserInstance } from "../../Utils/axios/axios";
+import { axiosHRInstance } from "../../Utils/axios/axios";
 import Modal from "./modal";
 import ManageJob from "./ManageJobPost";
-import { retry } from "@reduxjs/toolkit/query";
 
 interface UserData {
   fname: string;
@@ -32,6 +31,7 @@ interface AppliedArray {
 interface JobInterface {
   _id: string;
   createdBy: string | null;
+  jobType : string;
   jobRole: string;
   description: string;
   qualification: string[];
@@ -62,7 +62,7 @@ const ListJobAndManage: React.FC = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [id]);
 
   const fetchUsers = async () => {
     try {
@@ -128,8 +128,7 @@ const ListJobAndManage: React.FC = () => {
           })
         );
         setJobPostData(extractedJobPostData);
-        console.log(extractedUsers, "user");
-        console.log(jobPostData, "11111");
+       
 
         const checkApplied: string[] = jobPostData[0]?.appliedUsers
           .filter((user: AppliedArray) => user.isShortListed === true)
@@ -199,7 +198,7 @@ const ListJobAndManage: React.FC = () => {
         </div>
         {manageJob && <ManageJob jobPostData={jobPostData} />}
         <div>
-          <Modal isOpen={isOpen} onClose={handleToggleModal}>
+          <Modal isOpen={isOpen} onClose={()=> setIsOp(!isOp)}>
             <div className="">
               <div className="signupForm items-center justify-center">
                 {viewSelectedUsr && (

@@ -34,8 +34,8 @@ const navigate = useNavigate()
            navigate('/hr')
 
           }      
-          
-        } catch (error) {
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error:any) {
           if(error.response?.data?.status === 400)  toast.success("User not found"); 
          
 

@@ -2,21 +2,23 @@ import React, { ReactNode, useState } from 'react';
 
 interface ModalInterface {
     isOpen : boolean;
-    onClose : ()=> void;
+    onClose : (x: number | string)=> void;
     children : ReactNode
 }
 
 const Modal : React.FC<ModalInterface> = ({ isOpen  , onClose, children }) => {
   const [isVisible, setIsVisible] = useState(isOpen);
 
-  const handleClose = () => {
+  const handleClose = (index:number) => {
+
+    console.log(index,isVisible,'isVisible')
     setIsVisible(false);
-    onClose();
+    onClose(index);
   };
 
 
 if(isOpen) return (
-    <div className="modal-overlay" onClick={handleClose}
+    <div className="modal-overlay" onClick={()=>handleClose}
     style={{
       marginTop: "5%",
       display: "flex",

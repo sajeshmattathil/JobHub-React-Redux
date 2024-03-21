@@ -1,4 +1,3 @@
-import React from 'react'
 import HRManagementTable from '../../components/Admin/HRManagementTable'
 import AdminNavbar from '../../components/Admin/adminNavbar'
 

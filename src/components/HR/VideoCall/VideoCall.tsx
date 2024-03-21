@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 import { useNavigate, useParams } from "react-router-dom";
 import { v4 } from "uuid";
@@ -9,17 +9,18 @@ const VideoCall = ({ socket }: { socket: Socket }) => {
 
   const VURL = "http://localhost:5173/hr/videoCall";
   const navigate = useNavigate();
-  const [newMessage, setNewMessage] = useState(`${VURL}/${userId}`);
+  const [newMessage] = useState(`${VURL}/${userId}`);
   const HREmail = localStorage.getItem("HREmail");
   //   const [socket, setSocket] = useState(null);
 
-  const myMeeting = async (element) => {
+  const myMeeting = async (element: HTMLDivElement) => {
+    console.log(element,'element----')
     const appID = 405182362;
     const serverSecret = "75651d7bd9a2ece1f54fce1093141b41";
     const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
       appID,
       serverSecret,
-      userId,
+      String(userId),
       Date.now().toString(),
       v4()
     );

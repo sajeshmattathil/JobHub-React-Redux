@@ -167,7 +167,7 @@ const HRManagementTable: React.FC = () => {
               count={totalPagesHRTable}
               variant="outlined"
               shape="rounded"
-              onChange={(e, value) => setPageHRTable(value)}
+              onChange={(_e, value) => setPageHRTable(value)}
             />
           </Stack>
         </div>
@@ -216,7 +216,7 @@ const HRManagementTable: React.FC = () => {
               count={totalPagesApprovalTable}
               variant="outlined"
               shape="rounded"
-              onChange={(e, value) => setPageApprovalTable(value)}
+              onChange={(_e, value) => setPageApprovalTable(value)}
             />
           </Stack>
         </div>

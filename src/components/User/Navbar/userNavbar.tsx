@@ -4,17 +4,17 @@ import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { userLogout } from "../../../Services/Redux/Slices/UserSlices";
-import { IoIosNotificationsOutline } from "react-icons/io";
-import { Socket } from "socket.io-client";
+// import { IoIosNotificationsOutline } from "react-icons/io";
 import messageImage from '../../../../public/message.gif'
-import { io } from 'socket.io-client';
 import { FcVideoCall } from "react-icons/fc";
+import { useSocket } from "../../../Providers/Socket";
 
 
-const UserNavbar = ({socket} :{socket : Socket}) => {
+const UserNavbar = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
+  const {socket } = useSocket()
   const navigate = useNavigate();
   const [notification,setNotification] = useState<boolean>(false)
   const [link,setLink] = useState<string>('')
@@ -40,10 +40,15 @@ const UserNavbar = ({socket} :{socket : Socket}) => {
           notificationRef.current = true;
           console.log(notificationRef.current, 'notification inside');
           setNotification(true);
+          console.log(notification,'notification');
+          
         }
       };
-  
-      const handleJoinVdoCall = (data: any) => {
+  interface VideoCallInterface{
+    message : string;
+    recipient : string;
+  }
+      const handleJoinVdoCall = (data: VideoCallInterface) => {
         console.log('message reached 222');
         console.log(data, 'data-vdo-user');
 
@@ -62,7 +67,7 @@ const UserNavbar = ({socket} :{socket : Socket}) => {
         socket.off('join-vdo-call', handleJoinVdoCall);
       };
     }
-  }, [socket]);
+  }, [notification, socket]);
   
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);

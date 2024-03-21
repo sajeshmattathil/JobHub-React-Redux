@@ -1,4 +1,3 @@
-import React from "react";
 import SubscriptionPlans from "../../components/User/SubscriptionPlans";
 import Navbar from "../../components/User/Navbar/UserNavbar";
 

@@ -1,4 +1,3 @@
-import { duration } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
@@ -22,10 +21,10 @@ const EditPlans = () => {
     formState: { errors },
   } = useForm();
   interface planData {
-    _id: string;
-    planName: string;
-    amount: string;
-    duration: string;
+    _id ?: string;
+    planName ?: string;
+    amount ?: string;
+    duration ?:  string;
   }
 
   useEffect(() => {
@@ -49,17 +48,19 @@ const EditPlans = () => {
       if (!data.amount) data.amount = planData?.amount;
       if (!data.planName) data.planName = planData?.planName;
       if (!data.duration) data.duration = planData?.duration;
+if(planData){
+  const saveNewPlan = await axiosAdminInstance.post(
+    `/admin/updatePlan/${planData._id}`,
+    data
+  );
+  if (saveNewPlan.data.status === 201)
+    toast.success("Plan updated succesfully.");
 
-      const saveNewPlan = await axiosAdminInstance.post(
-        `/admin/updatePlan/${planData._id}`,
-        data
-      );
-      console.log(saveNewPlan, "savenew --- plan");
-      if (saveNewPlan.data.status === 201)
-        toast.success("Plan updated succesfully.");
-      setTimeout(() => {
-        navigate("/admin/subscriptionManagement");
-      }, 2000);
+  setTimeout(() => {
+    navigate("/admin/subscriptionManagement");
+  }, 2000);
+}
+     
     } catch (error) {
       toast.success("Something went wrong");
     }

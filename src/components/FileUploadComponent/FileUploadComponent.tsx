@@ -1,15 +1,19 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
+import { useForm } from 'react-hook-form';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 interface YourComponentProps {
-    register: any; 
     upload: (file: File, folder: string) => Promise<string>;
     setFile: React.Dispatch<React.SetStateAction<string | null>>; // Define the setFile function type
   }
 
-  const FileUploadComponent: React.FC<YourComponentProps> = ({ register, upload, setFile }) => {
+  const FileUploadComponent: React.FC<YourComponentProps> = ({ upload, setFile }) => {
+    const {
+      register,
+    } = useForm();
     return (
     <div>
       <label htmlFor="file" className="file-upload-label">

@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 export default function HRProfileManagement() {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [ password,setPassword] = useState<string>("");
   const [resume, setResume] = useState<string>("");
   const [experience, setExperience] = useState<string>("0");
   const [company, setCompany] = useState<string>("");
@@ -50,13 +50,13 @@ export default function HRProfileManagement() {
   } = useForm();
 
   interface HRProfileData {
-    name: string;
-    company: string;
-    website: string;
-    resume: string;
-    employeesNumber: number | string;
-    experience: number;
-    email: string;
+    name ?: string;
+    company ?: string;
+    website ?: string;
+    resume ?: string;
+    employeesNumber ?: number | string;
+    experience ?: number;
+    email ?: string;
   }
 
   const onSubmit = async (data: HRProfileData) => {
@@ -141,7 +141,7 @@ export default function HRProfileManagement() {
               onChange={(
                 event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
               ) => setPassword(event.target.value)}
-              value={"●●●●●●"}
+              value={"●●●●●●" || password}
               disabled
             />
             {/* {errors.password?.type === "required" && (

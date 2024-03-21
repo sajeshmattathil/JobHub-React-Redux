@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const SearchBar = ({ onSearchChange  } :{onSearchChange :(x: string,y: string)=>void}) => {
   const [option,setOption] = useState<string>('')

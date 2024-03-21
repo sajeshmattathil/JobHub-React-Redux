@@ -1,4 +1,3 @@
-import React from 'react'
 import LoginHr from '../../components/HR/Login/LoginHr'
 
 const HrLogin = () => {

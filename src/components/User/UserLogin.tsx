@@ -3,7 +3,7 @@ import { axiosInstance } from "../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { userLogin } from "../../Services/Redux/Slices/UserSlices";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -37,20 +37,15 @@ function UserLogin() {
       } else if (response?.data?.status === 400)
       toast.success(response?.data?.message); 
         // setError(response?.data?.message);
-    } catch (err) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err :any) {
       console.log(err.response.data.message,'err message');
       toast.success(err.response.data.message);    
       // setError(err.response.data.message)
     }
   };
-  interface UserState {
-    isLoggedIn: boolean;
-    userEmail: string;
-  }
-  interface RootState {
-    user: UserState;
-  }
-  const userEmail = useSelector((state: RootState) => state.user.userEmail);
+
+ 
 
   const navigate = useNavigate();
 

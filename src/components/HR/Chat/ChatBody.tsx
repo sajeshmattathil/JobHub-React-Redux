@@ -9,16 +9,17 @@ interface File {
   fileName: string;
 }
 interface ChatMessage {
+  time: Date;
   text: string;
-  file: File | null;
+  file ?: File | null;
   name: string | null;
   id: string;
   socketID: string;
 }
 interface ChatBodyProps {
-  messages: ChatMessage[] | null;
+  messages: ChatMessage[] ;
   lastMessageRef: React.RefObject<HTMLDivElement>;
-  recipient: string;
+  recipient: string | undefined;
 }
 const ChatBody: React.FC<ChatBodyProps> = ({
   messages,
@@ -48,7 +49,7 @@ const ChatBody: React.FC<ChatBodyProps> = ({
       }
     };
     fetchPreviousChat();
-  }, []);
+  }, [HREmail, recipient]);
   const handleFile = async (fileUrl: string, fileName: string) => {
     try {
       console.log(fileUrl, fileName, "req=====>>>>");
@@ -79,18 +80,18 @@ const ChatBody: React.FC<ChatBodyProps> = ({
       console.log(error, "errrorss");
     }
   };
-  const formatTime = (timestamp : Date)=>{
+  const formatTime = (timestamp: Date) => {
     const date = new Date(timestamp);
     const hours = date.getHours();
     const minutes = date.getMinutes();
     const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
     return `${hours}:${formattedMinutes}`;
-  }
+  };
 
   return (
     <>
       <header className="chat__mainHeader">
-      {HREmail && <h6 style={{fontStyle:'italic'}}>Online</h6>}
+        {HREmail && <h6 style={{ fontStyle: "italic" }}>Online</h6>}
 
         <button className="leaveChat__btn" onClick={handleLeaveChat}>
           LEAVE CHAT
@@ -109,12 +110,15 @@ const ChatBody: React.FC<ChatBodyProps> = ({
                 {message.file?.url.trim() && (
                   <div className="message__sender">
                     <p style={{ fontSize: "1.1rem" }}>
-                      {message.file.fileName}{" "}
                       <MdOutlineDownloadForOffline
                         style={{ width: "9%", height: "9%", cursor: "pointer" }}
-                        onClick={() =>
-                          handleFile(message.file.url, message.file?.fileName)
-                        }
+                        onClick={() => {
+                          if (message.file)
+                            return handleFile(
+                              message.file.url,
+                              message.file?.fileName
+                            );
+                        }}
                       />
                     </p>
                   </div>
@@ -132,9 +136,13 @@ const ChatBody: React.FC<ChatBodyProps> = ({
                       {message.file.fileName}{" "}
                       <MdOutlineDownloadForOffline
                         style={{ width: "9%", height: "9%", cursor: "pointer" }}
-                        onClick={() =>
-                          handleFile(message.file.url, message.file?.fileName)
-                        }
+                        onClick={() => {
+                          if (message.file)
+                            return handleFile(
+                              message.file.url,
+                              message.file?.fileName
+                            );
+                        }}
                       />
                     </p>
                   </div>
@@ -151,7 +159,7 @@ const ChatBody: React.FC<ChatBodyProps> = ({
                 <div className="message__sender">
                   <p>{message.text}</p>
                 </div>
-              <p className="sender__name">{formatTime(message.time)}</p>
+                <p className="sender__name">{formatTime(message.time)}</p>
 
                 {message.file?.url.trim() && (
                   <div className="message__sender">
@@ -159,9 +167,13 @@ const ChatBody: React.FC<ChatBodyProps> = ({
                       {message.file.fileName}
                       <MdOutlineDownloadForOffline
                         style={{ width: "9%", height: "9%", cursor: "pointer" }}
-                        onClick={() =>
-                          handleFile(message.file.url, message.file?.fileName)
-                        }
+                        onClick={() => {
+                          if (message.file)
+                            return handleFile(
+                              message.file.url,
+                              message.file?.fileName
+                            );
+                        }}
                       />
                     </p>
                   </div>
@@ -175,7 +187,7 @@ const ChatBody: React.FC<ChatBodyProps> = ({
                 </div>
                 <p className="message__chats">{formatTime(message.time)}</p>
 
-                {message.file.url.trim() && (
+                {message.file && message.file.url.trim() && (
                   <div className="message__recipient">
                     <p>
                       {message.file.fileName}{" "}
@@ -186,9 +198,13 @@ const ChatBody: React.FC<ChatBodyProps> = ({
                           cursor: "pointer",
                           marginRight: "10%",
                         }}
-                        onClick={() =>
-                          handleFile(message.file.url, message.file?.fileName)
-                        }
+                        onClick={() => {
+                          if (message.file)
+                            return handleFile(
+                              message.file.url,
+                              message.file?.fileName
+                            );
+                        }}
                       />
                     </p>
                   </div>

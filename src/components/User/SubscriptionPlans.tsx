@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import  { useCallback, useEffect, useState } from "react";
+// import { useNavigate } from "react-router-dom";
 import { axiosInstance, axiosUserInstance } from "../../Utils/axios/axios";
 import Modal from "../HR/modal";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import Razorpay from "razorpay";
+import useRazorpay, { RazorpayOptions } from "react-razorpay";
 
 const SubscriptionPlans = () => {
-  declare global {
-    interface Window {
-      Razorpay: any;
-    }
-  }
+  const [Razorpay] = useRazorpay();
+  
 
   interface SubscriptioInterface {
     duration: string;
@@ -18,6 +15,7 @@ const SubscriptionPlans = () => {
     planName: string;
     _id: string;
   }
+
   const [plans, setPlans] = useState<SubscriptioInterface[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<SubscriptioInterface | null>(
@@ -36,62 +34,65 @@ const SubscriptionPlans = () => {
   };
   const rupeeSymbol = "\u20B9";
 
-  const navigate = useNavigate();
-
-  const handleToggleManageModal = async (id) => {
+  const handleToggleManageModal = async (id: string) => {
     setIsOpen(!isOpen);
     const filteredPlan = plans.filter((plan) => id == plan._id);
     setSelectedPlan(filteredPlan[0]);
   };
   const [paymentError, setPaymentError] = useState("");
+  console.log(paymentError, "paymentError");
 
-  const createOrder = async () => {
-    try {
-      let price: number | string = selectedPlan?.amount + ".00";
-      price = Number(price);
-      console.log(price, "price");
+  const createOrder = useCallback(() => {
+    async () => {
+      try {
+        let price: number | string = selectedPlan?.amount + ".00";
+        price = Number(price);
+        console.log(price, "price");
 
-      const response = await axiosInstance.post("/create-order", {
-        amount: price,
-      });
-      console.log(response, "resss");
+        const response = await axiosInstance.post("/create-order", {
+          amount: price,
+        });
+        console.log(response, "resss");
 
-      const options = {
-        key: import.meta.env.RAZORPAY_ID_KEY,
-        amount: response.data.order.amount + ".00",
-        currency: "INR",
-        name: "JobHub",
-        description: "Payment for services",
-        order_id: response.data.order.id,
-        handler: async function (response) {
-          console.log(response);
-          response.subscribedAt = Date.now()
-          response.duration= selectedPlan?.duration
-          response.planName = selectedPlan?.planName
-          console.log(response,'2');
+        const options: RazorpayOptions = {
+          key: import.meta.env.RAZORPAY_ID_KEY,
+          amount: response.data.order.amount + ".00",
+          currency: "INR",
+          name: "JobHub",
+          notes:{
+          subscibedAt :Date.now(),
+            duration : selectedPlan?.duration,
+            planName : selectedPlan?.planName,
+          },
 
-          await axiosUserInstance.post('/savePayment',response)
-        },
-        prefill: {
-          name: "",
-          email: "",
-          contact: "",
-        },
-        theme: {
-          color: "#3399cc",
-        },
-      };
-      const rzp = new window.Razorpay(options);
-      rzp.open();
-    } catch (error) {
-      setPaymentError("Failed to create payment order");
-      console.error("Error:", error);
-    }
-  };
+         
+          description: "Payment for services",
+          order_id: response.data.order.id,
+          handler: async function (response) {
+            console.log(response);
+            await axiosUserInstance.post("/savePayment", response);
+          },
+          prefill: {
+            name: "",
+            email: "",
+            contact: "",
+          },
+          theme: {
+            color: "#3399cc",
+          },
+        };
+        const rzpay = new Razorpay(options);
+        rzpay.open();
+      } catch (error) {
+        setPaymentError("Failed to create payment order");
+        console.error("Error:", error);
+      }
+    };
+  }, [Razorpay]);
   if (isOpen)
     return (
       <div>
-        <Modal isOpen={isOpen} onClose={handleToggleManageModal}>
+        <Modal isOpen={isOpen} onClose={() => setIsOpen(!isOpen)}>
           <div
             className=""
             style={{
@@ -102,7 +103,7 @@ const SubscriptionPlans = () => {
           >
             <AiOutlineCloseCircle
               style={{ marginLeft: "99%", cursor: "pointer", fontSize: "200%" }}
-              onClick={handleToggleManageModal}
+              onClick={() => setIsOpen(!isOpen)}
             />
 
             <div
@@ -132,7 +133,7 @@ const SubscriptionPlans = () => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            flexDirection: "row", // Adjust the layout to be a column
+            flexDirection: "row",
             padding: "20px",
           }}
         >
@@ -140,7 +141,6 @@ const SubscriptionPlans = () => {
             return (
               <div
                 className="card"
-               
                 style={{
                   backgroundColor: "white",
                   color: "black",

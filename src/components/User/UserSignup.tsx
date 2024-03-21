@@ -90,7 +90,8 @@ function UserSignup() {
       } else {
         setError("Enter correct OTP");
       }
-    } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error :any) {
       console.log(error);
       if (error.response.data.status === 401)
         setError(error.response.data.message);

@@ -1,4 +1,4 @@
-import React, { Component, ReactNode, ErrorInfo } from 'react';
+import{ Component, ReactNode, ErrorInfo } from 'react';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -15,15 +15,13 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // You can log the error here, or send it to an error reporting service
     console.error('Error caught by error boundary:', error, errorInfo);
     this.setState({ hasError: true });
   }
 
   render() {
     if (this.state.hasError) {
-      // You can customize the error message here
-      return <h1>Something went wrong.</h1>;
+      return <h1 style={{height:'30vh',width:'30%',fontSize:'1rem'}}>Something went wrong.</h1>;
     }
 
     return this.props.children;
@@ -31,3 +29,4 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 }
 
 export default ErrorBoundary;
+

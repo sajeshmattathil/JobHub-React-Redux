@@ -1,10 +1,21 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import "./ShowShortListedUsrers.css";
 import { axiosHRInstance } from "../../Utils/axios/axios";
 import { useNavigate, useParams } from "react-router-dom";
 
+interface ShortListedUsersInterface {
+  educationalQualification: string;
+  skills: string[];
+  resume: string;
+  password: string;
+  lname: string;
+  fname: string;
+  email: string;
+  isShortListed: boolean;
+}
+
 interface UserInterface {
-  shortListedUsers: any;
+  shortListedUsers: ShortListedUsersInterface;
   resume: string;
   skills: string[];
   educationalQualification: string;
@@ -18,10 +29,10 @@ interface UserInterface {
 const ShowShortListedUsers = () => {
   const [users, setUsers] = useState<UserInterface[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  
+
   const { jobId } = useParams();
   console.log(jobId, "jobIdddd");
-const navigate = useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -42,10 +53,7 @@ const navigate = useNavigate()
                 user.shortListedUsers.educationalQualification,
             })
           );
-
           setUsers(extractedUsers);
-          console.log(users, "users");
-
           setLoading(false);
         }
       } catch (error) {
@@ -55,13 +63,14 @@ const navigate = useNavigate()
     };
 
     fetchUsers();
+    
   }, [jobId]);
   if (loading) {
     return <div>Loading...</div>;
   }
   return (
     <>
-    <h1 style={{marginLeft : '35%',marginTop : '5%'}}>Short Listed Users</h1>
+      <h1 style={{ marginLeft: "35%", marginTop: "5%" }}>Short Listed Users</h1>
 
       <table>
         <thead className="userHead">
@@ -71,7 +80,6 @@ const navigate = useNavigate()
             <th>View Resume</th>
             <th></th>
             <th></th>
-
           </tr>
         </thead>
         <tbody className="userTableBody">
@@ -80,18 +88,25 @@ const navigate = useNavigate()
               <td>{`${user.fname} ${user.lname}`}</td>
               <td>{user.email}</td>
               <td>
-              <a
-                      href={user.resume}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="view-resume-link"
-                    >
-                      View Resume
-                    </a>
+                <a
+                  href={user.resume}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="view-resume-link"
+                >
+                  View Resume
+                </a>
               </td>
-              <td><button onClick={()=>navigate(`/hr/chatPage/${user.email}`)}>Send Messsage</button></td>
-              <td><button onClick={()=>navigate(`/hr/videoCall/${user.email}`)}>Video Call</button></td>
-
+              <td>
+                <button onClick={() => navigate(`/hr/chatPage/${user.email}`)}>
+                  Send Messsage
+                </button>
+              </td>
+              <td>
+                <button onClick={() => navigate(`/hr/videoCall/${user.email}`)}>
+                  Video Call
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>

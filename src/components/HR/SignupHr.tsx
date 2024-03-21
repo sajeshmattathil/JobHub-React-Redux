@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import  { axiosInstance } from "../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import upload from "../../Utils/Cloudinary/cloudinary";
 import generateOtp from "../../Utils/OtpGenerator/otpGenerator";
 
 function SignupHr() {
@@ -22,13 +21,13 @@ function SignupHr() {
     formState: { errors },
   } = useForm();
   interface dataInterface{
-    name : string,
-    email : string,
-    password : string,
-    company : string,
-    website : string
-    otp : string | undefined,
-    createdAt : number
+    name ?: string,
+    email ?: string,
+    password ?: string,
+    company ?: string,
+    website ?: string
+    otp ?: string | undefined,
+    createdAt ?: number
   }
 
 

@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import React from "react";
 import CreateJob from "../../Pages/hr/CreateJob";
 import SignUp from "../../Pages/hr/SignUp";
 import HrLogin from "../../Pages/hr/HrLogin";
@@ -10,7 +9,7 @@ import HRPrivatedRoute from "./HRPrivateRoutes";
 import ViewJob from "../../Pages/hr/ViewJob";
 import ChatPageUser from "../../components/HR/Chat/ChatPageUser";
 import ChatHomeUser from "../../components/HR/Chat/ChatHomeUser";
-import { Socket, io } from "socket.io-client";
+import { Socket } from "socket.io-client";
 import ShowShortListedUsers from "../../components/HR/ShowShortListedUsrers";
 import VideoCall from "../../components/HR/VideoCall/VideoCall";
 import ErrorBoundary from "../../ErrorBoundary/ErrorBoundary";
