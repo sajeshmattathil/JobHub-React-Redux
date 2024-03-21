@@ -8,7 +8,7 @@ interface SearchValue {
   option : string;
   value : string;
 }
-const Home = () => {
+const UserHomePage = () => {
   const [searchValue, setSearchValue] = useState<SearchValue | null>(null);
   const [sort, setSort] = useState<string>('');
   const handleSearch =  (option : string,value: string) => {
@@ -27,4 +27,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default UserHomePage;
