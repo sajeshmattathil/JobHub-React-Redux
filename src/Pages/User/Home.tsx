@@ -1,5 +1,5 @@
 import  { useState } from "react";
-import Navbar from "../../components/User/Navbar/UserNavbar";
+import UserNavbar from "../../components/User/Navbar/UserNavbar";
 import UserHome from "../../components/User/UserHome";
 import SearchBar from "../../components/SearchBar";
 import Sort from "../../components/User/Sort";
@@ -19,7 +19,7 @@ const Home = () => {
   }
   return (
     <>
-      <Navbar  />
+      <UserNavbar  />
       <SearchBar  onSearchChange={handleSearch}  />
       <Sort onSortChange={handleSort}/>
       <UserHome searchData={searchValue}   sortData = {sort} />
