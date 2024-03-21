@@ -19,9 +19,7 @@ const UserHome  = ({searchData ,sortData } :{ searchData :SearchValue | null, so
   const [jobs, setJobs] = useState<jobData[]>([]);
   const [msg, setMsg] = useState<string>("");
 
-  
-  
-  interface jobData {
+  interface jobData{
     _id: string;
     jobRole: string;
 
