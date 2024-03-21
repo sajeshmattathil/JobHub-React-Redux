@@ -1,8 +1,8 @@
 import  { useState } from "react";
-import UserNavbar from "../../components/User/Navbar/UserNavbar";
 import UserHome from "../../components/User/UserHome";
 import SearchBar from "../../components/SearchBar";
 import Sort from "../../components/User/Sort";
+import UserNavbar from "../../components/User/Navbar/UserNavbar";
 
 interface SearchValue {
   option : string;
@@ -19,7 +19,7 @@ const Home = () => {
   }
   return (
     <>
-      <UserNavbar  />
+      <UserNavbar/>
       <SearchBar  onSearchChange={handleSearch}  />
       <Sort onSortChange={handleSort}/>
       <UserHome searchData={searchValue} sortData = {sort} />

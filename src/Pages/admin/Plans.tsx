@@ -1,4 +1,4 @@
-import AdminNavbar from "../../components/Admin/adminNavbar";
+import AdminNavbar from "../../components/Admin/AdminNavbar";
 import SubscriptionManagement from "../../components/Admin/SubscriptionManagement";
 
 const Plans = () => {

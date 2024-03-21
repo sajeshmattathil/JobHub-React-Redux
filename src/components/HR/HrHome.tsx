@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 
-const Jobs = () => {
+const HrHome = () => {
 
     const navigate = useNavigate()
 
@@ -189,4 +189,4 @@ onClick={()=>navigate(`/hr/viewJob/${job._id}`)}
   }
 };
 
-export default Jobs;
+export default HrHome;

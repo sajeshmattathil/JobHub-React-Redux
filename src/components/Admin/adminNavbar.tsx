@@ -7,7 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { useDispatch } from "react-redux";
 import { adminLogout } from "../../Services/Redux/Slices/AdminSlices";
 
-const userNavbar = () => {
+const AdminNavbar = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const navigate = useNavigate();
 
@@ -88,6 +88,6 @@ const adminLoggedIn = localStorage.getItem('adminEmail')
   );
 };
 
-export default userNavbar;
+export default AdminNavbar;
 
 

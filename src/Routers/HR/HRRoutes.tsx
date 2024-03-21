@@ -10,7 +10,7 @@ import ViewJob from "../../Pages/hr/ViewJob";
 import ChatPageUser from "../../components/HR/Chat/ChatPageUser";
 import ChatHomeUser from "../../components/HR/Chat/ChatHomeUser";
 import { Socket } from "socket.io-client";
-import ShowShortListedUsers from "../../components/HR/ShowShortListedUsrers";
+import ShowShortListedUsers from "../../components/HR/ShowShortListedUsers";
 import VideoCall from "../../components/HR/VideoCall/VideoCall";
 import ErrorBoundary from "../../ErrorBoundary/ErrorBoundary";
 

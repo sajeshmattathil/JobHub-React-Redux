@@ -1,5 +1,5 @@
 import HRManagementTable from '../../components/Admin/HRManagementTable'
-import AdminNavbar from '../../components/Admin/adminNavbar'
+import AdminNavbar from '../../components/Admin/AdminNavbar'
 
 const HRManagement = () => {
   return (

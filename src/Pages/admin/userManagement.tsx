@@ -1,5 +1,5 @@
-import UserManagementTable from '../../components/Admin/userManagement'
-import AdminNavbar from '../../components/Admin/adminNavbar'
+import UserManagementTable from '../../components/Admin/UserManagementTable'
+import AdminNavbar from '../../components/Admin/AdminNavbar'
 
 const UserManagement = () => {
   return (

@@ -1,5 +1,5 @@
 import HRNavbar from '../../components/HR/Navbar/HRNavbar'
-import CreateJobForm from '../../components/HR/CreateJob'
+import CreateJobForm from '../../components/HR/CreateJobForm'
 
 const CreateJob = () => {
   return (

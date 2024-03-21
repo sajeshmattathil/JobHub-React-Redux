@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { axiosAdminInstance } from "../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
+
 const CreateNewPlan = () => {
   const [name, setName] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
