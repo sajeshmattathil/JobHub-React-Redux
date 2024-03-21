@@ -4,6 +4,7 @@ import HRRoutes from './Routers/HR/HRRoutes'
 import AdminRoutes from './Routers/Admin/AdminRoutes'
 import { io } from 'socket.io-client';
 
+
 function App() {
   const socket = io("http://localhost:3001");
 

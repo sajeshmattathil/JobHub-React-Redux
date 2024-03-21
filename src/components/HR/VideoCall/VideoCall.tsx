@@ -14,12 +14,13 @@ const VideoCall = ({ socket }: { socket: Socket }) => {
   //   const [socket, setSocket] = useState(null);
 
   const myMeeting = async (element: HTMLDivElement) => {
-    console.log(element,'element----')
-    const appID = 405182362;
-    const serverSecret = "75651d7bd9a2ece1f54fce1093141b41";
+  
+     const appID = import.meta.env.VITE_appID;
+    const serverSecret = import.meta.env.VITE_serverSecret;
+    console.log(appID,serverSecret,'zigoC')
     const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
-      appID,
-      serverSecret,
+      Number(appID),
+      String(serverSecret),
       String(userId),
       Date.now().toString(),
       v4()
