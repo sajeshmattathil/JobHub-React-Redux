@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import './userManagement.css';
+import  { useEffect, useState } from 'react';
+import './userManagementCss.css';
 import { axiosAdminInstance } from '../../Utils/axios/axios';
 
 interface UserInterface {

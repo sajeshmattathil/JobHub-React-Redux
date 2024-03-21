@@ -1,5 +1,5 @@
 import  { useEffect, useState } from "react";
-import "./ShowShortListedUsrers.css";
+import "./ShowShortListedUsrersStyle.css";
 import { axiosHRInstance } from "../../Utils/axios/axios";
 import { useNavigate, useParams } from "react-router-dom";
 

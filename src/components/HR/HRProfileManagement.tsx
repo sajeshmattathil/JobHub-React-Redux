@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import "./HRProfileManagement.css";
 import upload from "../../Utils/Cloudinary/cloudinary";
 import { axiosHRInstance } from "../../Utils/axios/axios";
@@ -41,7 +41,7 @@ export default function HRProfileManagement() {
       }
     };
     fetchUser();
-  }, []);
+  }, [HRId, navigate]);
 
   const {
     register,

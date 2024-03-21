@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import  { useEffect, useRef, useState } from "react";
 import { axiosInstance } from "../../Utils/axios/axios";
 import generateOtp from "../../Utils/OtpGenerator/otpGenerator";
 import { useForm } from "react-hook-form";

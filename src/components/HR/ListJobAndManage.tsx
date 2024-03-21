@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { axiosHRInstance } from "../../Utils/axios/axios";
 import Modal from "./modal";

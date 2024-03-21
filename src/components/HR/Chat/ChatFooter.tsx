@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { Socket } from "socket.io-client";
 import { GrAttachment } from "react-icons/gr";
 import upload from "../../../Utils/Cloudinary/cloudinary";

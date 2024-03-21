@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import "./profileManagement.css";
 import Select from "react-select";

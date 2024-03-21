@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { axiosAdminInstance } from '../../Utils/axios/axios';
 import { Pagination, Stack } from '@mui/material';
 
