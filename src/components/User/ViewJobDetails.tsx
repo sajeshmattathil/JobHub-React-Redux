@@ -109,7 +109,15 @@ console.log(err,'error');
       }
     };
     fetchJobData();
-  }, [id, isApplied, job?.appliedUsers, shouldRender, userEmail]);
+     return () => {
+      setAppliedJob({
+        isHRViewed: false,
+        isReplayed: false,
+        isShortlisted: false,
+      });
+      setJob(null);
+    };
+  }, [id]);
 
   const handleApplyJob = async () => {
     try {

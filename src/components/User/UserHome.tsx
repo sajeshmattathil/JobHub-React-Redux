@@ -36,16 +36,11 @@ const UserHome  = ({searchData ,sortData } :{ searchData :SearchValue | null, so
 
 
   useEffect(() => {
-    console.log(pageNumber, typeof pageNumber, "page no.");
-
     const fetchData = async () => {
-
       try {
         const fetchedData = await axiosInstance.post(
           `/getJobs?jobsPerPage=5&page=${pageNumber}`,searchData
         );
-
-
         if (fetchedData.data.status === 201) {
           const data = fetchedData.data;
           const pages = Math.ceil(data.totalJobs / 5);
@@ -62,6 +57,10 @@ const UserHome  = ({searchData ,sortData } :{ searchData :SearchValue | null, so
       }
     };
     fetchData();
+    return () => {
+      setJobs([]);
+      setMsg("No jobs");
+  };
   }, [pageNumber,searchData]);
   
   useEffect(()=>{

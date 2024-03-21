@@ -1,75 +1,57 @@
 import React, { useEffect, useRef, useState } from "react";
-import { HiMiniUserCircle } from "react-icons/hi2";
+// import { HiMinusCircle } from "react-icons/hi"; 
 import { useNavigate } from "react-router-dom";
-import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import { useDispatch } from "react-redux";
 import { userLogout } from "../../../Services/Redux/Slices/UserSlices";
-// import { IoIosNotificationsOutline } from "react-icons/io";
-import messageImage from '../../../../public/message.gif'
+import messageImage from "../../../public/message.gif";
 import { FcVideoCall } from "react-icons/fc";
 import { useSocket } from "../../../Providers/Socket";
-
+import { Button, Menu, MenuItem } from "@mui/material";
+import { HiMiniUserCircle } from "react-icons/hi2";
 
 const UserNavbar = () => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const {socket } = useSocket()
+  const { socket } = useSocket();
   const navigate = useNavigate();
-  const [notification,setNotification] = useState<boolean>(false)
-  const [link,setLink] = useState<string>('')
-  
+  const [link, setLink] = useState<string>("");
+
   interface ChatMessage {
     text: string;
     file: File | null;
     name: string | null;
-    recipient2 : string;
+    recipient2: string;
     id: string;
     socketID: string;
   }
-  const notificationRef = useRef<boolean>(false)
-  const notificationVdoCallRef = useRef<boolean>(false)
-
+  const notificationRef = useRef<boolean>(false);
+  const notificationVdoCallRef = useRef<boolean>(false);
 
   useEffect(() => {
-    console.log('message reached',socket);
-  
     if (socket) {
       const handleMessageResponse = (data: ChatMessage) => {
-        if (data.recipient2 === localStorage.getItem('userEmail')) {
+        if (data.recipient2 === localStorage.getItem("userEmail")) {
           notificationRef.current = true;
-          console.log(notificationRef.current, 'notification inside');
-          setNotification(true);
-          console.log(notification,'notification');
-          
         }
       };
-  interface VideoCallInterface{
-    message : string;
-    recipient : string;
-  }
+      interface VideoCallInterface {
+        message: string;
+        recipient: string;
+      }
       const handleJoinVdoCall = (data: VideoCallInterface) => {
-        console.log('message reached 222');
-        console.log(data, 'data-vdo-user');
-
-        if (data.recipient === localStorage.getItem('userEmail')) {
+        if (data.recipient === localStorage.getItem("userEmail")) {
           notificationVdoCallRef.current = true;
-          setLink(data.message)
+          setLink(data.message);
         }
-        console.log(notificationVdoCallRef,'video ref');
-        
       };
-      socket.on('join-vdo-call', handleJoinVdoCall);
-      socket.on('messageResponse', handleMessageResponse);
-  
+      socket.on("join-vdo-call", handleJoinVdoCall);
+      socket.on("messageResponse", handleMessageResponse);
+
       return () => {
-        socket.off('messageResponse', handleMessageResponse);
-        socket.off('join-vdo-call', handleJoinVdoCall);
+        socket.off("messageResponse", handleMessageResponse);
+        socket.off("join-vdo-call", handleJoinVdoCall);
       };
     }
-  }, [notification, socket]);
-  
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+  }, [socket]);
+
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const handleClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget);
@@ -78,19 +60,9 @@ const UserNavbar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  // interface UserState {
-  //   isLoggedIn : boolean;
-  //   userEmail : string;
-  //  }
-  //  interface RootState {
-  //   user: UserState;
-  // }
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+
   const dispatch = useDispatch();
-  // // eslint-disable-next-line react-hooks/rules-of-hooks
-  // const userLoggenIn = useSelector((state :RootState)=>state.user.isLoggedIn)
-  const userLoggenIn = localStorage.getItem("userEmail");
-  console.log(userLoggenIn, "userLoggenIn");
+  const userLoggedIn = localStorage.getItem("userEmail"); // Corrected variable name
 
   return (
     <nav
@@ -113,80 +85,93 @@ const UserNavbar = () => {
           JobHub
         </h1>
       </div>
-      <div  >
-      {userLoggenIn ? (
-        <div className="container" style={{display: 'flex'}}>
-       
-          {
-         notificationRef.current &&  <div className="inside" style={{ width : '10%',marginRight : '40%',cursor : 'pointer'}} > <img src={messageImage} style={{width : '300%'}}  onClick={()=>{
-          navigate('/chatPage')} 
-        }
-         /> </div>
-         } 
-          {
-         notificationVdoCallRef.current &&  <div className="inside" style={{ width : '100%',marginRight : '40%',cursor : 'pointer'}} ><a href={link}> <FcVideoCall 
-         style={{fontSize : '300%'}}  onClick={()=>{
-          navigate('/chatPage')} 
-        }
-         /></a> </div>
-         } 
-        
-          <Button
-            aria-controls="simple-menu"
-            aria-haspopup="true"
-            onClick={handleClick}
-          >
-            <HiMiniUserCircle
-              style={{ width: "250%", height: "250%", cursor: "pointer" }}
-            />
-          </Button>
-          <Menu
-            id="simple-menu"
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            <MenuItem
-              onClick={() => {
-                setAnchorEl(null);
-                navigate("/profilemanagement");
-              }}
-            >
-              Profile
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                setAnchorEl(null);
-                dispatch(userLogout());
+      <div>
+        {userLoggedIn ? (
+          <div className="container" style={{ display: "flex" }}>
+            {notificationRef.current && (
+              <div
+                className="inside"
+                style={{ width: "10%", marginRight: "40%", cursor: "pointer" }}
+              >
+                <img
+                  src={messageImage}
+                  style={{ width: "300%" }}
+                  onClick={() => {
+                    navigate("/chatPage");
+                  }}
+                />
+              </div>
+            )}
+            {notificationVdoCallRef.current && (
+              <div
+                className="inside"
+                style={{ width: "100%", marginRight: "40%", cursor: "pointer" }}
+              >
+                <a href={link}>
+                  <FcVideoCall
+                    style={{ fontSize: "300%" }}
+                    onClick={() => {
+                      navigate("/chatPage");
+                    }}
+                  />
+                </a>
+              </div>
+            )}
 
-                localStorage.removeItem("userEmail");
-                localStorage.removeItem("userToken");
-                navigate("/login");
-              }}
+            <Button
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              onClick={handleClick}
             >
-              Logout
-            </MenuItem>
-          </Menu>
+              <HiMiniUserCircle
+                style={{ width: "250%", height: "250%", cursor: "pointer" }}
+              />
+            </Button>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem
+                onClick={() => {
+                  setAnchorEl(null);
+                  navigate("/profilemanagement");
+                }}
+              >
+                Profile
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  setAnchorEl(null);
+                  dispatch(userLogout());
+
+                  localStorage.removeItem("userEmail");
+                  localStorage.removeItem("userToken");
+                  navigate("/login");
+                }}
+              >
+                Logout
+              </MenuItem>
+            </Menu>
           </div>
-
-      ) : (
-        <div style={{ display: "flex" }}>
-          <button
-            style={{ cursor: "pointer", fontWeight: "bold" }}
-            onClick={() => navigate("/signup")}
-          >
-            Register
-          </button>
-          <button
-            style={{ cursor: "pointer", fontWeight: "bold" }}
-            onClick={() => navigate("/login")}
-          >
-            Login
-          </button>
-        </div>
-      )}
-        </div>
-
+        ) : (
+          <div style={{ display: "flex" }}>
+            <button
+              style={{ cursor: "pointer", fontWeight: "bold" }}
+              onClick={() => navigate("/signup")}
+            >
+              Register
+            </button>
+            <button
+              style={{ cursor: "pointer", fontWeight: "bold" }}
+              onClick={() => navigate("/login")}
+            >
+              Login
+            </button>
+          </div>
+        )}
+      </div>
     </nav>
   );
 };
