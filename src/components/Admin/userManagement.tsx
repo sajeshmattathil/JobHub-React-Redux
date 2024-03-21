@@ -4,7 +4,7 @@ import { axiosAdminInstance } from '../../Utils/axios/axios';
 
 interface UserInterface {
     _id?: string;
-    fname: string | undefined;
+    fname: string ;
     lname: string;
     email: string;
     password: string;
@@ -86,7 +86,7 @@ const UserManagementTable: React.FC = () => {
             <tbody className="userTableBody">
                 {users.map((user: UserInterface) => (
                     <tr key={user._id}>
-                        <td>{`${user.fname} ${user.lname}`}</td>
+                        <td>{`${user.fname || ''} ${user.lname || ''}`}</td>
                         <td>{user.email}</td>
                         <td>{user.isBlocked ? 'Blocked' : 'Active'}</td>
                         <td>
