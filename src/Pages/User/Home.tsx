@@ -22,7 +22,7 @@ const Home = () => {
       <UserNavbar  />
       <SearchBar  onSearchChange={handleSearch}  />
       <Sort onSortChange={handleSort}/>
-      <UserHome searchData={searchValue}   sortData = {sort} />
+      <UserHome searchData={searchValue} sortData = {sort} />
     </>
   );
 };
