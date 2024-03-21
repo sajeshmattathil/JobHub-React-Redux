@@ -1,4 +1,4 @@
-import AdminNavbar from '../../components/Admin/AdminNavbar'
+import AdminNavbar from '../../components/Admin/AdminsNavbar'
 import AdminHome from '../../components/Admin/AdminHome'
 
 const Home = () => {

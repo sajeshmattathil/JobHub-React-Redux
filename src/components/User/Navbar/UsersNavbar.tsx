@@ -8,7 +8,7 @@ import { useSocket } from "../../../Providers/Socket";
 import { Button, Menu, MenuItem } from "@mui/material";
 import { HiMiniUserCircle } from "react-icons/hi2";
 
-const UserNavbar = () => {
+const UsersNavbar = () => {
   const { socket } = useSocket();
   const navigate = useNavigate();
   const [link, setLink] = useState<string>("");
@@ -175,4 +175,4 @@ const UserNavbar = () => {
   );
 };
 
-export default UserNavbar;
+export default UsersNavbar;

@@ -1,4 +1,4 @@
-import Navbar from '../../components/User/Navbar/UserNavbar'
+import Navbar from '../../components/User/Navbar/UsersNavbar'
 import ViewJobDetails from '../../components/User/ViewJobDetails'
 
 const ViewJob = () => {

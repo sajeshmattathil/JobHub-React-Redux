@@ -2,7 +2,7 @@ import  { useState } from "react";
 import UserHome from "../../components/User/UserHome";
 import SearchBar from "../../components/SearchBar";
 import Sort from "../../components/User/Sort";
-import UserNavbar from "../../components/User/Navbar/UserNavbar";
+import UserNavbar from "../../components/User/Navbar/UsersNavbar";
 
 interface SearchValue {
   option : string;

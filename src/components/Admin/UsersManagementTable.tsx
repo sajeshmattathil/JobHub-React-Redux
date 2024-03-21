@@ -11,7 +11,7 @@ interface UserInterface {
     isBlocked: boolean;
 }
 
-const UserManagementTable: React.FC = () => {
+const UsersManagementTable: React.FC = () => {
     const [users, setUsers] = useState<UserInterface[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -107,4 +107,4 @@ const UserManagementTable: React.FC = () => {
     );
 };
 
-export default UserManagementTable;
+export default UsersManagementTable;

@@ -1,5 +1,5 @@
-import UserProfileManagement from "../../components/User/UserProfileManagement";
-import Navbar from "../../components/User/Navbar/UserNavbar";
+import UserProfileManagement from "../../components/User/UsersProfileManagement";
+import Navbar from "../../components/User/Navbar/UsersNavbar";
 
 const profileManagement = () => {
   return (
