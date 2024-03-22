@@ -9,6 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function UsersProfileManagement() {
+
   const [fname, setFname] = useState<string>("");
   const [lname, setLname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -16,12 +17,10 @@ export default function UsersProfileManagement() {
   const [resume, setResume] = useState<string>("");
   const [experience, setExperience] = useState<string>("0");
   const [skill, setSkills] = useState<string[]>([]);
-
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
   console.log(password,'pwd');
   
-
   useEffect(() => {
     const fetchUser = async () => {
       try {

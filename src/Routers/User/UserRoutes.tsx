@@ -3,7 +3,7 @@ import Home from "../../Pages/User/UserHomePage";
 import LoginNew from "../../Pages/User/Login";
 import SignUp from "../../Pages/User/SignUp";
 import UserProtectedRoute from "./UserPrivateRoutes";
-import profileManagement from "../../Pages/User/ProfileManagement";
+import profileManagement from "../../Pages/User/profileManagement";
 import UserPublicRoutes from "./UserPublicRoutes";
 import UserForgotPassword from "../../components/User/UserForgotPassword";
 import ViewJob from "../../Pages/User/ViewJob";
