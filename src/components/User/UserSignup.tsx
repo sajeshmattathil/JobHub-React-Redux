@@ -65,9 +65,10 @@ function UserSignup() {
         if (otp) setOtp(otp);
         startTimer();
       }
-    } catch (error) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error:any) {
       console.log("error found in signup submit", error);
-      toast.success("User already exists");
+      toast.success(error.response.data.message);
 
       // setError("User already exists");
     }
