@@ -1,6 +1,6 @@
 import  { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import "./profileManagement.css";
+import "./ProfileManagement.css";
 import Select from "react-select";
 import upload from "../../Utils/Cloudinary/cloudinary";
 import { axiosUserInstance } from "../../Utils/axios/axios";
