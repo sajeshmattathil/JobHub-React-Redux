@@ -4,7 +4,7 @@ function createAxiosInstance(token : string | null,role : string | null) {
     console.log(token,role,'jwt front');
    
     const instance = axios.create({
-        baseURL: 'http://localhost:3000'
+        baseURL: 'http://localhost:3001'
     });
     
 if(token){
