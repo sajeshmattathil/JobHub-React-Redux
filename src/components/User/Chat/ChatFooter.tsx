@@ -1,12 +1,12 @@
 import  { useState } from "react";
-import { Socket } from "socket.io-client";
 import upload from "../../../Utils/Cloudinary/cloudinary";
 import { useForm } from "react-hook-form";
 import { GrAttachment } from "react-icons/gr";
+import { useSocket } from "../../../Providers/Socket";
 // import { useParams } from "react-router-dom";
 // import FileUploadComponent from "../../FileUploadComponent/FileUploadComponent";
 
-const ChatFooter = ({ socket,recipient }: { socket: Socket ,recipient : string}) => {
+const ChatFooter = ({ recipient }: { recipient : string | null}) => {
   interface File {
     url: string;
     size: number;
@@ -16,6 +16,8 @@ const ChatFooter = ({ socket,recipient }: { socket: Socket ,recipient : string})
   const [file, setFile] = useState<File | null>(null);
 
   const { register } = useForm();
+  const {socket} = useSocket()
+
 
   const handleSendMessage = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
@@ -24,7 +26,8 @@ const ChatFooter = ({ socket,recipient }: { socket: Socket ,recipient : string})
     setFile(null);
     const userEmail = localStorage.getItem("userEmail")
 
-    if (message.trim() || file?.url.trim()) {
+   if(socket){
+    if ( message.trim() || file?.url.trim()) {
       socket.emit("message", {
         text: message,
         time : Date.now(),
@@ -36,6 +39,7 @@ const ChatFooter = ({ socket,recipient }: { socket: Socket ,recipient : string})
         socketID: socket.id,
       });
     }
+   }
     setMessage("");
     setFile(null);
 

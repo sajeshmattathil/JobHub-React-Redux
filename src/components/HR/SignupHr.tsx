@@ -34,9 +34,6 @@ function SignupHr() {
   const onSubmit = async (data: dataInterface) => {
     try {
       if (error !== "") return;
-    
-     console.log(data);
-
      const OneTimePassword = generateOtp();
      const createdAt = Date.now();
      data.otp = OneTimePassword
@@ -46,13 +43,10 @@ function SignupHr() {
         "/hr/signup_submit",
        data 
       );
-      console.log(response.data,'djhjdddddddddd');
-
       if (response?.data?.status === 201) {
         setError("");
         if (OneTimePassword){
           setOtp(OneTimePassword);
-          console.log(OneTimePassword,'OneTimePassword')
         } 
       } 
        if(response?.data?.status === 400){
@@ -63,7 +57,7 @@ function SignupHr() {
       }
 
     } catch (err) {
-      console.log("Error happenend in sigunp submit", err);
+      console.log("Error happenend in sigunp submit");
       setError('Internal Server Down')
     }
   };
@@ -74,7 +68,6 @@ function SignupHr() {
           otp: enteredOtp,
           userId: email,
         });
-        console.log(response, "response");
 
         if (response.data.status === 201){
           setError("");
@@ -89,7 +82,6 @@ function SignupHr() {
         setError("Enter correct OTP");
       }
     } catch (error) {
-      console.log(error);
       setError("Something went wrong try again");
       setOtp("");
     }

@@ -64,8 +64,6 @@ const CreateJobForm = () => {
   }
 
   const onSubmit = async (data: formData): Promise<void> => {
-    console.log(data, "data");
-
     if (data) {
       data.createdAt = Date.now();
       data.createdBy = HREmail;

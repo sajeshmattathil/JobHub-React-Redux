@@ -9,14 +9,13 @@ import HRPrivatedRoute from "./HRPrivateRoutes";
 import ViewJob from "../../Pages/hr/ViewJob";
 import ChatPageUser from "../../components/HR/Chat/ChatPageUser";
 import ChatHomeUser from "../../components/HR/Chat/ChatHomeUser";
-import { Socket } from "socket.io-client";
 import ShowShortListedUsers from "../../components/HR/ShowShortListedUsers";
 import VideoCall from "../../components/HR/VideoCall/VideoCall";
 import ErrorBoundary from "../../ErrorBoundary/ErrorBoundary";
 
 
 
-function HRRoutes({socket}:{socket:Socket}) {
+function HRRoutes() {
   
   return (
     <ErrorBoundary>
@@ -27,7 +26,7 @@ function HRRoutes({socket}:{socket:Socket}) {
           path={"/job"}
           element={<HRPrivatedRoute component={CreateJob} />}
         />
-        <Route path={"/"} element={<HRPrivatedRoute component={Home} />} />
+        <Route path={"/"} element={<Home />} />
         <Route
           path={"/profilemanagement"}
           element={<HRPrivatedRoute component={ProfileManagement} />}
@@ -43,11 +42,11 @@ function HRRoutes({socket}:{socket:Socket}) {
         <Route path="/chatSignin" element={<ChatHomeUser />} />
         <Route
           path="/chatPage/:recipient"
-          element={<ChatPageUser socket={socket} />}
+          element={<ChatPageUser  />}
         />
         <Route
           path="/videoCall/:userId"
-          element={<VideoCall socket={socket} />}
+          element={<VideoCall  />}
         />
       </Routes>
     </ErrorBoundary>

@@ -25,8 +25,6 @@ const HRManagementTable: React.FC = () => {
         const fetchUsers = async () => {
             try {
                 const response = await axiosAdminInstance.get(`/admin/hiringmanagers?jobsPerPage=5&page=${pageNumberApprovalTable}`);
-                console.log(response.data);
-
                 if (response.data.status === 201) {
                     const data = response.data;
                     const pages = Math.ceil(data.totalJobs / 5);
@@ -39,7 +37,7 @@ const HRManagementTable: React.FC = () => {
                     setReload(false)
                 }
             } catch (error) {
-                console.log('Error fetching users:', error);
+                console.log('Error fetching users:');
                 setLoading(false);
             }
         };
@@ -51,8 +49,6 @@ const HRManagementTable: React.FC = () => {
         const fetchUsers = async () => {
             try {
                 const response = await axiosAdminInstance.get(`/admin/hiringmanagersApproved?jobsPerPage=5&page=${pageNumberHRTable}`);
-                console.log(response.data);
-
                 if (response.data.status === 201) {
                     const extractedHRs: HRInterface[] = response.data.HRData.filter((HR: HRInterface) => HR.isApproved === true );
                     const data = response.data;
@@ -65,7 +61,7 @@ const HRManagementTable: React.FC = () => {
                     setReload(false)
                 }
             } catch (error) {
-                console.log('Error fetching users:', error);
+                console.log('Error fetching users:');
                 setLoading(false);
             }
         };
@@ -75,17 +71,11 @@ const HRManagementTable: React.FC = () => {
 
     const onBlock = async (email: string, isBlocked: boolean | undefined) => {
         try {
-            console.log('Blocking user:', email);
             const response = await axiosAdminInstance.patch('/admin/hrblockandunblock', { email , isBlocked });
-            console.log('Block user response:', response);
-
             if (response.data.status === 201) {
-                console.log(HRs);
                 
                 const updatedHR = HRs.map((HR) => {
-                    if (HR.email === email) {
-                        console.log(HR,'hrrrr');
-                        
+                    if (HR.email === email) {                        
                         return { ...HR, isBlocked: !isBlocked };
                     }
                     return HR;
@@ -94,16 +84,13 @@ const HRManagementTable: React.FC = () => {
                 setHR(updatedHR);
             }
         } catch (error) {
-            console.log('Error blocking user:', error);
+            console.log('Error blocking user');
         }
     };
 
     const onApprove = async (email: string) => {
         try {
-            console.log('Blocking user:', email);
             const response = await axiosAdminInstance.patch('/admin/hrapprove', { email});
-            console.log('Approve HR response:', response);
-
             if (response.data.status === 201) {
                 const updatedHR = approvalPendingHRs.filter((HR) => HR.email !== email);
 
@@ -111,7 +98,7 @@ const HRManagementTable: React.FC = () => {
                 setReload(true)
             }
         } catch (error) {
-            console.log('Error blocking user:', error);
+            console.log('Error blocking user:');
         }
     };
 

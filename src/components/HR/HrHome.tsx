@@ -36,20 +36,17 @@ const HrHome = () => {
 
         if (fetchedData.data.status === 201) {
           const data = fetchedData.data;
-          console.log(data.jobs, "jobs");
-
           const pages  =Math.ceil(data.totalPages / 5);
           setTotalpages(pages)
           setJobs(data.jobs);
         } else setMsg("No jobs found");
       } catch (error) {
-        console.log(error, "err");
+        console.log( "err");
         setMsg("no jobs");
       }
     };
     fetchData();
   }, [pageNumber]);
-  console.log(msg, "msg");
   if(!HREmail){
     return (
       <div

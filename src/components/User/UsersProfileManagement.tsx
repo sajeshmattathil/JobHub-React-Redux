@@ -25,11 +25,9 @@ export default function UsersProfileManagement() {
     const fetchUser = async () => {
       try {
         const userId = localStorage.getItem("userEmail");
-        console.log(userId, "userId");
         if (!userId) navigate("/login");
 
         const response = await axiosUserInstance.get(`/getUser`);
-        console.log(response, "responde");
 
         if (response?.data?.status === 201) {
           setFname(response?.data?.user?.fname);
@@ -95,17 +93,15 @@ export default function UsersProfileManagement() {
         (option) => option.value
       );
     }
-    console.log(data, "profile dataaa");
     try {
       const update = await axiosUserInstance.put("/update", data);
       console.log(update,'user data updation');
       
-      console.log(update.data.status === 201);
       // setError("User data updated");
       toast.success("User data updated");
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error:any) {
-      console.log("Error in updating profile", error);
+      console.log("Error in updating profile");
       // if(error.response.status)
       setError(error.response.data.message);
     }

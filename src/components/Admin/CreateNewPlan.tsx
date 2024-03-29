@@ -24,13 +24,11 @@ const CreateNewPlan = () => {
     duration ?: string;
   }
   const onSubmit = async (data: planData) => {
-    console.log(data, "dataaaa");
    try {
     const saveNewPlan = await axiosAdminInstance.post(
         "/admin/saveNewPlan",
         data
       );
-      console.log(saveNewPlan, "savenew --- plan");
       if(saveNewPlan.data.status === 200) toast.success('New plan created.');  
 setTimeout(() => {
     navigate('/admin/subscriptionManagement')

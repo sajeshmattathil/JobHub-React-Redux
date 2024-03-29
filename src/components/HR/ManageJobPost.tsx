@@ -134,7 +134,6 @@ const ManageJobPost: React.FC<ManageJobPostProps> = ({ jobPostData }) => {
   }
 
   const onSubmit = async (data: formData): Promise<void> => {
-    console.log(data, "data");
     window.scrollTo(0, 0);
 
     try {
@@ -160,7 +159,7 @@ console.log(data,'data ----2');
        console.log(response,'res------');
        toast.success("Job updated succesfully");
     } catch (error) {
-      console.log(error, "error in updating job data-------");
+      console.log( "error in updating job data-------");
       toast.success("Job updating failed,try again");
 
     }
@@ -168,17 +167,14 @@ console.log(data,'data ----2');
 
   const handleDeleteJob = async (id: string) => {
     try {
-      console.log(id, "id-----");
-
       const deleteJob = await axiosHRInstance.delete(`/hr/deleteJob/${id}`);
-      console.log(deleteJob, "res --- delete job");
       if (deleteJob.data.status == 201)
         toast.success("Job deleted succesfully");
       setTimeout(() => {
         navigate("/hr");
       }, 500);
     } catch (error) {
-      console.log(error, "error");
+      console.log("error happened,try again");
       toast.success("Job deletion  failed,try again");
     }
   };

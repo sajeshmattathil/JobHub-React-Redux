@@ -14,7 +14,6 @@ interface adminState {
 const AdminPublicRoute: React.FC<RouteProps> = ({ component: Component }) => {
     const admin = useSelector((state: RootState) => state.admin.isLoggedIn);
 
-    console.log(admin)
     if (admin) {
 
         return <Navigate to="/admin/login" />;

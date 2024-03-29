@@ -22,15 +22,15 @@ const UserProtectedRoute: React.FC<RouteProps> = ({ component: Component }) => {
 
   // const userEmail = localStorage.getItem('userEmail')
 
-  console.log(userEmail, "protected route--->");
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true)
       try {
         const response = await axiosUserInstance.get("/getUser");
         if (response.data.status === 201)
           setUserEmail(response.data.user.email);
       } catch (error) {
-        console.log(error, "error");
+        console.log("error happened try again");
       }finally{
         setLoading(false)
       }

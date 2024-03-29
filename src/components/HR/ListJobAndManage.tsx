@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { axiosHRInstance } from "../../Utils/axios/axios";
 import Modal from "./modal";
@@ -25,13 +25,14 @@ interface UserInterface {
   appliedAt: Date;
 }
 interface AppliedArray {
+  appliedUsers: AppliedArray[];
   email: string;
   isShortListed: boolean;
 }
 interface JobInterface {
   _id: string;
   createdBy: string | null;
-  jobType : string;
+  jobType: string;
   jobRole: string;
   description: string;
   qualification: string[];
@@ -46,6 +47,10 @@ interface JobInterface {
   createdAt: Date | number;
   appliedUsers: AppliedArray[];
 }
+interface AppliedArray {
+  email: string;
+  isShortListed: boolean;
+}
 const ListJobAndManage: React.FC = () => {
   const [users, setUsers] = useState<UserInterface[]>([]);
   const [notFound, setNotFound] = useState<boolean>(false);
@@ -59,16 +64,16 @@ const ListJobAndManage: React.FC = () => {
 
   const { id } = useParams();
   const navigate = useNavigate();
+  const jobRef = useRef<AppliedArray[] | null>(null);
+  const appliedUsersRef = useRef<string[] | null>(null);
 
   useEffect(() => {
     fetchUsers();
-  }, [id]);
+  }, []);
 
   const fetchUsers = async () => {
     try {
       const response = await axiosHRInstance.get(`/hr/getJobDetails/${id}`);
-      console.log(response, "response");
-
       if (response.data.status == 201) {
         const extractedUsers = response.data.jobData.map(
           (user: {
@@ -93,10 +98,7 @@ const ListJobAndManage: React.FC = () => {
             resume: user.userData[0].resume,
           })
         );
-        interface AppliedArray {
-          email: string;
-          isShortListed: boolean;
-        }
+      
 
         const extractedJobPostData = response.data.jobData.map(
           (data: {
@@ -128,15 +130,19 @@ const ListJobAndManage: React.FC = () => {
           })
         );
         setJobPostData(extractedJobPostData);
-       
+        jobRef.current = extractedJobPostData;
+        // console.log(extractedJobPostData,'sh0')
+        console.log(jobRef.current, "sh0");
 
-        const checkApplied: string[] = jobPostData[0]?.appliedUsers
-          .filter((user: AppliedArray) => user.isShortListed === true)
-          .map((user: AppliedArray) => user.email);
-        console.log(checkApplied, "checkApplied1");
-
-        setShortListed(checkApplied);
-        console.log(shortListed, "shortListed");
+        if (jobRef.current) {
+          const checkApplied: string[] = jobRef.current[0].appliedUsers
+            .filter((user: AppliedArray) => user.isShortListed === true)
+            .map((user: AppliedArray) => user.email);
+          console.log(checkApplied, "sh1");
+          appliedUsersRef.current = checkApplied;
+          setShortListed(checkApplied);
+          console.log(shortListed, "sh2");
+        }
 
         setUsers(extractedUsers);
         setLoading(false);
@@ -145,7 +151,7 @@ const ListJobAndManage: React.FC = () => {
         setNotFound(true);
       }
     } catch (error) {
-      console.log("Error fetching users:", error);
+      console.log("Error fetching users:");
       setLoading(false);
     }
   };
@@ -164,16 +170,15 @@ const ListJobAndManage: React.FC = () => {
 
   const handleToggleManageModal = async (userId: string) => {
     setIsOp(!isOp);
-    console.log(userId, "userid");
     try {
       const shortListUser = await axiosHRInstance.patch("/hr/shortListUser", {
         userId,
         jobId: jobPostData[0]._id,
       });
-      await fetchUsers();
+      fetchUsers();
       console.log(shortListUser, "shortlistresult");
     } catch (error) {
-      console.log(error, "error in shortlisting");
+      console.log("error in shortlisting");
     }
   };
 
@@ -198,7 +203,7 @@ const ListJobAndManage: React.FC = () => {
         </div>
         {manageJob && <ManageJob jobPostData={jobPostData} />}
         <div>
-          <Modal isOpen={isOpen} onClose={()=> setIsOp(!isOp)}>
+          <Modal isOpen={isOpen} onClose={() => setIsOp(!isOp)}>
             <div className="">
               <div className="signupForm items-center justify-center">
                 {viewSelectedUsr && (
@@ -250,7 +255,8 @@ const ListJobAndManage: React.FC = () => {
                   </button>
                 </td>
                 <td>
-                  {shortListed && shortListed.includes(user.email) ? (
+                  {appliedUsersRef.current &&
+                  appliedUsersRef.current.includes(user.email) ? (
                     <div>{"Short Listed"}</div>
                   ) : (
                     <button onClick={() => handleToggleManageModal(user.email)}>
@@ -270,7 +276,7 @@ const ListJobAndManage: React.FC = () => {
                       )}
                     </div>
                   )} */}
-                  {!shortListed && <div>{" "}</div>}
+                  {!shortListed && <div> </div>}
                 </td>
               </tr>
             ))}

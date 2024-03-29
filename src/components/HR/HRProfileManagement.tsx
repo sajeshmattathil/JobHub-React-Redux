@@ -22,12 +22,8 @@ export default function HRProfileManagement() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        console.log(HRId, "hrId");
         if (!HRId) navigate("/hr/login");
-
         const response = await axiosHRInstance.get('/hr/getHR');
-        console.log(response, "response -----------");
-
         if (response?.data?.status === 201) {
           setName(response?.data?.HR?.name);
           setEmail(response?.data?.HR?.email);
@@ -37,7 +33,7 @@ export default function HRProfileManagement() {
           setEmployeesNumber(response?.data?.HR?.EmployeesNumber);
         }
       } catch (error) {
-        console.log("error in fetching user", error);
+        console.log("error in fetching user");
       }
     };
     fetchUser();
@@ -68,13 +64,11 @@ export default function HRProfileManagement() {
     data.website = website;
     data.employeesNumber = EmployeesNumber;
     data.email = email;
-    console.log(data, "profile dataaa");
     try {
-      const update = await axiosHRInstance.post(`/hr/update/${HRId}`, data);
-      console.log(update.data.status === 201);
+      await axiosHRInstance.post(`/hr/update/${HRId}`, data);
       setError("User data updated");
     } catch (error) {
-      console.log("Error in updating profile", error);
+      console.log("Error in updating profile");
     }
   };
 

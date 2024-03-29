@@ -55,7 +55,6 @@ function UserSignup() {
         otp: otp,
         createdAt: createdAt,
       });
-      console.log(response, "<<<<<<<<<");
       if (response.data.status === 500) setError(response?.data?.message);
       if (response.data.status === 400) setError(response?.data?.message);
       if (response.data.status === 409) setError(response?.data?.message);
@@ -67,9 +66,7 @@ function UserSignup() {
       }
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error:any) {
-      console.log("error found in signup submit", error);
-      toast.success(error.response.data.message);
-
+      toast.success(error?.response?.data?.message);
       // setError("User already exists");
     }
   }
@@ -80,7 +77,6 @@ function UserSignup() {
           otp: enteredOtp,
           userId: email,
         });
-        console.log(response, "response");
 
         if (response.data.status === 201) navigate("/login");
         if (response.data.status === 401) setError(response.data.message);
@@ -93,7 +89,6 @@ function UserSignup() {
       }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error :any) {
-      console.log(error);
       if (error.response.data.status === 401)
         setError(error.response.data.message);
       if (error.response.data.status === 401)
@@ -121,7 +116,7 @@ function UserSignup() {
       if (resendOTP.data.status === 400)
         setError("Something went wrong ,try again");
     } catch (error) {
-      console.log("error in resend otp ", error);
+      console.log("error in resend otp ");
     }
   };
 
@@ -134,7 +129,7 @@ function UserSignup() {
         setMinutes(minutes);
         setSeconds(seconds);
       } catch (error) {
-        console.log("error in otp timer", error);
+        console.log("error in otp timer");
       }
     };
     if (intervalRef.current && timer == 0) {
@@ -145,28 +140,22 @@ function UserSignup() {
   }, [timer]);
 
   const startTimer = () => {
-    console.log("settimer");
 
     if (!intervalRef.current) {
       intervalRef.current = setInterval(() => {
-        console.log(timer, "timer -- inside interval");
 
         setTimer((prev) => {
-          console.log(prev, "prev");
           return prev - 1;
         });
-        console.log(timer, "timer -- inside interval--2");
         // updateTimer();
       }, 1000);
     }
   };
 
   const clearTimer = () => {
-    console.log(timer, "timerrrr");
 
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
-      console.log(intervalRef.current,'interval');
       
       intervalRef.current = null;
       setTimer(600);

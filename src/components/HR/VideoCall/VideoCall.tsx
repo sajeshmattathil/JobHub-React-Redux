@@ -2,9 +2,9 @@ import  { useEffect, useState } from "react";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 import { useNavigate, useParams } from "react-router-dom";
 import { v4 } from "uuid";
-import { Socket } from "socket.io-client";
+import { useSocket } from "../../../Providers/Socket";
 
-const VideoCall = ({ socket }: { socket: Socket }) => {
+const VideoCall = () => {
   const { userId } = useParams();
 
   const VURL = "http://localhost:5173/hr/videoCall";
@@ -12,6 +12,7 @@ const VideoCall = ({ socket }: { socket: Socket }) => {
   const [newMessage] = useState(`${VURL}/${userId}`);
   const HREmail = localStorage.getItem("HREmail");
   //   const [socket, setSocket] = useState(null);
+  const {socket} = useSocket()
 
   const myMeeting = async (element: HTMLDivElement) => {
   
@@ -54,7 +55,7 @@ const VideoCall = ({ socket }: { socket: Socket }) => {
         message: newMessage,
       };
 
-      socket.emit("vdo-call", data);
+     if(socket) socket.emit("vdo-call", data);
     } else {
       console.error("Socket is null. Cannot send data.");
     }

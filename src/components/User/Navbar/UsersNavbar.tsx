@@ -13,7 +13,9 @@ const UsersNavbar = () => {
   const navigate = useNavigate();
   const [link, setLink] = useState<string>("");
 
+
   interface ChatMessage {
+    recipient1: string;
     text: string;
     file: File | null;
     name: string | null;
@@ -23,23 +25,31 @@ const UsersNavbar = () => {
   }
   const notificationRef = useRef<boolean>(false);
   const notificationVdoCallRef = useRef<boolean>(false);
+  const recipientRef = useRef<string>()
 
   useEffect(() => {
     if (socket) {
       const handleMessageResponse = (data: ChatMessage) => {
         if (data.recipient2 === localStorage.getItem("userEmail")) {
           notificationRef.current = true;
+      
+          recipientRef.current =data.recipient1;
+          
         }
+      
       };
       interface VideoCallInterface {
         message: string;
-        recipient: string;
+        recipient2: string;
+        recipient1: string;
+
       }
       const handleJoinVdoCall = (data: VideoCallInterface) => {
-        if (data.recipient === localStorage.getItem("userEmail")) {
+        if (data.recipient2 === localStorage.getItem("userEmail")) {
           notificationVdoCallRef.current = true;
           setLink(data.message);
         }
+        
       };
       socket.on("join-vdo-call", handleJoinVdoCall);
       socket.on("messageResponse", handleMessageResponse);
@@ -61,7 +71,7 @@ const UsersNavbar = () => {
   };
 
   const dispatch = useDispatch();
-  const userLoggedIn = localStorage.getItem("userEmail"); // Corrected variable name
+  const userLoggedIn = localStorage.getItem("userEmail"); 
 
   return (
     <nav
@@ -96,7 +106,7 @@ const UsersNavbar = () => {
                   src={messageImage}
                   style={{ width: "300%" }}
                   onClick={() => {
-                    navigate("/chatPage");
+                    navigate(`/chatPage/${recipientRef.current}`);
                   }}
                 />
               </div>

@@ -18,8 +18,6 @@ export default function BasicTextFields({type,inputValue,setInput,placeholder,cl
   }
 
   function validatePwd(password : string){
-console.log(password,typeof(password));
-
     const pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
     return pwdRegex.test(password)
   }

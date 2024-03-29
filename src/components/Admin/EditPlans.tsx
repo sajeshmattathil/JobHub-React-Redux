@@ -13,8 +13,6 @@ const EditPlans = () => {
 
   const navigate = useNavigate();
   const { planId } = useParams();
-  console.log(planId, "iddd---");
-
   const {
     register,
     handleSubmit,
@@ -35,7 +33,6 @@ const EditPlans = () => {
       const getPlanData = await axiosAdminInstance.get(
         `/admin/getPlanData/${planId}`
       );
-      console.log(getPlanData, "planDataaa");
       if (getPlanData.data.status === 201)
         setPlanData(getPlanData.data.planData);
     } catch (error) {
@@ -43,7 +40,6 @@ const EditPlans = () => {
     }
   };
   const onSubmit = async (data: planData) => {
-    console.log(data, "dataaaa");
     try {
       if (!data.amount) data.amount = planData?.amount;
       if (!data.planName) data.planName = planData?.planName;

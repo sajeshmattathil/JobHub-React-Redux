@@ -9,9 +9,7 @@ const HRAuthSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    HRLogin(state, action) {
-      console.log(action.payload,'payload');
-      
+    HRLogin(state, action) {      
       state.isLoggedIn = true;
       state.HREmail = action.payload.HREmail;
 

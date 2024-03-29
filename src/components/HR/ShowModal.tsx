@@ -5,9 +5,7 @@ const ShowModal = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggleModal = () => {
-    setIsOpen(!isOpen);
-    console.log(isOpen,'isopen');
-    
+    setIsOpen(!isOpen);    
   };
 
   return (

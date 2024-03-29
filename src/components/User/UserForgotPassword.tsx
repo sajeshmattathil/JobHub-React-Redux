@@ -42,19 +42,15 @@ const UserForgotPassword = () => {
         userId: data.email,
       });
 
-      console.log(sendForgotOtp, "sendForgotOtp");
 
       if (sendForgotOtp.data.status === 201) {
-        console.log(error, "error1");
 
         setOtp("otp mailed");
       }
       // if(sendForgotOtp.data.status === 404) setError('User Not Found,Create new Account')
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      console.log(
-        "error happened in sending forgot otp in userpassword component"
-      );
+      
       if (error.response.data.status === 404) setError("User Not Found");
       if (error.response.data.status === 500)
         setError("Something went wrong ,try again");
@@ -69,7 +65,6 @@ const UserForgotPassword = () => {
           userId: email,
           purpose: "forgotOtp",
         });
-        console.log(response, "response");
 
         if (response.data.status === 201) {
           setNewPassword("open new Password component");
@@ -84,7 +79,6 @@ const UserForgotPassword = () => {
         setError("Enter correct OTP");
       }
     } catch (error) {
-      console.log(error);
       setError("Something went wrong try again");
       setOtp("");
     }
@@ -104,7 +98,7 @@ const UserForgotPassword = () => {
       if (resendOTP.data.status === 400)
         setError("Something went wrong ,try again");
     } catch (error) {
-      console.log("error in resend otp ", error);
+      console.log("error in resend otp ");
     }
   };
 
@@ -117,7 +111,7 @@ const UserForgotPassword = () => {
         setMinutes(minutes);
         setSeconds(seconds);
       } catch (error) {
-        console.log("error in otp timer", error);
+        console.log("error in otp timer",);
       }
     };
     if (intervalRef.current && timer == 0) {
@@ -128,28 +122,22 @@ const UserForgotPassword = () => {
   }, [timer]);
 
   const startTimer = () => {
-    console.log("settimer");
 
     if (!intervalRef.current) {
       intervalRef.current = setInterval(() => {
-        console.log(timer, "timer -- inside interval");
 
         setTimer((prev) => {
-          console.log(prev, "prev");
           return prev - 1;
         });
-        console.log(timer, "timer -- inside interval--2");
         // updateTimer();
       }, 1000);
     }
   };
 
   const clearTimer = () => {
-    console.log(timer, "timerrrr");
 
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
-      console.log(intervalRef.current, "interval");
 
       intervalRef.current = null;
       setTimer(600);
@@ -164,7 +152,6 @@ const UserForgotPassword = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleNewPasswords = async (data: Passwords) => {
     try {
-      console.log(data, "new passwords");
       if (password !== confirm) setError("Password must match");
       const saveNewPassword = await axiosInstance.put("/resetPassword", data);
       if (saveNewPassword.data.status === 201) {
@@ -175,7 +162,7 @@ const UserForgotPassword = () => {
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      console.log(error, "error in handling new passwords");
+      console.log("error in handling new passwords");
 
       if (error.response?.data?.status === 404) {
         setError("Something went wrong, try again");

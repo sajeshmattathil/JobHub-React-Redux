@@ -10,8 +10,7 @@ interface SearchValue {
   value : string;
 }
 const UserHome  = ({searchData ,sortData } :{ searchData :SearchValue | null, sortData : string} ) => {
-  console.log(searchData,'location');
-  console.log(sortData || 'Date','sort');
+ 
   
   const navigate = useNavigate();
   const [pageNumber, setPage] = useState<number>(1);
@@ -46,11 +45,10 @@ const UserHome  = ({searchData ,sortData } :{ searchData :SearchValue | null, so
           setJobs(data.jobData);
           setMsg("jobs found");
         } else {
-          console.log("elseeee");
           setMsg("");
         }
       } catch (error) {
-        console.log(error, "err");
+        console.log("Something went wrong,try again");
         setMsg("no jobs");
       }
     };

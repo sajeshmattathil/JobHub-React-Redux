@@ -27,4 +27,9 @@
     font-size: 18px;
     color: #333;
   }
+  @media screen and (max-width: 600px) {
+    .modal-content {
+      width: 100%; /* Adjust the width as needed for smaller screens */
+    }
+  }
   

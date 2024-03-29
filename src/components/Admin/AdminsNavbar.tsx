@@ -32,8 +32,6 @@ const AdminsNavbar = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   // const userLoggenIn = useSelector((state :RootState)=>state.admin.isLoggedIn)
 const adminLoggedIn = localStorage.getItem('adminEmail')
-  console.log(adminLoggedIn,'adminLoggenIn');
-
   return (
     <nav
       style={{

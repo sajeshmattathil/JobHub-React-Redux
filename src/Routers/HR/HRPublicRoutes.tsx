@@ -14,7 +14,6 @@ interface HRState {
 const HRPublicRoute: React.FC<RouteProps> = ({ component: Component }) => {
     const HR = useSelector((state: RootState) => state.HR.isLoggedIn);
 
-    console.log(HR)
     if (HR) {
 
       return <Navigate to="/hr/login" />;

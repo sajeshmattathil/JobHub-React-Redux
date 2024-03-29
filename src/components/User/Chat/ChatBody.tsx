@@ -1,7 +1,8 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineDownloadForOffline } from "react-icons/md";
 import { axiosUserInstance } from "../../../Utils/axios/axios";
+// import { message } from "antd";
 
 interface File {
   url: string;
@@ -11,7 +12,7 @@ interface File {
 interface ChatMessage {
   time: Date;
   text: string;
-  file ?: File | null;
+  file?: File | null;
   name: string | null;
   id: string;
   socketID: string;
@@ -19,14 +20,14 @@ interface ChatMessage {
 interface ChatBodyProps {
   messages: ChatMessage[];
   lastMessageRef: React.RefObject<HTMLDivElement>;
-  recipient: string;
 }
-const ChatBody: React.FC<ChatBodyProps> = ({ messages, recipient,lastMessageRef }) => {
+const ChatBody: React.FC<ChatBodyProps> = ({
+  messages,
+  lastMessageRef,
+}) => {
   const navigate = useNavigate();
   const [previousChat, setPreviousChat] = useState<ChatMessage[] | null>(null);
-
-  console.log(messages, "msg");
-  console.log(recipient, "recipient");
+  // const recipientRef = useRef<string | null>('');
 
   const handleLeaveChat = () => {
     localStorage.removeItem("userName");
@@ -34,73 +35,68 @@ const ChatBody: React.FC<ChatBodyProps> = ({ messages, recipient,lastMessageRef 
     window.location.reload();
   };
   const userEmail = localStorage.getItem("userEmail");
-  console.log(userEmail, recipient, "____<<<<<<");
 
   useEffect(() => {
     const fetchPreviousChat = async () => {
-      if (userEmail && recipient) {
+console.log(messages,'name')
+      if (userEmail && messages.length) {
         const response = await axiosUserInstance.get(
-          `/hr/getChat?recipient1=${recipient}&recipient2=${userEmail}`
+          `/getChat?recipient1=${messages[0].name}&recipient2=${userEmail}`
         );
-        console.log(response, "res---<< chat");
+        console.log(response,'prev --msag --user');
+        
         if (response.data.status === 201)
+        console.log(response.data.chatData,'prev -user');
+
           setPreviousChat(response.data.chatData);
       }
     };
     fetchPreviousChat();
-  }, []);
+  }, [messages]);
 
   const handleFile = async (fileUrl: string, fileName: string) => {
     try {
-      console.log(fileUrl, fileName, "req=====>>>>");
-
       const downloadFile = await axiosUserInstance.post("/downloadFile", {
         url: fileUrl,
         fileName: fileName,
       });
 
-      console.log(downloadFile, "download---->user");
-
       const blob = new Blob([downloadFile.data], { type: "application/pdf" });
-      console.log(blob, "blob-user");
 
       const url = window.URL.createObjectURL(blob);
-      console.log(url, "url-user");
 
       const a = document.createElement("a");
       a.href = url;
       a.download = fileName;
       document.body.appendChild(a);
-      console.log(a, "a-user");
 
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     } catch (error) {
-      console.log(error, "errrorss");
+      console.log( "error happened ,try again");
     }
   };
 
-  const formatTime = (timestamp : Date)=>{
+  const formatTime = (timestamp: Date) => {
     const date = new Date(timestamp);
     const hours = date.getHours();
     const minutes = date.getMinutes();
     const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
     return `${hours}:${formattedMinutes}`;
-  }
+  };
 
   return (
     <>
       <header className="chat__mainHeader">
         <p>Hangout with Colleagues</p>
-        {userEmail && <h6 style={{fontStyle:'italic'}}>Online</h6>}
+        {userEmail && <h6 style={{ fontStyle: "italic" }}>Online</h6>}
         <button className="leaveChat__btn" onClick={handleLeaveChat}>
           LEAVE CHAT
         </button>
       </header>
 
       <div className="message__container">
-
         {previousChat &&
           previousChat.map((message: ChatMessage) =>
             message.name === localStorage.getItem("userEmail") ? (
@@ -189,7 +185,6 @@ const ChatBody: React.FC<ChatBodyProps> = ({ messages, recipient,lastMessageRef 
                 <p>{message.text}</p>
               </div>
               <p className="message__chats">{formatTime(message.time)}</p>
-
             </div>
           )
         )}

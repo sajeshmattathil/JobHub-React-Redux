@@ -24,7 +24,7 @@ const upload = async (pdf :File,foldername : string)=>{
         size : response.data.bytes
         }
     } catch (error) {
-        console.log('Uploading pdf file failed ',error);
+        console.log('Uploading pdf file failed ');
         
     }
 }

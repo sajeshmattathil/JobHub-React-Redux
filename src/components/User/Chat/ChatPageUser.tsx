@@ -1,18 +1,19 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect,  useRef, useState } from "react";
 import ChatBar from "./ChatBar";
 import ChatBody from "./ChatBody";
 import ChatFooter from "./ChatFooter";
-import { Socket } from "socket.io-client";
+import { useSocket } from "../../../Providers/Socket";
 
-const ChatPageUser = ({ socket }: { socket: Socket }) => {
+const ChatPageUser = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [recipient, setRecipient] = useState<string>("");
   const lastMessageRef = useRef<HTMLDivElement>(null);
+  const recipientRef = useRef<string | null>('');
+
+  const { socket } = useSocket();
 
   interface ChatMessage {
     time: Date;
     name: string | null;
-
     text: string;
     recipient1: string;
     id: string;
@@ -20,30 +21,34 @@ const ChatPageUser = ({ socket }: { socket: Socket }) => {
   }
 
   useEffect(() => {
-    socket.on("messageResponse", (data: ChatMessage) => {
-      console.log(data, "data");
-
-      setRecipient(data.recipient1);
-      console.log(recipient, "recip at chat page");
-
-      setMessages([...messages, data]);
-    });
+    if (socket) {
+      socket.on("messageResponse", (data: ChatMessage) => {
+        setMessages([...messages, data]);
+      });
+    }
   }, [socket, messages]);
+  // useEffect(() => {
+  //   if (socket) {
+  //     socket.on("messageResponse", (data: ChatMessage) => {
+  //       console.log(data,'data2')
+
+  //       setMessages([...messages, data]);
+  //     });
+  //   }
+  // }, [socket,messages]);
 
   useEffect(() => {
     lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-
   return (
     <div className="chat">
       <ChatBar />
       <div className="chat__main">
         <ChatBody
           messages={messages}
-          recipient={recipient}
           lastMessageRef={lastMessageRef}
         />
-        <ChatFooter socket={socket} recipient={recipient} />
+        <ChatFooter recipient={recipientRef.current} />
       </div>
     </div>
   );

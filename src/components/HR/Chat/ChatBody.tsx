@@ -26,7 +26,6 @@ const ChatBody: React.FC<ChatBodyProps> = ({
   recipient,
   lastMessageRef,
 }) => {
-  console.log(messages, "msg");
 
   const [previousChat, setPreviousChat] = useState<ChatMessage[] | null>(null);
   const navigate = useNavigate();

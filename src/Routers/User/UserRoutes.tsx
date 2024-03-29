@@ -8,20 +8,14 @@ import UserPublicRoutes from "./UserPublicRoutes";
 import UserForgotPassword from "../../components/User/UserForgotPassword";
 import ViewJob from "../../Pages/User/ViewJob";
 import SearchBar from "../../components/User/Timer";
-import { Socket } from "socket.io-client";
 import ChatHomeUser from "../../components/User/Chat/ChatHomeUser";
 import ChatPageUser from "../../components/User/Chat/ChatPageUser";
-import { SocketProvider } from "../../Providers/Socket";
-import PeerProvider from "../../Providers/Peer";
 import Subscriptions from "../../Pages/User/Subscriptions";
-import ErrorBoundary from "../../ErrorBoundary/ErrorBoundary";
 
 
-function UserRoutes({socket}:{socket:Socket}) {
+function UserRoutes() {
   return (
-    <SocketProvider>
-      <PeerProvider>
-        <ErrorBoundary>
+   
           <Routes>
             <Route
               path="/signup"
@@ -37,12 +31,12 @@ function UserRoutes({socket}:{socket:Socket}) {
             <Route path="/search" element={<SearchBar />} />
             <Route
               path="/jobPost/:id"
-              element={<UserPublicRoutes component={ViewJob} />}
+              element={<ViewJob/>}
             />
             <Route path="/chatSignin" element={<ChatHomeUser />} />
             <Route
-              path="/chatPage"
-              element={<ChatPageUser socket={socket} />}
+              path="/chatPage/:id"
+              element={<ChatPageUser/>}
             />
            
             <Route
@@ -54,9 +48,7 @@ function UserRoutes({socket}:{socket:Socket}) {
               element={<UserProtectedRoute component={Subscriptions} />}
             />
           </Routes>
-        </ErrorBoundary>
-      </PeerProvider>
-    </SocketProvider>
+      
   );
 }
 

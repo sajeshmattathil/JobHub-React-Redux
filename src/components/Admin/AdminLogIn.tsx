@@ -22,21 +22,14 @@ function AdminLogIn() {
   const dispatch = useDispatch()
 
   const onSubmit = async (data: unknown) => {
-
-    console.log(data);
-
     try {
       if (error !== "") return;
 
       const response = await axiosAdminInstance.post(
         "/admin/login_submit",
         data
-      );
-      console.log(response,'------->');
-      
+      );      
       if (response?.data?.status === 201) {
-console.log(response.data,'admin verified data');
-
         localStorage.setItem("adminToken", response?.data?.token);
 
         dispatch(adminLogin({adminEmail:email}))
@@ -49,12 +42,10 @@ console.log(response.data,'admin verified data');
 
         setError(response?.data?.message);
 
-        console.log(response?.data?.message,'message');
+        (response?.data?.message,'message');
         
     } catch (err) {
-
-      console.log("Error happenend in login submit", err);
-
+      console.log("Error happenend in login submit");
     }
   };
 

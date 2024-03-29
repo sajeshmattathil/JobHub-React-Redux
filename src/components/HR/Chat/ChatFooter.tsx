@@ -1,15 +1,13 @@
 import  { useState } from "react";
-import { Socket } from "socket.io-client";
 import { GrAttachment } from "react-icons/gr";
 import upload from "../../../Utils/Cloudinary/cloudinary";
 import { useForm } from "react-hook-form";
+import { useSocket } from "../../../Providers/Socket";
 // import FileUploadComponent from "../../FileUploadComponent/FileUploadComponent";
 
 const ChatFooter = ({
-  socket,
   recipient,
 }: {
-  socket: Socket;
   recipient: string | undefined;
 }) => {
   interface File {
@@ -19,18 +17,18 @@ const ChatFooter = ({
   }
   const [message, setMessage] = useState("");
   const [file, setFile] = useState<File | null>(null);
-  console.log(socket, "socketttt");
+  const {socket} = useSocket()
   const { register } = useForm();
 
   const handleSendMessage = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    console.log(message, "message---<");
 
     console.log({ userName: localStorage.getItem("HREmail"), message });
     setMessage("");
     const HREmail = localStorage.getItem("HREmail");
     console.log(HREmail, "hr email");
 
+   if(socket){
     if (message.trim() || file?.url.trim()) {
       socket.emit("message", {
         text: message,
@@ -43,10 +41,10 @@ const ChatFooter = ({
         socketID: socket.id,
       });
     }
+   }
     setMessage("");
     setFile(null);
 
-    // return <div className="chat__footer">...</div>;
   };
   return (
     <div className="chat__footer">

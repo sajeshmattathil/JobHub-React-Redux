@@ -26,32 +26,27 @@ const ViewJobDetails = () => {
 
   const [job, setJob] = useState<Job | null>(null);
   const [hr, setHR] = useState<HRData | null>(null);
-  const [err, setError] = useState<string>("");
   const [appliedJob, setAppliedJob] = useState<AppliedJob>({
     isHRViewed: false,
     isReplayed: false,
     isShortlisted: false,
   });
   const [isApplied,setIsApplied] = useState<string>('')
-  const [shouldRender, setShouldRender] = useState(true);
+  const [shouldRender, setShouldRender] = useState<string| null>(null);
   // const [isApplied, setIsApplied] = useState<string>("");
-console.log(err,'error');
 
   const userEmail = localStorage.getItem("userEmail");
-
-  if (job) console.log(job.appliedUsers, "applied users");
-  if (job && userEmail) console.log(job.appliedUsers,'job.appliedUsers');
 
   // const checkApplied = job?.appliedUsers.filter(
   //   (user) => user.email === userEmail
   // );
-  
   // if (checkApplied?.length) isApplied = checkApplied[0].email;
   // if(checkApplied?.length) setIsApplied(checkApplied[0].email)
 
   const navigate = useNavigate();
 
   interface HRData {
+    email: string;
     name: string;
     followers: string[];
     _id: string;
@@ -85,27 +80,25 @@ console.log(err,'error');
   const { id } = useParams();
 
   useEffect(() => {
-    console.log("useeffect");
-
     const fetchJobData = async () => {
       try {
         const jobData = await axiosInstance(`/getJobData/${id}`);
-
         setJob(jobData?.data?.jobDataFetched[0]);
-        const checkApplied = job?.appliedUsers.filter(
-          (user) => user.email === userEmail
+
+        // console.log(job,'job?.appliedUsers')
+
+        const checkApplied = jobData?.data?.jobDataFetched[0]?.appliedUsers.filter(
+          (user: { email: string | null; }) => user.email === userEmail
         );
+        console.log(checkApplied,'checkApplied')
         if (checkApplied?.length){
           setIsApplied(checkApplied[0].email);
-        console.log(isApplied,'isApplied');
-
         } 
         
         setHR(jobData?.data?.jobDataFetched[0]?.jobData[0]);
         setAppliedJob(jobData?.data?.jobDataFetched[0]?.appliedData[0]);
       } catch (error) {
-        console.log(error, "error in catch");
-        setError("Something Went Wrong, Try again");
+        console.log("Something Went Wrong, Try again");
       }
     };
     fetchJobData();
@@ -117,7 +110,7 @@ console.log(err,'error');
       });
       setJob(null);
     };
-  }, [id]);
+  }, [id,shouldRender]);
 
   const handleApplyJob = async () => {
     try {
@@ -128,26 +121,20 @@ console.log(err,'error');
           appliedAt: Date.now(),
         });
         if (applyJob.data.status === 201) {
-          console.log(applyJob.data.appliedJob, "res------->>>>");
+          console.log('applied succesfully')
           setAppliedJob(applyJob.data.appliedJob);
-          console.log(appliedJob, "applies job--->");
-
-          setShouldRender((prev) => !prev);
-          console.log(shouldRender);
+          setShouldRender('yes');
         }
       }
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error:any) {
-      console.log(error, "error in applying job");
       console.log(error.response.data.message);
     }
   };
 
   const handleFollowHiringManager = async (HRId: string, value: string) => {
     try {
-      console.log(HRId, value);
-      setShouldRender((prevState) => !prevState);
-      console.log(shouldRender, "kdhshkj");
+      // setShouldRender((prevState) => !prevState);
 
       const followAndUnfollowHR = await axiosUserInstance.patch(
         `/followAndUnfollow/`,
@@ -159,16 +146,15 @@ console.log(err,'error');
 
       console.log(followAndUnfollowHR.data, "followAndUnfollowHR");
     } catch (error) {
-      console.log(error, "error in follow unfollow hr");
+      console.log("error in follow unfollow hr");
     }
   };
 
-  const handleSendMessage = async () => {
+  const handleSendMessage = async (email: string) => {
     try {
       const verifyUserSubscribed = await axiosUserInstance.get("/getUser");
-      console.log(verifyUserSubscribed, "verify");
       if (verifyUserSubscribed?.data?.user?.subscription?.isSubscribed)
-        navigate("/chatPage");
+        navigate(`/chatPage/${email}`);
       else {
         navigate("/subscriptionPlans");
       }
@@ -177,6 +163,7 @@ console.log(err,'error');
     }
   };
 
+  console.log(isApplied,'isApplied')
   return (
     <>
       <div
@@ -312,7 +299,7 @@ console.log(err,'error');
             alignContent: "center",
           }}
         >
-          {job !== null && userEmail !== null && isApplied &&  (
+          { isApplied.trim() &&  (
             <Timeline position="left">
               <TimelineItem>
                 <TimelineSeparator>
@@ -418,7 +405,7 @@ console.log(err,'error');
                         padding: "1%",
                         cursor: "pointer",
                       }}
-                      onClick={handleSendMessage}
+                      onClick={()=>handleSendMessage(hr.email)}
                     >
                       Send Message
                     </button>

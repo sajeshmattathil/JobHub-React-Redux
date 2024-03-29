@@ -2,11 +2,11 @@ import  { useEffect, useRef, useState } from "react";
 import ChatBar from "./ChatBar";
 import ChatBody from "./ChatBody";
 import ChatFooter from "./ChatFooter";
-import { Socket } from "socket.io-client";
 import { useParams } from "react-router-dom";
+import { useSocket } from "../../../Providers/Socket";
 
 
-const ChatPageUser = ({socket} :{socket : Socket}) => {
+const ChatPageUser = () => {
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const lastMessageRef = useRef<HTMLDivElement>(null)
     interface ChatMessage {
@@ -16,10 +16,11 @@ const ChatPageUser = ({socket} :{socket : Socket}) => {
         id: string;
         socketID: string; 
     }
+    const {socket} = useSocket()
   const {recipient} = useParams()
     
     useEffect(() => {
-      socket.on('messageResponse', (data :ChatMessage) => setMessages([...messages, data]));
+    if(socket)  socket.on('messageResponse', (data :ChatMessage) => setMessages([...messages, data]));
     }, [socket, messages]);
   
     useEffect(()=>{
@@ -31,7 +32,7 @@ const ChatPageUser = ({socket} :{socket : Socket}) => {
       <ChatBar />
       <div className="chat__main">
         <ChatBody messages={messages} recipient = {recipient} lastMessageRef={lastMessageRef} />
-        <ChatFooter  socket = {socket} recipient = {recipient}/>
+        <ChatFooter  recipient = {recipient}/>
       </div>
     </div>
   );

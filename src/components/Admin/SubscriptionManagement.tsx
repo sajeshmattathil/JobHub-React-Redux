@@ -26,7 +26,6 @@ const SubscriptionManagement = () => {
       const getSubscriptionPlans = await axiosAdminInstance.get(
         "/admin/getPlans"
       );
-      console.log(getSubscriptionPlans, "result");
       if (getSubscriptionPlans.data.status === 201) {
         setSubscriptions(getSubscriptionPlans.data.planDatas);
       }
@@ -38,7 +37,6 @@ const SubscriptionManagement = () => {
   const handleDeletePlan = async (id : string)=>{
     try {
         const deletePlan = await axiosAdminInstance.delete(`/admin/deletePlan/${id}`)
-        console.log(deletePlan,'delete plan');
         if(deletePlan.data.status === 200)   toast.success("Plan deleted succesfully"); 
         setShouldRender(prev=>!prev) 
     } catch (error) {

@@ -14,7 +14,6 @@ interface UserState {
 const UserPublicRoutes: React.FC<RouteProps> = ({ component: Component }) => {
     const user = useSelector((state: RootState) => state.user.isLoggedIn);
 
-    console.log(user)
     if (user) {
 
         return <Navigate to="/login" />;

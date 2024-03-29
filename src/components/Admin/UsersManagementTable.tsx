@@ -19,8 +19,6 @@ const UsersManagementTable: React.FC = () => {
         const fetchUsers = async () => {
             try {
                 const response = await axiosAdminInstance.get('/admin/users');
-                console.log(response.data);
-
                 if (response.data.status === 201) {
                     const extractedUsers: UserInterface[] = response.data.usersData.map((user: UserInterface) => ({
                         _id: user._id,
@@ -35,7 +33,7 @@ const UsersManagementTable: React.FC = () => {
                     setLoading(false);
                 }
             } catch (error) {
-                console.log('Error fetching users:', error);
+                console.log('Error fetching users:');
                 setLoading(false);
             }
         };
@@ -45,10 +43,7 @@ const UsersManagementTable: React.FC = () => {
 
     const onBlock = async (email: string, isBlocked: boolean) => {
         try {
-            console.log('Blocking user:', email);
             const response = await axiosAdminInstance.patch('/admin/blockandunblock', { email , isBlocked });
-            console.log('Block user response:', response);
-
             if (response.data.status === 201) {
                 const updatedUsers = users.map((user) => {
                     if (user.email === email) {
@@ -60,7 +55,7 @@ const UsersManagementTable: React.FC = () => {
                 setUsers(updatedUsers);
             }
         } catch (error) {
-            console.log('Error blocking user:', error);
+            console.log('Error blocking user:');
         }
     };
 

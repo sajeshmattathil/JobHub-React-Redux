@@ -25,7 +25,6 @@ function UserLogin() {
       const response = await axiosInstance.post("/login_submit", data);
 
       if (response?.data?.status === 201) {
-        console.log(email, "email");
 
         dispatch(userLogin({ userEmail: email }));
 
@@ -39,7 +38,6 @@ function UserLogin() {
         // setError(response?.data?.message);
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err :any) {
-      console.log(err.response.data.message,'err message');
       toast.success(err.response.data.message);    
       // setError(err.response.data.message)
     }

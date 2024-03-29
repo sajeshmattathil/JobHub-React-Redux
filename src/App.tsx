@@ -1,24 +1,24 @@
-import { Route,Routes,BrowserRouter as Router } from 'react-router-dom'
-import UserRoutes from './Routers/User/UserRoutes.js'
-import HRRoutes from './Routers/HR/HRRoutes'
-import AdminRoutes from './Routers/Admin/AdminRoutes'
-import { io } from 'socket.io-client';
-
+import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
+import UserRoutes from "./Routers/User/UserRoutes.js";
+import HRRoutes from "./Routers/HR/HRRoutes";
+import AdminRoutes from "./Routers/Admin/AdminRoutes";
+import { SocketProvider } from "./Providers/Socket.js";
+import ErrorBoundary from "./ErrorBoundary/ErrorBoundary.js";
 
 function App() {
-  const socket = io("http://localhost:3001");
-
   return (
-
-   <Router>
-      <Routes>
-        <Route path={'/*'} element = {<UserRoutes socket={socket}/>}/>
-        <Route path={'/hr*'} element = {<HRRoutes socket={socket}/>}/>
-        <Route path={'/admin*'} element = {<AdminRoutes/>}/>
-      </Routes>
-   </Router>
-
-  )
+    <Router>
+      <SocketProvider>
+        <ErrorBoundary>
+          <Routes>
+            <Route path={"/*"} element={<UserRoutes />} />
+            <Route path={"/hr/*"} element={<HRRoutes />} />
+            <Route path={"/admin/*"} element={<AdminRoutes />} />
+          </Routes>
+        </ErrorBoundary>
+      </SocketProvider>
+    </Router>
+  );
 }
 
-export default App
+export default App;
