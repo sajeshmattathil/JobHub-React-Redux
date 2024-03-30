@@ -15,19 +15,19 @@ function AdminRoutes() {
 
       <Routes>  
 
-        <Route path={'/usermanagement'} element = {<AdminPrivatedRoute component={UserManagement}/>}/>
+        <Route path={'/usermanagement'} element = {<UserManagement/>}/>
 
-        <Route path={'/'} element = {<AdminPrivatedRoute component={Home}/>}/>
+        <Route path={'/'} element = {<Home/>}/>
 
         <Route path={'/login'} element = {<Login/>}/>
 
-        <Route path={'/hrmanagement'} element = {<AdminPrivatedRoute component={HRManagement}/>}/>
+        <Route path={'/hrmanagement'} element = {< HRManagement/>}/>
 
-        <Route path={'/subscriptionManagement'} element = {<AdminPrivatedRoute component={Plans}/>}/>
+        <Route path={'/subscriptionManagement'} element = {< Plans/>}/>
 
-        <Route path={'/createNewPlan'} element = {<AdminPrivatedRoute component={CreateNewPlan}/>}/>
+        <Route path={'/createNewPlan'} element = {<CreateNewPlan/>}/>
 
-        <Route path={'/editPlan/:planId'} element = {<AdminPrivatedRoute component={EditPlans}/>}/>
+        <Route path={'/editPlan/:planId'} element = {<EditPlans/>}/>
 
       </Routes>
 
