@@ -102,6 +102,8 @@ const ViewJobDetails = () => {
       }
     };
     fetchJobData();
+  setShouldRender(null);
+
      return () => {
       setAppliedJob({
         isHRViewed: false,
@@ -111,6 +113,7 @@ const ViewJobDetails = () => {
       setJob(null);
     };
   }, [id,shouldRender]);
+
 
   const handleApplyJob = async () => {
     try {
@@ -145,6 +148,8 @@ const ViewJobDetails = () => {
       );
 
       console.log(followAndUnfollowHR.data, "followAndUnfollowHR");
+      setShouldRender('yes');
+
     } catch (error) {
       console.log("error in follow unfollow hr");
     }
@@ -163,7 +168,6 @@ const ViewJobDetails = () => {
     }
   };
 
-  console.log(isApplied,'isApplied')
   return (
     <>
       <div
