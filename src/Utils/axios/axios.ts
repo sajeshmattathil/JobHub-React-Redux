@@ -7,7 +7,7 @@ const adminToken: string | null  = localStorage.getItem("adminToken");
 function createAxiosInstance(token: string | null, role: string | null) {
   const instance = axios.create({
     // baseURL: 'https://job-hub.online'
-    baseURL: "http://localhost:3001",
+    baseURL: "http://localhost:3000",
   });
 
   if (token) {

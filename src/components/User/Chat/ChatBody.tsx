@@ -52,7 +52,7 @@ console.log(messages,'name')
       }
     };
     fetchPreviousChat();
-  }, [messages]);
+  }, [messages, userEmail]);
 
   const handleFile = async (fileUrl: string, fileName: string) => {
     try {

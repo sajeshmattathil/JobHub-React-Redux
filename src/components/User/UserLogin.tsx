@@ -38,7 +38,7 @@ function UserLogin() {
         // setError(response?.data?.message);
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err :any) {
-      toast.success(err.response.data.message);    
+      toast.success(err?.response?.data?.message);    
       // setError(err.response.data.message)
     }
   };
