@@ -1,7 +1,7 @@
 import  { useState } from "react";
-import upload from "../../../Utils/Cloudinary/cloudinary";
-import { useForm } from "react-hook-form";
-import { GrAttachment } from "react-icons/gr";
+// import upload from "../../../Utils/Cloudinary/cloudinary";
+// import { useForm } from "react-hook-form";
+// import { GrAttachment } from "react-icons/gr";
 import { useSocket } from "../../../Providers/Socket";
 // import { useParams } from "react-router-dom";
 // import FileUploadComponent from "../../FileUploadComponent/FileUploadComponent";
@@ -15,7 +15,7 @@ const ChatFooter = ({ recipient }: { recipient : string | null}) => {
   const [message, setMessage] = useState("");
   const [file, setFile] = useState<File | null>(null);
 
-  const { register } = useForm();
+  // const { register } = useForm();
   const {socket} = useSocket()
 
 
