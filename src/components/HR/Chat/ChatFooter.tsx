@@ -49,7 +49,7 @@ const ChatFooter = ({
   return (
     <div className="chat__footer">
       <form className="form">
-        <div style={{ margin: "3%" }}>
+        {/* <div style={{ margin: "3%" }}>
           <GrAttachment style={{ width: "300%", height: "100%" }} />
         </div>
         <input
@@ -67,7 +67,7 @@ const ChatFooter = ({
               if (fileUrl) setFile(fileUrl);
             }
           }}
-        />
+        /> */}
         {/* <FileUploadComponent  upload={upload} setFile={setFile} /> */}
 
         <input

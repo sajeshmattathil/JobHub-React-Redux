@@ -7,7 +7,7 @@ import { useSocket } from "../../../Providers/Socket";
 const VideoCall = () => {
   const { userId } = useParams();
 
-  const VURL = "http://localhost:5173/hr/videoCall";
+  const VURL = "https://jobshub-nine.vercel.app/hr/videoCall";
   const navigate = useNavigate();
   const [newMessage] = useState(`${VURL}/${userId}`);
   const HREmail = localStorage.getItem("HREmail");

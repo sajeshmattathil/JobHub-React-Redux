@@ -138,7 +138,7 @@ const ViewJobDetails = () => {
   const handleFollowHiringManager = async (HRId: string, value: string) => {
     try {
       // setShouldRender((prevState) => !prevState);
-
+console.log(hr)
       const followAndUnfollowHR = await axiosUserInstance.patch(
         `/followAndUnfollow/`,
         {
@@ -148,7 +148,10 @@ const ViewJobDetails = () => {
       );
 
       console.log(followAndUnfollowHR.data, "followAndUnfollowHR");
-      setShouldRender('yes');
+      // "Unfollow" : "follow+"
+      // if(value === Unfollow) {
+      //   const updateHr = hr?.followers.filter((user)=>)
+      // }
 
     } catch (error) {
       console.log("error in follow unfollow hr");
