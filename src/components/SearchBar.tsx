@@ -1,12 +1,10 @@
-import { useState } from "react";
+import {  useState } from "react";
 
 const SearchBar = ({ onSearchChange  } :{onSearchChange :(x: string,y: string)=>void}) => {
   const [option,setOption] = useState<string>('')
   const [value,setValue] = useState<string>('')
 
   const handleSearch = async () => {
-  
-
     onSearchChange(option.trim() ? option : 'location',value.trim());
   };
   return (
@@ -16,6 +14,7 @@ const SearchBar = ({ onSearchChange  } :{onSearchChange :(x: string,y: string)=>
         type="text"
         placeholder="Enter location / skill / job role..."
         onChange={((e)=>setValue(e.target.value))}
+        value={value}
       />
        <select
                 style={{
@@ -44,12 +43,14 @@ const styles = {
     display: "flex",
     alignItems: "center",
     width: "70%",
+    height:'20%',
     margin: "auto",
     border: "1px solid #ccc",
     borderRadius: "20px",
     padding: "5px 10px",
     backgroundColor: "#fff",
     boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.1)",
+    marginLeft:'17%'
   },
   input: {
     flex: 1,
@@ -64,7 +65,7 @@ const styles = {
     color: "#fff",
     border: "none",
     borderRadius: "20px",
-    padding: "10px 20px",
+    padding: "15px 20px",
     marginLeft: "10px",
     cursor: "pointer",
     fontSize: "16px",

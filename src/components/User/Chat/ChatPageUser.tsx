@@ -3,19 +3,22 @@ import ChatBar from "./ChatBar";
 import ChatBody from "./ChatBody";
 import ChatFooter from "./ChatFooter";
 import { useSocket } from "../../../Providers/Socket";
+import { useParams } from "react-router-dom";
 
 const ChatPageUser = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const lastMessageRef = useRef<HTMLDivElement>(null);
-  const recipientRef = useRef<string | null>('');
 
   const { socket } = useSocket();
+  const {recipient} = useParams()
+
 
   interface ChatMessage {
     time: Date;
     name: string | null;
     text: string;
     recipient1: string;
+    recipient2: string;
     id: string;
     socketID: string;
   }
@@ -23,7 +26,9 @@ const ChatPageUser = () => {
   useEffect(() => {
     if (socket) {
       socket.on("messageResponse", (data: ChatMessage) => {
-        setMessages([...messages, data]);
+        console.log(data,'data');
+        
+       if(data.recipient2 === localStorage.getItem('userEmail')) setMessages([...messages, data]);
       });
     }
   }, [socket, messages]);
@@ -40,6 +45,8 @@ const ChatPageUser = () => {
   useEffect(() => {
     lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  console.log(recipient,'chatpage >>> user')
   return (
     <div className="chat">
       <ChatBar />
@@ -47,8 +54,9 @@ const ChatPageUser = () => {
         <ChatBody
           messages={messages}
           lastMessageRef={lastMessageRef}
+          recipient={recipient}
         />
-        <ChatFooter recipient={recipientRef.current} />
+        <ChatFooter recipient={recipient} />
       </div>
     </div>
   );

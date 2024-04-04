@@ -4,9 +4,7 @@ import { Socket, io } from "socket.io-client";
 interface SocketContextType {
   socket: Socket | null;
 }
-
 const SocketContext = createContext<SocketContextType>({ socket: null });
-
 // eslint-disable-next-line react-refresh/only-export-components
 export const useSocket = () => {
   return useContext(SocketContext);
@@ -17,7 +15,8 @@ type SocketProviderProps = {
 
 export const SocketProvider = (props: SocketProviderProps) => {
   const socket = useMemo(() => io("https://job-hub.online"), []);
-  
+  // const socket = useMemo(() => io("http://localhost:3000"), []);
+
   const contextValue: SocketContextType = {
     socket: socket,
   };

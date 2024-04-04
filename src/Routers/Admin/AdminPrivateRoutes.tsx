@@ -16,6 +16,7 @@ const AdminPrivatedRoute: React.FC<RouteProps> = ({ component: Component }) => {
           try {
             
             const response = await axiosAdminInstance.get("/admin/getAdmin");
+            console.log(response,'resssss>>>>>');
             
             if (response.data.status === 201)
             adminRef.current = response.data.admin.email;
@@ -32,7 +33,9 @@ const AdminPrivatedRoute: React.FC<RouteProps> = ({ component: Component }) => {
       if (loading) {
         return <div>Loading...</div>; 
     }
-    if (adminRef.current && !adminRef.current.trim()) {
+    console.log(adminRef.current,'currrrr');
+    
+    if (!adminRef.current && !adminRef.current?.trim()) {
 
         return <Navigate to="/admin/login" />;
     }

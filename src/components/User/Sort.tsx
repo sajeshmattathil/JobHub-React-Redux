@@ -6,7 +6,7 @@ const sortValue = e.target.value
     }
   return (
     <div style={{display : 'flex'}}>
-       
+      
          <select
                 style={{
                   width: "20%",
@@ -22,7 +22,7 @@ const sortValue = e.target.value
                 onChange={handleSort}
               > 
                 <option value="old-new">Time (Old - New)</option>
-                <option value="new-old">Time (New - Old)</option>
+                <option value="relevance">Relevance</option>
 
                 {/* <option value="Relevance">Relevance</option> */}
               </select>

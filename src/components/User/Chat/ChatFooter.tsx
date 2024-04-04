@@ -6,7 +6,7 @@ import { useSocket } from "../../../Providers/Socket";
 // import { useParams } from "react-router-dom";
 // import FileUploadComponent from "../../FileUploadComponent/FileUploadComponent";
 
-const ChatFooter = ({ recipient }: { recipient : string | null}) => {
+const ChatFooter = ({ recipient }: { recipient : string | undefined}) => {
   interface File {
     url: string;
     size: number;
@@ -28,11 +28,12 @@ const ChatFooter = ({ recipient }: { recipient : string | null}) => {
 
    if(socket){
     if ( message.trim() || file?.url.trim()) {
+      console.log(recipient,'recip>>>>user')
       socket.emit("message", {
         text: message,
         time : Date.now(),
         file: file?.url.trim() ? file : {url :'',size : 0,fileName : ''},
-        name: localStorage.getItem("userEmail"),
+        name: localStorage.getItem("userName")?.split('@')[0],
         recipient1 : recipient,
         recipient2 : userEmail,
         id: `${socket.id}${Math.random()}`,
@@ -45,14 +46,15 @@ const ChatFooter = ({ recipient }: { recipient : string | null}) => {
 
     // return <div className="chat__footer">...</div>;
   };
+  if(recipient !== 'showMessages')
   return (
     <div className="chat__footer">
       <form className="form" onSubmit={handleSendMessage}>
         {/* <div style={{ margin: "3%" }}>
           <GrAttachment style={{ width: "300%", height: "100%" }} />
-        </div>
+        </div> */}
 
-        <input
+        {/* <input
           type="file"
           id=""
           accept=".pdf"

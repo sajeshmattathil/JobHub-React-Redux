@@ -35,7 +35,7 @@ function UserRoutes() {
             />
             <Route path="/chatSignin" element={<ChatHomeUser />} />
             <Route
-              path="/chatPage/:id"
+              path="/chatPage/:recipient"
               element={<ChatPageUser/>}
             />
            

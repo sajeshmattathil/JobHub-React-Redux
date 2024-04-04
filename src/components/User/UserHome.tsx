@@ -4,6 +4,8 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { axiosInstance } from "../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface SearchValue {
   option : string;
@@ -11,7 +13,6 @@ interface SearchValue {
 }
 const UserHome  = ({searchData ,sortData } :{ searchData :SearchValue | null, sortData : string} ) => {
  
-  
   const navigate = useNavigate();
   const [pageNumber, setPage] = useState<number>(1);
   const [totalPages, setTotalpages] = useState<number>(1);
@@ -19,15 +20,14 @@ const UserHome  = ({searchData ,sortData } :{ searchData :SearchValue | null, so
   const [msg, setMsg] = useState<string>("");
 
   interface jobData{
+    salaryScale: string;
     _id: string;
     jobRole: string;
 
     description: string;
     qualification: [string];
-    salaryFrom: string;
-    salaryTo: string;
     company: string;
-    createdAt: Date | number;
+    createdAt: Date ;
     locations: [string];
   }
 
@@ -45,7 +45,7 @@ const UserHome  = ({searchData ,sortData } :{ searchData :SearchValue | null, so
           setJobs(data.jobData);
           setMsg("jobs found");
         } else {
-          setMsg("");
+      toast.success("No jobs found"); 
         }
       } catch (error) {
         console.log("Something went wrong,try again");
@@ -61,14 +61,15 @@ const UserHome  = ({searchData ,sortData } :{ searchData :SearchValue | null, so
   
   useEffect(()=>{
    if(sortData == 'old-new') {
+    
     const jobsSorted = jobs.reverse()
     setJobs(jobsSorted)
   }else {
-    const jobsSorted = jobs
+    console.log('');
+    const jobsSorted = jobs.filter((job)=>job?.salaryScale.split('')[0] >= '3')
     setJobs(jobsSorted)
   }
- 
-  },[jobs, sortData])
+  },[ sortData])
 
 const handleViewJob = (id : string)=>{
   return (_event: React.MouseEvent<HTMLDivElement>) => {
@@ -80,6 +81,8 @@ const handleViewJob = (id : string)=>{
   if (msg != "") {
     return (
       <>
+      <ToastContainer />
+
        <div className="Container"  style={{
         display:'flex',
       marginLeft : '6%'

@@ -32,8 +32,7 @@ const HrHome = () => {
       try {
         
         const fetchedData = await axiosHRInstance.get(`/hr/getJobs/${HREmail}?jobsPerPage=3&page=${pageNumber}`);
-
-
+       console.log(fetchedData,'hrhome')
         if (fetchedData.data.status === 201) {
           const data = fetchedData.data;
           const pages  =Math.ceil(data.totalPages / 5);

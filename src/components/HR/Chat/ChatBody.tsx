@@ -26,7 +26,7 @@ const ChatBody: React.FC<ChatBodyProps> = ({
   recipient,
   lastMessageRef,
 }) => {
-
+console.log(messages[messages.length-1],'bodyyyy')
   const [previousChat, setPreviousChat] = useState<ChatMessage[] | null>(null);
   const navigate = useNavigate();
   const HREmail = localStorage.getItem("HREmail");
@@ -90,6 +90,8 @@ const ChatBody: React.FC<ChatBodyProps> = ({
   return (
     <>
       <header className="chat__mainHeader">
+     {recipient && <p>{recipient.split("@")[0]}</p>}
+
         {HREmail && <h6 style={{ fontStyle: "italic" }}>Online</h6>}
 
         <button className="leaveChat__btn" onClick={handleLeaveChat}>

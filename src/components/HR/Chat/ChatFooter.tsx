@@ -30,6 +30,8 @@ const ChatFooter = ({
 
    if(socket){
     if (message.trim() || file?.url.trim()) {
+      console.log(recipient,'recip>>>hr')
+
       socket.emit("message", {
         text: message,
         time: Date.now(),

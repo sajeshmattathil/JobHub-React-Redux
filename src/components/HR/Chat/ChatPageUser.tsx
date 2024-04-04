@@ -5,7 +5,6 @@ import ChatFooter from "./ChatFooter";
 import { useParams } from "react-router-dom";
 import { useSocket } from "../../../Providers/Socket";
 
-
 const ChatPageUser = () => {
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const lastMessageRef = useRef<HTMLDivElement>(null)
@@ -13,6 +12,8 @@ const ChatPageUser = () => {
       time:Date;
         text: string; 
         name: string | null; 
+        recipient1:string;
+        recipient2 :string;
         id: string;
         socketID: string; 
     }
@@ -20,8 +21,15 @@ const ChatPageUser = () => {
   const {recipient} = useParams()
     
     useEffect(() => {
-    if(socket)  socket.on('messageResponse', (data :ChatMessage) => setMessages([...messages, data]));
-    }, [socket, messages]);
+    if(socket)  socket.on('messageResponse', (data :ChatMessage) =>{
+      console.log(data,recipient,'data>>hrrrrrr')
+    if(data.recipient2 === recipient) {
+      console.log('helloooo')
+      setMessages([...messages, data])
+    }
+    } 
+    );
+    }, [socket, messages, recipient]);
   
     useEffect(()=>{
       lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' })

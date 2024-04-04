@@ -35,11 +35,9 @@ function UserLogin() {
         navigate("/");
       } else if (response?.data?.status === 400)
       toast.success(response?.data?.message); 
-        // setError(response?.data?.message);
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err :any) {
       toast.success(err?.response?.data?.message);    
-      // setError(err.response.data.message)
     }
   };
 

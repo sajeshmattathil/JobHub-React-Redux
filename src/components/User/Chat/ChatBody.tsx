@@ -14,21 +14,23 @@ interface ChatMessage {
   text: string;
   file?: File | null;
   name: string | null;
+  recipient1: string;
+  recipient2: string;
   id: string;
   socketID: string;
 }
 interface ChatBodyProps {
   messages: ChatMessage[];
   lastMessageRef: React.RefObject<HTMLDivElement>;
+  recipient : string | undefined
+  ;
 }
-const ChatBody: React.FC<ChatBodyProps> = ({
-  messages,
-  lastMessageRef,
-}) => {
+
+const ChatBody: React.FC<ChatBodyProps> = ({ messages, lastMessageRef ,recipient}) => {
   const navigate = useNavigate();
   const [previousChat, setPreviousChat] = useState<ChatMessage[] | null>(null);
   // const recipientRef = useRef<string | null>('');
-
+console.log(recipient,'recpnt')
   const handleLeaveChat = () => {
     localStorage.removeItem("userName");
     navigate("/");
@@ -38,21 +40,21 @@ const ChatBody: React.FC<ChatBodyProps> = ({
 
   useEffect(() => {
     const fetchPreviousChat = async () => {
-console.log(messages,'name')
-      if (userEmail && messages.length) {
+      console.log(messages, "name");
+      if (userEmail && recipient) {
         const response = await axiosUserInstance.get(
-          `/getChat?recipient1=${messages[0].name}&recipient2=${userEmail}`
+          `/getChat?recipient1=${recipient}&recipient2=${userEmail}`
         );
-        console.log(response,'prev --msag --user');
-        
-        if (response.data.status === 201)
-        console.log(response.data.chatData,'prev -user');
+        console.log(response, "prev --msag --user");
 
-          setPreviousChat(response.data.chatData);
+        if (response.data.status === 201)
+          console.log(response.data.chatData, "prev -user");
+
+        setPreviousChat(response.data.chatData);
       }
     };
     fetchPreviousChat();
-  }, [messages, userEmail]);
+  }, [recipient]);
 
   const handleFile = async (fileUrl: string, fileName: string) => {
     try {
@@ -74,7 +76,7 @@ console.log(messages,'name')
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     } catch (error) {
-      console.log( "error happened ,try again");
+      console.log("error happened ,try again");
     }
   };
 
@@ -85,11 +87,10 @@ console.log(messages,'name')
     const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
     return `${hours}:${formattedMinutes}`;
   };
-
   return (
     <>
       <header className="chat__mainHeader">
-        <p>Hangout with Colleagues</p>
+      {recipient && <p>{recipient.split("@")[0]}</p>}
         {userEmail && <h6 style={{ fontStyle: "italic" }}>Online</h6>}
         <button className="leaveChat__btn" onClick={handleLeaveChat}>
           LEAVE CHAT
@@ -99,7 +100,7 @@ console.log(messages,'name')
       <div className="message__container">
         {previousChat &&
           previousChat.map((message: ChatMessage) =>
-            message.name === localStorage.getItem("userEmail") ? (
+            message.recipient2 == localStorage.getItem('userEmail') ? (
               <div className="message__chats" key={message.id}>
                 <p className="sender__name">You</p>
                 <div className="message__sender">
@@ -132,7 +133,8 @@ console.log(messages,'name')
                 {message.file?.url.trim() && (
                   <div className="message__recipient">
                     <p>
-                      {message.file.fileName}{" "}
+                      {message.file.fileName}
+
                       <MdOutlineDownloadForOffline
                         style={{ width: "9%", height: "9%", cursor: "pointer" }}
                         onClick={() => {
@@ -151,7 +153,7 @@ console.log(messages,'name')
           )}
 
         {messages.map((message: ChatMessage) =>
-          message.name === localStorage.getItem("userEmail") ? (
+          message.recipient2 === localStorage.getItem('userEmail') ? (
             <div className="message__chats" key={message.id}>
               <p className="sender__name">You</p>
 
