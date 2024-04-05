@@ -18,7 +18,6 @@ const VideoCall = () => {
   
      const appID = import.meta.env.VITE_appID;
     const serverSecret = import.meta.env.VITE_serverSecret;
-    console.log(appID,serverSecret,'zigoC')
     const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
       1293873590,
       String(serverSecret),
