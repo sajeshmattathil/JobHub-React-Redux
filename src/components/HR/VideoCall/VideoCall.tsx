@@ -26,9 +26,7 @@ const VideoCall = () => {
       v4()
     );
     console.log(kitToken,'kittoken')
-    // const zc = ZegoUIKitPrebuilt.create(kitToken);
-    const zc = ZegoUIKitPrebuilt.create('04AAAAAGYRBzgAEDExOGp5Z2x0azhqd25lb20AoJa6ZjmR8jOMO0uDwb1vN5heQ/Kzx3yF+QVnfA24TKm1rJBdqq69LwTAsVTmONi6FmB6mTFjEAjTcHq1p4vvikSfE9kivnwp4xCuaVu+YvyzCAtbpUAUy6uXw9IGkNS3Cw2F3vINyjqQx7TXFagJpKxiw5C/8D7u3C57b7F0z3NbtXAC86FvNLrc35csRNDeByGjHs+LT3YI3YN8YKkVjtg=');
-
+    const zc = ZegoUIKitPrebuilt.create(kitToken);
     zc.joinRoom({
       container: element,
       scenario: {
