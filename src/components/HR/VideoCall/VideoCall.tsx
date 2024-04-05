@@ -16,11 +16,11 @@ const VideoCall = () => {
 
   const myMeeting = async (element: HTMLDivElement) => {
   
-     const appID = import.meta.env.VITE_appID;
-    const serverSecret = import.meta.env.VITE_serverSecret;
+    //  const appID = import.meta.env.VITE_appID;
+    // const serverSecret = import.meta.env.VITE_serverSecret;
     const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
       1293873590,
-      String(serverSecret),
+      'a5f7e809758cd1c9e8e860c8c554f44b',
       String(userId),
       Date.now().toString(),
       v4()
