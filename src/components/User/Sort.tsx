@@ -20,11 +20,11 @@ const sortValue = e.target.value
                   marginLeft : '60%'
                 }}
                 onChange={handleSort}
+                defaultValue={'relevance'}
               > 
-                <option value="old-new">Time (Old - New)</option>
-                <option value="relevance">Relevance</option>
+                <option value="old-new">Time (Older)</option>
+                <option value="relevance" selected>Relevance</option>
 
-                {/* <option value="Relevance">Relevance</option> */}
               </select>
     </div>
   )

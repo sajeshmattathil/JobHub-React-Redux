@@ -61,13 +61,12 @@ const UserHome  = ({searchData ,sortData } :{ searchData :SearchValue | null, so
   
   useEffect(()=>{
    if(sortData == 'old-new') {
-    
-    const jobsSorted = jobs.reverse()
+    console.log(jobs[0].createdAt)
+    const jobsSorted = [...jobs].sort((a,b)=>new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
     setJobs(jobsSorted)
   }else {
-    console.log('');
-    const jobsSorted = jobs.filter((job)=>job?.salaryScale.split('')[0] >= '3')
-    setJobs(jobsSorted)
+    const filteredJobs = jobs.filter(job => parseInt(job.salaryScale.split('')[0]) >= 5); 
+    setJobs(filteredJobs);
   }
   },[ sortData])
 

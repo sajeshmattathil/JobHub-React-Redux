@@ -22,7 +22,6 @@ console.log(tokenId,'token')
       }
     );
   }
-
   return instance;
 }
 const axiosUserInstance = createAxiosInstance("userToken", "user");

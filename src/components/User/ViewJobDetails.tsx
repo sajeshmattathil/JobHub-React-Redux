@@ -25,7 +25,7 @@ const ViewJobDetails = () => {
   }
 
   const [job, setJob] = useState<Job | null>(null);
-  const [hr, setHR] = useState<HRData | null>(null);
+  const [hr, setHR] = useState<HRData | null >(null);
   const [appliedJob, setAppliedJob] = useState<AppliedJob>({
     isHRViewed: false,
     isReplayed: false,
@@ -148,10 +148,18 @@ console.log(hr)
       );
 
       console.log(followAndUnfollowHR.data, "followAndUnfollowHR");
-      // "Unfollow" : "follow+"
-      // if(value === Unfollow) {
-      //   const updateHr = hr?.followers.filter((user)=>)
-      // }
+    
+      if (followAndUnfollowHR.status === 200 && hr) {
+        if (value === 'follow+' && userEmail && hr) {
+            const updatedHR: HRData = { ...hr, followers: [...hr.followers, userEmail] };
+            setHR(updatedHR);
+        } else {
+            const updatedFollowers = hr.followers.filter(user => user !== userEmail) ||[];
+            const updatedHR: HRData = { ...hr, followers: updatedFollowers };
+            setHR(updatedHR);
+        }
+    }
+     
 
     } catch (error) {
       console.log("error in follow unfollow hr");
