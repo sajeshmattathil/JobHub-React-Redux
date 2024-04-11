@@ -100,12 +100,13 @@ console.log(recipient,'recpnt')
       <div className="message__container">
         {previousChat &&
           previousChat.map((message: ChatMessage) =>
-            message.recipient2 == localStorage.getItem('userEmail') ? (
+            message.name == localStorage.getItem('userEmail') ? (
               <div className="message__chats" key={message.id}>
                 <p className="sender__name">You</p>
                 <div className="message__sender">
                   <p>{message.text}</p>
                 </div>
+
                 {message.file?.url.trim() && (
                   <div className="message__sender">
                     <p style={{ fontSize: "1.1rem" }}>
@@ -122,11 +123,14 @@ console.log(recipient,'recpnt')
                       />
                     </p>
                   </div>
+                  
                 )}
+              <p className="sender__name">{formatTime(message.time)}</p>
+
               </div>
             ) : (
               <div className="message__chats" key={message.id}>
-                <p>{message.name}</p>
+                <p>{message.name?.split('@')[0]}</p>
                 <div className="message__recipient" ref={lastMessageRef}>
                   <p>{message.text}</p>
                 </div>
@@ -148,19 +152,20 @@ console.log(recipient,'recpnt')
                     </p>
                   </div>
                 )}
+              <p>{formatTime(message.time)}</p>
+
               </div>
             )
           )}
 
         {messages.map((message: ChatMessage) =>
-          message.recipient2 === localStorage.getItem('userEmail') ? (
+          message.name === localStorage.getItem('userEmail') ? (
             <div className="message__chats" key={message.id}>
               <p className="sender__name">You</p>
 
               <div className="message__sender">
                 {message.text && <p>{message.text}</p>}
               </div>
-              <p className="sender__name">{formatTime(message.time)}</p>
 
               {message.file?.url.trim() && (
                 <div className="message__sender">
@@ -179,14 +184,16 @@ console.log(recipient,'recpnt')
                   </p>
                 </div>
               )}
+              <p className="sender__name">{formatTime(message.time)}</p>
+
             </div>
           ) : (
             <div className="message__chats" key={message.id}>
-              {message.text.trim() && <p>{message.name}</p>}
+              {message.text.trim() && <p>{message.name?.split('@')[0]}</p>}
               <div className="message__recipient">
                 <p>{message.text}</p>
               </div>
-              <p className="message__chats">{formatTime(message.time)}</p>
+              <p >{formatTime(message.time)}</p>
             </div>
           )
         )}

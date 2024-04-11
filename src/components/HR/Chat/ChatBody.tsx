@@ -124,10 +124,12 @@ console.log(messages[messages.length-1],'bodyyyy')
                     </p>
                   </div>
                 )}
+                <p className="sender__name">{formatTime(message.time)}</p>
+
               </div>
             ) : (
               <div className="message__chats" key={message.id}>
-                <p>{message.name}</p>
+                <p>{message.name?.split('@')[0]}</p>
                 <div className="message__recipient" ref={lastMessageRef}>
                   <p>{message.text}</p>
                 </div>
@@ -148,6 +150,8 @@ console.log(messages[messages.length-1],'bodyyyy')
                     </p>
                   </div>
                 )}
+                <p className="message__chats">{formatTime(message.time)}</p>
+
               </div>
             )
           )}
@@ -182,7 +186,7 @@ console.log(messages[messages.length-1],'bodyyyy')
               </div>
             ) : (
               <div className="message__chats" key={message.id}>
-                <p>{message.name}</p>
+                <p>{message.name?.split('@')[0]}</p>
                 <div className="message__recipient" ref={lastMessageRef}>
                   <p>{message.text}</p>
                 </div>

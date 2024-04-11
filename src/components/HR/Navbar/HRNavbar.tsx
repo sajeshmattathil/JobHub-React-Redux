@@ -26,7 +26,6 @@ const HRNavbar = () => {
   const recipientRef = useRef<string>();
 
   useEffect(() => {
-    console.log(socket, "socket");
     if (socket) {
       const handleMessageResponse = (data: ChatMessage) => {
         if (data.recipient1 === localStorage.getItem("HREmail")) {

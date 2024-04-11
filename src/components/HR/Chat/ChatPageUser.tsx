@@ -37,7 +37,7 @@ const ChatPageUser = () => {
     
   return (
     <div className="chat">
-      <ChatBar />
+      <ChatBar messages={messages} />
       <div className="chat__main">
         <ChatBody messages={messages} recipient = {recipient} lastMessageRef={lastMessageRef} />
         <ChatFooter  recipient = {recipient}/>

@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { axiosInstance, axiosUserInstance } from "../../Utils/axios/axios";
 import { CiLocationOn } from "react-icons/ci";
@@ -25,14 +25,14 @@ const ViewJobDetails = () => {
   }
 
   const [job, setJob] = useState<Job | null>(null);
-  const [hr, setHR] = useState<HRData | null >(null);
+  const [hr, setHR] = useState<HRData | null>(null);
   const [appliedJob, setAppliedJob] = useState<AppliedJob>({
     isHRViewed: false,
     isReplayed: false,
     isShortlisted: false,
   });
-  const [isApplied,setIsApplied] = useState<string>('')
-  const [shouldRender, setShouldRender] = useState<string| null>(null);
+  const [isApplied, setIsApplied] = useState<string>("");
+  const [shouldRender, setShouldRender] = useState<string | null>(null);
   // const [isApplied, setIsApplied] = useState<string>("");
 
   const userEmail = localStorage.getItem("userEmail");
@@ -87,14 +87,15 @@ const ViewJobDetails = () => {
 
         // console.log(job,'job?.appliedUsers')
 
-        const checkApplied = jobData?.data?.jobDataFetched[0]?.appliedUsers.filter(
-          (user: { email: string | null; }) => user.email === userEmail
-        );
-        console.log(checkApplied,'checkApplied')
-        if (checkApplied?.length){
+        const checkApplied =
+          jobData?.data?.jobDataFetched[0]?.appliedUsers.filter(
+            (user: { email: string | null }) => user.email === userEmail
+          );
+        console.log(checkApplied, "checkApplied");
+        if (checkApplied?.length) {
           setIsApplied(checkApplied[0].email);
-        } 
-        
+        }
+
         setHR(jobData?.data?.jobDataFetched[0]?.jobData[0]);
         setAppliedJob(jobData?.data?.jobDataFetched[0]?.appliedData[0]);
       } catch (error) {
@@ -102,9 +103,9 @@ const ViewJobDetails = () => {
       }
     };
     fetchJobData();
-  setShouldRender(null);
+    setShouldRender(null);
 
-     return () => {
+    return () => {
       setAppliedJob({
         isHRViewed: false,
         isReplayed: false,
@@ -112,8 +113,7 @@ const ViewJobDetails = () => {
       });
       setJob(null);
     };
-  }, [id,shouldRender]);
-
+  }, [id, shouldRender]);
 
   const handleApplyJob = async () => {
     try {
@@ -124,13 +124,13 @@ const ViewJobDetails = () => {
           appliedAt: Date.now(),
         });
         if (applyJob.data.status === 201) {
-          console.log('applied succesfully')
+          console.log("applied succesfully");
           setAppliedJob(applyJob.data.appliedJob);
-          setShouldRender('yes');
+          setShouldRender("yes");
         }
       }
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error:any) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       console.log(error.response.data.message);
     }
   };
@@ -138,7 +138,7 @@ const ViewJobDetails = () => {
   const handleFollowHiringManager = async (HRId: string, value: string) => {
     try {
       // setShouldRender((prevState) => !prevState);
-console.log(hr)
+      console.log(hr);
       const followAndUnfollowHR = await axiosUserInstance.patch(
         `/followAndUnfollow/`,
         {
@@ -148,19 +148,21 @@ console.log(hr)
       );
 
       console.log(followAndUnfollowHR.data, "followAndUnfollowHR");
-    
-      if (followAndUnfollowHR.status === 200 && hr) {
-        if (value === 'follow+' && userEmail && hr) {
-            const updatedHR: HRData = { ...hr, followers: [...hr.followers, userEmail] };
-            setHR(updatedHR);
-        } else {
-            const updatedFollowers = hr.followers.filter(user => user !== userEmail) ||[];
-            const updatedHR: HRData = { ...hr, followers: updatedFollowers };
-            setHR(updatedHR);
-        }
-    }
-     
 
+      if (followAndUnfollowHR.status === 200 && hr) {
+        if (value === "follow+" && userEmail && hr) {
+          const updatedHR: HRData = {
+            ...hr,
+            followers: [...hr.followers, userEmail],
+          };
+          setHR(updatedHR);
+        } else {
+          const updatedFollowers =
+            hr.followers.filter((user) => user !== userEmail) || [];
+          const updatedHR: HRData = { ...hr, followers: updatedFollowers };
+          setHR(updatedHR);
+        }
+      }
     } catch (error) {
       console.log("error in follow unfollow hr");
     }
@@ -175,7 +177,7 @@ console.log(hr)
         navigate("/subscriptionPlans");
       }
     } catch (error) {
-      console.log('error in sending message');
+      console.log("error in sending message");
     }
   };
 
@@ -268,12 +270,11 @@ console.log(hr)
                         color: "green",
                         border: "2px solid green",
                         borderRadius: ".5rem",
-                        width: "25%",
+                        maxWidth: "100px",
                         padding: "1%",
                         overflow: "auto",
                       }}
                     >
-                    
                       <TiTickOutline /> Applied
                     </div>
                   ) : (
@@ -301,27 +302,30 @@ console.log(hr)
             </div>
           </div>
         )}
-        <div
-          className="apply"
-          style={{
-            backgroundColor: "#f5f5f5",
-            padding: "20px",
-            borderRadius: "15px",
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-            marginBottom: "20px",
-            width: "20%",
-            justifyContent: "center",
-            alignContent: "center",
-          }}
-        >
-          { isApplied.trim() &&  (
+
+        {isApplied.trim() && (
+          <div
+            className="apply"
+            style={{
+              backgroundColor: "#f5f5f5",
+              padding: "20px",
+              borderRadius: "15px",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+              marginBottom: "20px",
+              display: "flex", // Ensure flex properties work properly
+              justifyContent: "center",
+              alignItems: "center", // Align items vertically
+            }}
+          >
             <Timeline position="left">
               <TimelineItem>
                 <TimelineSeparator>
                   <TimelineDot color={appliedJob ? "success" : "primary"} />
                   <TimelineConnector />
                 </TimelineSeparator>
-                <TimelineContent>Job applied</TimelineContent>
+                <TimelineContent style={{ flex: 1 }}>
+                  <div style={{ maxWidth: "100px" }}>Job applied</div>
+                </TimelineContent>
               </TimelineItem>
               <TimelineItem>
                 <TimelineSeparator>
@@ -330,7 +334,9 @@ console.log(hr)
                   />
                   <TimelineConnector />
                 </TimelineSeparator>
-                <TimelineContent>HR viewed application</TimelineContent>
+                <TimelineContent style={{ flex: 1 }}>
+                <div style={{ maxWidth: "60px" }}> HR viewed application</div>
+                </TimelineContent>
               </TimelineItem>
               <TimelineItem>
                 <TimelineSeparator>
@@ -339,7 +345,10 @@ console.log(hr)
                   />
                   <TimelineConnector />
                 </TimelineSeparator>
-                <TimelineContent>Shortlisted</TimelineContent>
+                <TimelineContent style={{ flex: 1 }}>
+                <div style={{ maxWidth: "60px" }}>Shortlisted</div>
+                
+                </TimelineContent>
               </TimelineItem>
               <TimelineItem>
                 <TimelineSeparator>
@@ -347,11 +356,13 @@ console.log(hr)
                     color={appliedJob.isReplayed ? "success" : "primary"}
                   />
                 </TimelineSeparator>
-                <TimelineContent>Get response</TimelineContent>
+                <TimelineContent style={{ flex: 1 }}>
+                <div style={{ maxWidth: "60px" }}>Get response</div>
+                </TimelineContent>
               </TimelineItem>
             </Timeline>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
       <div
@@ -420,7 +431,7 @@ console.log(hr)
                         padding: "1%",
                         cursor: "pointer",
                       }}
-                      onClick={()=>handleSendMessage(hr.email)}
+                      onClick={() => handleSendMessage(hr.email)}
                     >
                       Send Message
                     </button>

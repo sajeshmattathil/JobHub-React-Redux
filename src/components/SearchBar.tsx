@@ -1,10 +1,26 @@
-import {  useState } from "react";
+import {  ChangeEvent, useState } from "react";
 
 const SearchBar = ({ onSearchChange  } :{onSearchChange :(x: string,y: string)=>void}) => {
   const [option,setOption] = useState<string>('')
   const [value,setValue] = useState<string>('')
 
-  const handleSearch = async () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let timeOut : any
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>)=>{
+    try {
+      clearTimeout(timeOut)
+      timeOut = setTimeout(() => {
+        handleSearch(e.target.value)
+      }, 1000);
+
+    } catch (error) {
+      console.log('Error in searching');
+      
+    }
+  }
+
+  const handleSearch = async (value: string) => {
     onSearchChange(option.trim() ? option : 'location',value.trim());
   };
   return (
@@ -13,7 +29,9 @@ const SearchBar = ({ onSearchChange  } :{onSearchChange :(x: string,y: string)=>
         style={styles.input}
         type="text"
         placeholder="Enter location / skill / job role..."
-        onChange={((e)=>setValue(e.target.value))}
+        onChange={((e)=>{setValue(e.target.value)
+          handleChange(e)
+        })}
         value={value}
       />
        <select
@@ -33,7 +51,7 @@ const SearchBar = ({ onSearchChange  } :{onSearchChange :(x: string,y: string)=>
                 <option value="jobType">Job Type</option>
                 <option value="skills">Skill</option>
               </select>
-      <button style={styles.button} onClick = {handleSearch}>Search</button>
+      <button style={styles.button} >Search</button>
     </div>
   );
 };

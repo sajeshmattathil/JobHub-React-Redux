@@ -14,18 +14,18 @@ const ChatFooter = ({ recipient }: { recipient : string | undefined}) => {
   }
   const [message, setMessage] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  const [hide,setHide] = useState<boolean>(false)
 
   // const { register } = useForm();
   const {socket} = useSocket()
-
+if(recipient == 'showMessages')setHide(true)
+else setHide(false)
 
   const handleSendMessage = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    // console.log({ userName: localStorage.getItem('userName'), message });
     setMessage("");
     setFile(null);
     const userEmail = localStorage.getItem("userEmail")
-
    if(socket){
     if ( message.trim() || file?.url.trim()) {
       console.log(recipient,'recip>>>>user')
@@ -33,7 +33,7 @@ const ChatFooter = ({ recipient }: { recipient : string | undefined}) => {
         text: message,
         time : Date.now(),
         file: file?.url.trim() ? file : {url :'',size : 0,fileName : ''},
-        name: localStorage.getItem("userName")?.split('@')[0],
+        name: localStorage.getItem("userEmail"),
         recipient1 : recipient,
         recipient2 : userEmail,
         id: `${socket.id}${Math.random()}`,
@@ -49,7 +49,9 @@ const ChatFooter = ({ recipient }: { recipient : string | undefined}) => {
   if(recipient !== 'showMessages')
   return (
     <div className="chat__footer">
-      <form className="form" onSubmit={handleSendMessage}>
+    
+      {!hide &&<form className="form" onSubmit={handleSendMessage}>
+   
         {/* <div style={{ margin: "3%" }}>
           <GrAttachment style={{ width: "300%", height: "100%" }} />
         </div> */}
@@ -79,7 +81,9 @@ const ChatFooter = ({ recipient }: { recipient : string | undefined}) => {
           onChange={(e) => setMessage(e.target.value)}
         />
         <button className="sendBtn">SEND</button>
-      </form>
+  
+      </form>}
+  
     </div>
   );
 };

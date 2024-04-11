@@ -17,7 +17,8 @@ const sortValue = e.target.value
                   color: "#333",
                   fontSize: "16px",
                   marginTop : '5%',
-                  marginLeft : '60%'
+                  marginLeft : '60%',
+                  cursor:'pointer'
                 }}
                 onChange={handleSort}
                 defaultValue={'relevance'}

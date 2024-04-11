@@ -1,60 +1,224 @@
-.App {
-    font-family: Arial, sans-serif;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
+.edit-profile {
+  font-family: Arial, sans-serif;
+  max-width: 90%;
+  height: auto;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  margin-bottom: 10%;
+}
+.field {
+  width: 50%;
+  height: 10vh;
+  background-color: white;
+  margin: 1%;
+}
+.field label {
+  font-size: 1.5rem;
+  width: 50%;
+}
+.field input {
+  font-size: 1.3rem;
+}
+.skill-field {
+  width: 100%;
+  height: 10vh;
+  background-color: white;
+  margin: 2%;
+}
+.skill-field label {
+  font-size: 1.5rem;
+}
+.skill-field input {
+  font-size: 1rem;
+  height: auto;
+}
+
+.form-control {
+  margin-bottom: 20px;
+}
+.form-control label {
+}
+.label {
+  font-weight: bold;
+}
+
+.errorMsg {
+  color: red;
+  font-size: 12px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+button[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+.select-container {
+  width: 100%;
+}
+
+.select-container .react-select__control {
+  width: 100%;
+}
+
+.select-container .react-select__value-container {
+  padding: 10px;
+}
+
+.select-container .react-select__indicator-separator {
+  display: none;
+}
+.experienceContainer {
+  align-items: center;
+  width: 100%;
+  height: 10vh;
+  padding: 1%;
+}
+
+.experience {
+  background-color: rgb(241, 241, 241);
+  padding: 2%;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(56, 53, 53, 0.5);
+  margin: 1%;
+}
+.experience label{
+  font-size: 1rem;
+}
+
+.closeButtonContainer {
+  position: relative;
+}
+
+.closeButton {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  cursor: pointer;
+  font-size: 24px;
+  color: #0f0e0e;
+}
+
+.content {
+  padding: 20px;
+}
+
+.content h3 {
+  margin-bottom: 10px;
+  color: #a80a0a;
+}
+
+.profile {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  width: 60%;
+  margin-left: 20%;
+  margin-bottom: 10%;
+}
+
+.profileContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  /* margin-left: 30%; */
+}
+
+.profileSection {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-right: auto;
+  margin-left: auto;
+  width: 90%;
+}
+
+.profileSection h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.profileContent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.profileContent label {
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+.profileContent p {
+  margin-top: 1%;
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+.profile-icon {
+  font-size: 24px;
+  color: #333;
+}
+
+.profile-label {
+  align-self: center;
+}
+
+.profileContent p {
+  align-self: center;
+  padding-top: 1%;
+}
+@media (max-width: 768px) {
+  .profileContainer {
+    flex-direction: column;
   }
-  
-  .form-control {
+
+  .profileSection {
     margin-bottom: 20px;
   }
-  
-  .label {
-    font-weight: bold;
-  }
-  
-  .errorMsg {
-    color: red;
-    font-size: 12px;
-  }
-  
-  input[type="text"],
-  input[type="password"],
-  input[type="file"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-  }
-  
-  button[type="submit"] {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  button[type="submit"]:hover {
-    background-color: #0056b3;
-  }
-  
-  .select-container {
-    width: 100%;
-  }
-  
-  .select-container .react-select__control {
-    width: 100%;
-  }
-  
-  .select-container .react-select__value-container {
-    padding: 10px;
-  }
-  
-  .select-container .react-select__indicator-separator {
-    display: none;
-  }
-  
+}
+.edit-button {
+  background-color: #2a2b2c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: auto; /* Aligns the button to the right */
+}
+
+.edit-button:hover {
+  background-color: #bbcde0;
+}
+
+.profile-button {
+  background-color: #2a2b2c;
+  color: white;
+}
+.profile-button:hover {
+  background-color: rgb(172, 38, 38);
+  color: #a4a6a8;
+}

@@ -32,15 +32,7 @@ const ChatPageUser = () => {
       });
     }
   }, [socket, messages]);
-  // useEffect(() => {
-  //   if (socket) {
-  //     socket.on("messageResponse", (data: ChatMessage) => {
-  //       console.log(data,'data2')
 
-  //       setMessages([...messages, data]);
-  //     });
-  //   }
-  // }, [socket,messages]);
 
   useEffect(() => {
     lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -49,7 +41,7 @@ const ChatPageUser = () => {
   console.log(recipient,'chatpage >>> user')
   return (
     <div className="chat">
-      <ChatBar />
+      <ChatBar messages={messages} />
       <div className="chat__main">
         <ChatBody
           messages={messages}
