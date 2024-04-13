@@ -67,9 +67,9 @@ const ChatBar = ({ messages }: { messages: ChatMessage[] }) => {
                   style={{ cursor: "pointer", fontSize: "2.5rem" }}
                   onClick={() => navigate(`/chatPage/${hr?.name}`)}
                 >
-                 <FcStackOfPhotos /> {hr?.name?.split("@")[0]}
+                 <FcStackOfPhotos /> {hr?.name?.split("@")[0] || 'leo'}
                 </p>
-                <h6>{handleLastMsg(hr?.name)?.text ?handleLastMsg(hr?.name)?.text :hr?.text }</h6>
+                <h6>{handleLastMsg('leo@gmail.com')?.text ?handleLastMsg('leo@gmail.com')?.text :hr?.text }</h6>
               </div>
             ))}
             {error  && <p style={{fontSize:'1rem'}}>No previous messages</p>}
