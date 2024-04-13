@@ -39,6 +39,8 @@ const ChatBar = ({ messages }: { messages: ChatMessage[] }) => {
     fetchPreviousChatHRs();
   }, []);
   const userEmail = localStorage.getItem("userEmail");
+  console.log(prevChatUsers,userEmail,'last--prevusers')
+
   const handleLastMsg = (user: string) => {
     console.log(user);
     const messageWithUser = messages?.map((msg) => {
