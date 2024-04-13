@@ -1,3 +1,10 @@
 body {
-    font-family: Arial, sans-serif;
+  font-family: 'Satoshi', sans-serif;
+  font-size: 16px;
+  background-color: rgba(109, 100, 100, 0.164);
   }
+  html{
+    background-color: #ddeedd;
+    font-family: 'Satoshi', sans-serif;
+     font-size: 16px;
+}

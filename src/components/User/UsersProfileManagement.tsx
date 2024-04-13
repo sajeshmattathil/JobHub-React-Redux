@@ -130,7 +130,7 @@ export default function UsersProfileManagement() {
     resume?: string;
     skills?: { value: string; label: string }[] | string[];
   }) => {
-    if(data.workExperience) data.workExperience = workExperience
+    data.workExperience = workExperience
     console.log(data,workExperience, ">>>>>>first");
     window.scrollTo(0, 0);
 
@@ -140,15 +140,14 @@ export default function UsersProfileManagement() {
 
     data.resume = resume;
     if (data.resume == "") data.resume = resume;
+
     data.educationalQualification = `${data.education} ${data.course}`;
 
-    if (data.skills?.length) {
+   if (data?.skills?.length) {
       data.skills = (data.skills as SkillOption[]).map(
         (option) => option.value
       );
     }
-    console.log(1)
-
     console.log(data,workExperience,'final>>>>>')
     try {
       const update = await axiosUserInstance.put("/update", data);
@@ -618,7 +617,7 @@ export default function UsersProfileManagement() {
                   Add your Experience? <MdOutlineWork />
                 </div>
                 <div className="">
-                  {workExperience &&
+                  {workExperience.length &&
                     workExperience.map((_exp, index) => {
                       return (
                         <div className="experience" key={index}>
@@ -648,8 +647,15 @@ export default function UsersProfileManagement() {
                                   }
                                 )}
                                 placeholder={workExperience[index]?.jobRole}
-
                                 style={{ width: "50%" }}
+                                value={workExperience[index].jobRole || ''}
+                                onChange={(e) =>
+                                  setWorkExperience((prevExperience) => {
+                                    const updatedExperience = [...prevExperience];
+                                    updatedExperience[index].jobRole = e.target.value;
+                                    return updatedExperience;
+                                  })
+                                }
                               />
                             </div>
                             <div className="company">
@@ -665,13 +671,21 @@ export default function UsersProfileManagement() {
                                 {...register(
                                   `workExperience[${index}].company`,
                                   {
-                                    required: !workExperience[index]?.jobRole?.trim(),
+                                    required: !workExperience[index]?.company?.trim(),
                                     pattern: /^[A-Za-z]+$/,
                                   }
                                 )}
                                 id=""
                                 placeholder={workExperience[index]?.company}
                                 style={{ width: "50%" }}
+                                value={workExperience[index].company || ''}
+                                onChange={(e) =>
+                                  setWorkExperience((prevExperience) => {
+                                    const updatedExperience = [...prevExperience];
+                                    updatedExperience[index].company = e.target.value;
+                                    return updatedExperience;
+                                  })
+                                }
                               />
                             </div>
                             <div className="period" style={{ display: "flex" }}>
@@ -687,12 +701,17 @@ export default function UsersProfileManagement() {
                                 <Controller
                                   control={control}
                                   name={`workExperience[${index}].from`}
-                                  defaultValue={new Date()}
+                                  defaultValue={ new Date()}
                                   render={({ field }) => (
                                     <DatePicker
-                                      selected={field.value}
-                                      onChange={(date: Date) =>
-                                        field.onChange(date)
+                                      selected={field.value  }
+                                      
+                                      onChange={(date:Date) =>
+                                        setWorkExperience((prevExperience) => {
+                                          const updatedExperience = [...prevExperience];
+                                          updatedExperience[index].from = date;
+                                          return updatedExperience;
+                                        })
                                       }
                                     />
                                   )}
@@ -715,10 +734,12 @@ export default function UsersProfileManagement() {
                                   render={({ field }) => (
                                     <DatePicker
                                     selected={field.value}
-
-                                      // selected={workExperience[index]?.to  ? workExperience[index]?.to : field.value}
-                                      onChange={(date: Date) =>
-                                        field.onChange(date)
+                                      onChange={(date:Date) =>
+                                        setWorkExperience((prevExperience) => {
+                                          const updatedExperience = [...prevExperience];
+                                          updatedExperience[index].to = date;
+                                          return updatedExperience;
+                                        })
                                       }
                                     />
                                   )}
