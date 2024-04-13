@@ -19,7 +19,7 @@ interface lastMsgInterface {
   name: string ;
 }
 const ChatBar = ({ messages }: { messages: ChatMessage[] }) => {
-  const [prevChatUsers, setPrevChatUsers] = useState<lastMsgInterface[] | null>(null);
+  const [prevChatUsers, setPrevChatUsers] = useState<lastMsgInterface[] | []>([]);
   const [error,setError] = useState<boolean>(false)
   const navigate = useNavigate();
 
@@ -55,7 +55,7 @@ const ChatBar = ({ messages }: { messages: ChatMessage[] }) => {
       <div>
         <h4 className="chat__header"></h4>
         <div className="chat__users">
-          {prevChatUsers &&
+          {prevChatUsers?.length &&
             prevChatUsers.map((hr) => (
               <div
               key={hr.name}   
@@ -63,11 +63,11 @@ const ChatBar = ({ messages }: { messages: ChatMessage[] }) => {
               >
                 <p
                   style={{ cursor: "pointer", fontSize: "2.5rem" }}
-                  onClick={() => navigate(`/chatPage/${hr.name}`)}
+                  onClick={() => navigate(`/chatPage/${hr?.name}`)}
                 >
-                 <FcStackOfPhotos /> {hr.name.split("@")[0]}
+                 <FcStackOfPhotos /> {hr?.name?.split("@")[0]}
                 </p>
-                <h6>{handleLastMsg(hr.name)?.text ?handleLastMsg(hr.name)?.text :hr.text }</h6>
+                <h6>{handleLastMsg(hr?.name)?.text ?handleLastMsg(hr?.name)?.text :hr?.text }</h6>
               </div>
             ))}
             {error  && <p style={{fontSize:'1rem'}}>No previous messages</p>}
