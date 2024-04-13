@@ -19,7 +19,7 @@ interface lastMsgInterface {
   name: string ;
 }
 const ChatBar = ({ messages }: { messages: ChatMessage[] }) => {
-  const [prevChatUsers, setPrevChatUsers] = useState<lastMsgInterface[] | []>([]);
+  const [prevChatUsers, setPrevChatUsers] = useState<lastMsgInterface[] | null>(null);
   const [error,setError] = useState<boolean>(false)
   const navigate = useNavigate();
 
@@ -27,7 +27,7 @@ const ChatBar = ({ messages }: { messages: ChatMessage[] }) => {
     const fetchPreviousChatHRs = async () => {
       try {
         const prevChatUsers = await axiosUserInstance.get("/getPrevChatUsers");
-        console.log(prevChatUsers,'usersPrevChatWith>>>>');
+        console.log(prevChatUsers);
         if (prevChatUsers.status === 201)
           setPrevChatUsers(prevChatUsers?.data?.chatData);
         setError(false)
@@ -39,14 +39,13 @@ const ChatBar = ({ messages }: { messages: ChatMessage[] }) => {
     fetchPreviousChatHRs();
   }, []);
   const userEmail = localStorage.getItem("userEmail");
-  console.log(prevChatUsers,userEmail,'last--prevusers')
-
   const handleLastMsg = (user: string) => {
     console.log(user);
     const messageWithUser = messages?.map((msg) => {
       if (msg.recipient2 === userEmail && msg.recipient1 === user)
         return { text: msg.text, from: msg.recipient1 };
     });
+    console.log(messageWithUser, ">>>>");
     return messageWithUser[messageWithUser.length - 1];
   };
   return (
@@ -56,7 +55,7 @@ const ChatBar = ({ messages }: { messages: ChatMessage[] }) => {
       <div>
         <h4 className="chat__header"></h4>
         <div className="chat__users">
-          {prevChatUsers.length &&
+          {prevChatUsers &&
             prevChatUsers.map((hr) => (
               <div
               key={hr.name}   
@@ -64,11 +63,11 @@ const ChatBar = ({ messages }: { messages: ChatMessage[] }) => {
               >
                 <p
                   style={{ cursor: "pointer", fontSize: "2.5rem" }}
-                  onClick={() => navigate(`/chatPage/${hr?.name}`)}
+                  onClick={() => navigate(`/chatPage/${hr.name}`)}
                 >
                  <FcStackOfPhotos /> {hr?.name?.split("@")[0]}
                 </p>
-                <h6>{handleLastMsg(hr?.name)?.text ?handleLastMsg(hr?.name)?.text :hr?.text }</h6>
+                <h6>{handleLastMsg(hr.name)?.text ?handleLastMsg(hr.name)?.text :hr.text }</h6>
               </div>
             ))}
             {error  && <p style={{fontSize:'1rem'}}>No previous messages</p>}
