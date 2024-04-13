@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { axiosUserInstance } from "../../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
 import { FcStackOfPhotos } from "react-icons/fc";
@@ -20,14 +20,18 @@ interface lastMsgInterface {
 }
 const ChatBar = ({ messages }: { messages: ChatMessage[] }) => {
   const [prevChatUsers, setPrevChatUsers] = useState<lastMsgInterface[] | null>(null);
+  const prevChatUsersRef =useRef<lastMsgInterface[] | null>(null)
   const [error,setError] = useState<boolean>(false)
   const navigate = useNavigate();
+console.log(prevChatUsers)
+
 
   useEffect(() => {
     const fetchPreviousChatHRs = async () => {
       try {
         const prevChatUsers = await axiosUserInstance.get("/getPrevChatUsers");
         console.log(prevChatUsers);
+        prevChatUsersRef.current =prevChatUsers?.data?.chatData
         if (prevChatUsers.status === 201)
           setPrevChatUsers(prevChatUsers?.data?.chatData);
         setError(false)
@@ -55,8 +59,8 @@ const ChatBar = ({ messages }: { messages: ChatMessage[] }) => {
       <div>
         <h4 className="chat__header"></h4>
         <div className="chat__users">
-          {prevChatUsers &&
-            prevChatUsers.map((hr) => (
+          {prevChatUsersRef.current &&
+            prevChatUsersRef.current.map((hr) => (
               <div
               key={hr.name}   
               style={{backgroundColor:'white',padding:'2%',borderRadius:'10px'}}  
