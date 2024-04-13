@@ -27,7 +27,7 @@ const ChatBar = ({ messages }: { messages: ChatMessage[] }) => {
     const fetchPreviousChatHRs = async () => {
       try {
         const prevChatUsers = await axiosUserInstance.get("/getPrevChatUsers");
-        console.log(prevChatUsers);
+        console.log(prevChatUsers,'usersPrevChatWith>>>>');
         if (prevChatUsers.status === 201)
           setPrevChatUsers(prevChatUsers?.data?.chatData);
         setError(false)
