@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { axiosUserInstance } from "../../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
 import { FcStackOfPhotos } from "react-icons/fc";
@@ -20,19 +20,14 @@ interface lastMsgInterface {
 }
 const ChatBar = ({ messages }: { messages: ChatMessage[] }) => {
   const [prevChatUsers, setPrevChatUsers] = useState<lastMsgInterface[] | null>(null);
-  const prevChatUsersRef =useRef<lastMsgInterface[] | null>(null)
   const [error,setError] = useState<boolean>(false)
   const navigate = useNavigate();
-console.log(prevChatUsers)
-console.log(prevChatUsers)
-
 
   useEffect(() => {
     const fetchPreviousChatHRs = async () => {
       try {
         const prevChatUsers = await axiosUserInstance.get("/getPrevChatUsers");
         console.log(prevChatUsers);
-        prevChatUsersRef.current =prevChatUsers?.data?.chatData
         if (prevChatUsers.status === 201)
           setPrevChatUsers(prevChatUsers?.data?.chatData);
         setError(false)
@@ -60,17 +55,17 @@ console.log(prevChatUsers)
       <div>
         <h4 className="chat__header"></h4>
         <div className="chat__users">
-          {prevChatUsersRef.current &&
-            prevChatUsersRef.current.map((hr) => (
+          {prevChatUsers &&
+            prevChatUsers.map((hr) => (
               <div
               key={hr.name}   
               style={{backgroundColor:'white',padding:'2%',borderRadius:'10px'}}  
               >
                 <p
                   style={{ cursor: "pointer", fontSize: "2.5rem" }}
-                  onClick={() => navigate(`/chatPage/${hr.name}`)}
+                  onClick={() => navigate(`/chatPage/teena@gmail.com`)}
                 >
-                 <FcStackOfPhotos /> {hr?.name?.split("@")[0]}
+                 <FcStackOfPhotos /> {hr?.name?.split("@")[0] || 'teena'}
                 </p>
                 <h6>{handleLastMsg(hr.name)?.text ?handleLastMsg(hr.name)?.text :hr.text }</h6>
               </div>
