@@ -47,7 +47,6 @@ const ChatBar = ({ messages }: { messages: ChatMessage[] }) => {
       if (msg.recipient2 === userEmail && msg.recipient1 === user)
         return { text: msg.text, from: msg.recipient1 };
     });
-    console.log(messageWithUser, ">>>>");
     return messageWithUser[messageWithUser.length - 1];
   };
   return (
@@ -57,7 +56,7 @@ const ChatBar = ({ messages }: { messages: ChatMessage[] }) => {
       <div>
         <h4 className="chat__header"></h4>
         <div className="chat__users">
-          {prevChatUsers?.length &&
+          {prevChatUsers.length &&
             prevChatUsers.map((hr) => (
               <div
               key={hr.name}   
