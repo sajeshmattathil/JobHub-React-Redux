@@ -714,6 +714,8 @@ export default function UsersProfileManagement() {
 
                                   render={({ field }) => (
                                     <DatePicker
+                                    selected={field.value}
+
                                       // selected={workExperience[index]?.to  ? workExperience[index]?.to : field.value}
                                       onChange={(date: Date) =>
                                         field.onChange(date)
