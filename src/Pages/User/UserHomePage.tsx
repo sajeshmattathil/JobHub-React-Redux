@@ -5,8 +5,14 @@ import Sort from "../../components/User/Sort";
 import UserNavbar from "../../components/User/Navbar/UsersNavbar";
 
 interface SearchValue {
-  option : string;
-  value : string;
+  industry ?: industryInterface[] | [];
+  sort?: string;
+  option: string;
+  value: string;
+  salaryPackage?: number;
+}
+interface industryInterface {
+  industry: string;
 }
 const UserHomePage = () => {
   const [searchValue, setSearchValue] = useState<SearchValue | null>(null);

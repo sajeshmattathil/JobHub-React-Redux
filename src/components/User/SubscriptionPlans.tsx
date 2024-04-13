@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { axiosInstance, axiosUserInstance } from "../../Utils/axios/axios";
+import { axiosUserInstance } from "../../Utils/axios/axios";
 import Modal from "../HR/modal";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import useRazorpay, { RazorpayOptions } from "react-razorpay";
@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 const SubscriptionPlans = () => {
   const [Razorpay] = useRazorpay();
 
-  const userEmail  = localStorage.getItem('userEmail')
+  const userEmail = localStorage.getItem("userEmail");
 
   interface SubscriptioInterface {
     duration: string;
@@ -32,14 +32,11 @@ const SubscriptionPlans = () => {
     const planDatas = await axiosUserInstance.get("/getPlans");
     if (planDatas.data.status === 201) {
       setPlans(planDatas.data.planDatas);
-      
     }
   };
   const rupeeSymbol = "\u20B9";
 
   const handleToggleManageModal = async (id: string) => {
-  
-
     setIsOpen(!isOpen);
     const filteredPlan = plans.filter((plan) => id === plan._id);
     planRef.current = filteredPlan[0];
@@ -53,14 +50,14 @@ const SubscriptionPlans = () => {
       if (planRef.current) {
         setLoading(false);
 
-        const response = await axiosInstance.post("/create-order", {
+        const response = await axiosUserInstance.post("/create-order", {
           amount: Number(planRef.current.amount) * 100,
         });
         console.log(response, "resss");
 
         const options: RazorpayOptions = {
           key: import.meta.env.RAZORPAY_ID_KEY,
-          amount: response.data.order.amount + ".00",
+          amount: response?.data?.order?.amount + ".00",
           currency: "INR",
           name: "JobHub",
           notes: {},
@@ -73,7 +70,7 @@ const SubscriptionPlans = () => {
               amount: planRef.current?.amount,
               duration: planRef.current?.duration,
               planName: planRef.current?.planName,
-              planId : planRef.current?._id
+              planId: planRef.current?._id,
             });
             if (savePayment.status === 200) setIsOpen(!isOpen);
           },
@@ -97,15 +94,19 @@ const SubscriptionPlans = () => {
   if (loading) return <div>loading</div>;
   if (isOpen)
     return (
-      <div>
-        <Modal isOpen={isOpen} onClose={() => setIsOpen(!isOpen)}>
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(!isOpen)}>
+        <div style={{ marginLeft: "15%",display:'flex', }}>
           <div
             className=""
             style={{
-              width: "80%",
+              width: "60%",
               height: "auto",
-
               textAlign: "center",
+              alignContent:'center',
+              border:'2px solid grey',
+              borderRadius:'10px',
+              padding: '2%',
+              margin:'5%'
             }}
           >
             <AiOutlineCloseCircle
@@ -117,17 +118,28 @@ const SubscriptionPlans = () => {
                 fontSize: "24px",
               }}
               onClick={() => setIsOpen(!isOpen)}
+              
             />
 
             <h1>{planRef.current?.planName} </h1>
             <h1>{planRef.current?.duration} Month</h1>
-            <h1>
+            <h1 style={{ fontSize: "2rem" }}>
               {rupeeSymbol} {planRef.current?.amount}/- Only
             </h1>
             <button onClick={createOrder}>Confirm Payment</button>
           </div>
-        </Modal>
-      </div>
+         
+          <p style={{border:'2px solid grey',borderRadius:'10px',padding: '2%',margin:'5%'}}>
+            <h3 style={{ margin: "2vw" }}>How subscription helps you </h3>
+            <ul style={{ fontSize: "1.7vw" }}>
+              <li>Chat with Hiring Managers</li>
+              <li>Time Line of your applied job </li>
+              <li>Apply numerous number of jobs</li>
+              <li>connect with company and hiring managers</li>
+            </ul>
+          </p>
+        </div>
+      </Modal>
     );
   else
     return (
@@ -161,9 +173,10 @@ const SubscriptionPlans = () => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-              onClick={() =>{
-                if( userEmail && !plan.users.includes(userEmail)) handleToggleManageModal(plan._id)
-              } }
+                onClick={() => {
+                  if (userEmail && !plan.users.includes(userEmail))
+                    handleToggleManageModal(plan._id);
+                }}
               >
                 <h2>{plan.planName}</h2>
                 <p style={{ fontSize: "3vw" }}>
@@ -171,40 +184,50 @@ const SubscriptionPlans = () => {
                   {plan.amount} /-
                 </p>
                 <p>{plan.duration} Month</p>
-                { userEmail && plan.users.includes(userEmail) &&   <h3 style={{font : 'green',border:'2px green solid',padding : '1rem',borderRadius : '2rem'}}>Active Plan</h3>}
+                {userEmail && plan.users.includes(userEmail) && (
+                  <h3
+                    style={{
+                      font: "green",
+                      border: "2px green solid",
+                      padding: "1rem",
+                      borderRadius: "2rem",
+                    }}
+                  >
+                    Active Plan
+                  </h3>
+                )}
               </div>
             );
           })}
         </div>
         <div
-  className="card"
-  style={{
-    backgroundColor: "white",
-    color: "black",
-    padding: "20px",
-    borderRadius: "8px",
-    boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
-    fontFamily: "sans-serif",
-    height: "auto", // Change height to auto
-    maxWidth: "500px", // Set maximum width for responsiveness
-    margin: "0 auto", // Center horizontally using margin
-    display: "flex", // Use Flexbox
-    flexDirection: "column", // Stack children vertically
-    alignItems: "center", // Center items horizontally
-    justifyContent: "center", // Center items vertically
-  }}
->
-  <p>
-    <h3 style={{ margin: "2vw" }}>How subscription helps you </h3>
-    <ul style={{ fontSize: "1.7vw" }}>
-      <li>Chat with Hiring Managers</li>
-      <li>Time Line of your applied job </li>
-      <li>Apply numerous number of jobs</li>
-      <li>connect with company and hiring managers</li>
-    </ul>
-  </p>
-</div>
-
+          className="card"
+          style={{
+            backgroundColor: "white",
+            color: "black",
+            padding: "20px",
+            borderRadius: "8px",
+            boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
+            fontFamily: "sans-serif",
+            height: "auto",
+            maxWidth: "500px",
+            margin: "0 auto",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <p>
+            <h3 style={{ margin: "2vw" }}>How subscription helps you </h3>
+            <ul style={{ fontSize: "1.7vw" }}>
+              <li>Chat with Hiring Managers</li>
+              <li>Time Line of your applied job </li>
+              <li>Apply numerous number of jobs</li>
+              <li>connect with company and hiring managers</li>
+            </ul>
+          </p>
+        </div>
       </>
     );
 };

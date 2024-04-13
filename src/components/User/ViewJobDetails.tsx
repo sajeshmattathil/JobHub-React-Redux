@@ -395,10 +395,11 @@ const ViewJobDetails = () => {
             }}
           >
             <div className="inner" style={{ width: "80%" }}>
-              <h3>About Company</h3>
+              <h3>About Hiring Manager</h3>
 
               <span style={{ fontSize: "17px", marginBottom: "5px" }}>
-                {hr.company}
+                
+                Working at {hr.company}
               </span>
               <div style={{ fontSize: "17px", marginBottom: "5px" }}>
                 <span>

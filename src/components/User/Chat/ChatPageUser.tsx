@@ -12,6 +12,7 @@ const ChatPageUser = () => {
   const { socket } = useSocket();
   const {recipient} = useParams()
 
+console.log(recipient,"KKKKKKKKKKK");
 
   interface ChatMessage {
     time: Date;

@@ -6,10 +6,17 @@ import { axiosInstance, axiosUserInstance } from "../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import SalarySlider from "./SalarySlider";
 
 interface SearchValue {
+  industry ?: industryInterface[] | [];
+  sort?: string;
   option: string;
   value: string;
+  salaryPackage?: number;
+}
+interface industryInterface {
+  industry: string;
 }
 const UserHome = ({
   searchData,
@@ -22,15 +29,17 @@ const UserHome = ({
   const [pageNumber, setPage] = useState<number>(1);
   const [totalPages, setTotalpages] = useState<number>(1);
   const [jobs, setJobs] = useState<jobData[]>([]);
-  const [jobsCopy, setJobsCopy] = useState<jobData[]>([]);
-
+  // const [jobsCopy, setJobsCopy] = useState<jobData[]>([]);
+  const [salarySliderValue, setSalarySliderValue] = useState<number>(10);
+  const [industryFilter, setIndustryFilter] = useState<
+    industryInterface[] | []
+  >([]);
   const [msg, setMsg] = useState<string>("");
 
   interface jobData {
     salaryScale: string;
     _id: string;
     jobRole: string;
-
     description: string;
     qualification: [string];
     company: string;
@@ -41,6 +50,11 @@ const UserHome = ({
   useEffect(() => {
     const fetchData = async () => {
       let fetchedData;
+      if (searchData) {
+        searchData.sort = sortData;
+        searchData.salaryPackage = salarySliderValue ? salarySliderValue :10;
+        searchData.industry =industryFilter
+      }
       try {
         if (localStorage.getItem("userEmail")?.trim())
           fetchedData = await axiosUserInstance.post(
@@ -59,9 +73,9 @@ const UserHome = ({
           const pages = Math.ceil(data.totalJobs / 5);
           console.log(pages, "pagessss");
           setTotalpages(pages);
-          setJobsCopy(data.jobData);
+          // setJobsCopy(data.jobData);
           setJobs(data.jobData);
-          setMsg("jobs found");
+          setMsg("");
         } else {
           toast.success("No jobs found");
         }
@@ -75,65 +89,66 @@ const UserHome = ({
       setJobs([]);
       setMsg("No jobs");
     };
-  }, [pageNumber, searchData]);
-
-  useEffect(() => {
-    if (sortData == "old-new") {
-      // console.log(jobs[0].createdAt);
-      const jobsSorted = [...jobs].sort(
-        (a, b) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
-      setJobs(jobsSorted);
-    } else {
-      const filteredJobs = [...jobs].filter(
-        (job) => parseInt(job.salaryScale.split("")[1]) >= 5
-      );
-      setJobs(filteredJobs);
-    }
-    return () => {
-      const user = localStorage.getItem("authToken");
-      if (user && user !== "undefined") {
-        console.log(window.history, "window");
-      }
-    };
-  }, [sortData]);
-
+  }, [pageNumber, searchData, sortData, salarySliderValue,industryFilter]);
 
   const handleViewJob = (id: string) => {
     return (_event: React.MouseEvent<HTMLDivElement>) => {
       navigate(`/jobPost/${id}`);
     };
   };
-const style = {
-  label :{fontSize : '1.1rem',
-}
-
-}
-const [salary0,setSalary0] = useState<boolean>(false)
-const handleFilter = (isChecked : boolean,value : string)=>{
-  try {
-    let filteredJobs
-    if(isChecked) {
-          filteredJobs = jobsCopy.filter((job)=>{
-        console.log(value,job.salaryScale[0]+job.salaryScale[1],'filter')
-        if(Number(value + 10) > Number(job.salaryScale[0]+job.salaryScale[1])) return job
-      })}
-      else {
-        filteredJobs = jobs.filter((job)=>{
-        if(Number(value + 10) < Number(job.salaryScale[0]+job.salaryScale[1])) return job
-           
-        })
-      }
-      setJobs(filteredJobs)
-    
-  } catch (error) {
-    console.log(error,'error in filtering jobs');
-    
+  const style = {
+    label: { fontSize: "1.1rem" },
+  };
+  interface FiltersState {
+    [x: string]: boolean;
+    banking: boolean;
+    elearning: boolean;
+    marketing: boolean;
+    travel: boolean;
+    IT: boolean;
+    insurance : boolean;
   }
-}
+  const [filters, setFilters] = useState<FiltersState>({
+    banking: false,
+    elearning: false,
+    marketing: false,
+    travel: false,
+    IT: false,
+    insurance : false
+  });
 
-if (msg != "") {
+  useEffect(() => {
+    console.log("Filters updated:", filters);
+  }, [filters]);
+
+  const handleFilter = (
+    prevValue: boolean,
+    filterKey: keyof FiltersState,
+    value: string
+  ) => {
+    try {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        [filterKey]: !prevFilters[filterKey],
+      }));
+
+      if (!prevValue) {
+        setIndustryFilter([...industryFilter, { industry: value }]);
+      } else {
+        const filteredIndustry = [...industryFilter];
+        filteredIndustry.filter((element) => element.industry !== value);
+        setIndustryFilter(filteredIndustry);
+      }
+    } catch (error) {
+      console.log(error, "error in filtering jobs");
+    }
+  };
+
+  const handleSalarySliderValue = (value: number) => {
+    setSalarySliderValue(value);
+  };
+
+  if (!msg.trim()) {
     return (
       <>
         <ToastContainer />
@@ -150,94 +165,100 @@ if (msg != "") {
             style={{
               flex: "0 0 20%",
               padding: "30px",
-              backgroundColor: "#82b182",
+              backgroundColor: "white",
               borderRadius: ".5rem",
               margin: "2%",
               marginBottom: "4%",
-              fontSize: '50%'
+              fontSize: "50%",
+              height: "auto",
             }}
           >
             <div className="salary">
               <h3>Salary</h3>
-              <div>
-                <input
-                  type="checkbox"
-                  value={"0"}
-                  checked = {salary0}
-              style={{ marginRight: "5%" }}
-              onClick={()=>{
-                setSalary0(prev=>!prev)
-                handleFilter(salary0,'0')}}
-                />
-                <label style={style.label} htmlFor="filterOption1"> 0-10 Lakhs</label>
-              </div>
-            <div>
-                <input
-                  type="checkbox"
-                  value={"11"}
-                  style={{ marginRight: "5%" }}
-                />
-                <label  style={style.label}  htmlFor="filterOption1"> 11-20 Lakhs</label>
-              </div>
-              <div>
-                <input
-                  type="checkbox"
-                  value={"21"}
-                  style={{ marginRight: "5%" }}
-                />
-                <label style={style.label} htmlFor="filterOption1"> Above 21 Lakhs</label>
-              </div>
-            </div>
-            <div className="salary">
+              <p
+                style={{
+                  fontSize: "1rem",
+                  fontWeight: "bold",
+                  marginLeft: "80%",
+                }}
+              >
+                {salarySliderValue} LPA
+              </p>
+              <SalarySlider onChangeValue={handleSalarySliderValue} />
+
               <h3>Industry</h3>
+
               <div>
                 <input
                   type="checkbox"
-                  value={"IT"}
+                  value={"Information Technology"}
                   style={{ marginRight: "5%" }}
+                  checked={filters["Information Technology"]}
+                  onClick={() =>
+                    handleFilter(filters["Information Technology"], "IT", "Information Technology")
+                  }
                 />
-                <label style={style.label} htmlFor="filterOption1"> IT Services and Consulting</label>
-              </div>
-              <div>
-                <input
-                  type="checkbox"
-                  value={"banking"}
-                  style={{ marginRight: "5%" }}
-                />
-                <label style={style.label} htmlFor="filterOption1">Banking</label>
+                <label style={style.label} htmlFor="filterOption1">
+                IT Services
+                </label>
               </div>
               <div>
                 <input
                   type="checkbox"
                   value={"e-learning"}
                   style={{ marginRight: "5%" }}
+                  checked={filters["elearning"]}
+                  onClick={() =>
+                    handleFilter(filters["elearning"], "elearning", "elearning")
+                  }
                 />
-                <label style={style.label} htmlFor="filterOption1">E-learning</label>
+                <label style={style.label} htmlFor="filterOption1">
+                  E-learning
+                </label>
               </div>
               <div>
                 <input
                   type="checkbox"
                   value={"marketing"}
                   style={{ marginRight: "5%" }}
+                  checked={filters["marketing"]}
+                  onClick={() =>
+                    handleFilter(filters["marketing"], "marketing", "marketing")
+                  }
                 />
-                <label style={style.label} htmlFor="filterOption1">Marketing</label>
+                <label style={style.label} htmlFor="filterOption1">
+                  Marketing
+                </label>
               </div>
               <div>
                 <input
                   type="checkbox"
                   value={"insurance"}
                   style={{ marginRight: "5%" }}
+                  checked={filters["insurance"]}
+                  onClick={() =>
+                    handleFilter(filters["insurance"], "insurance", "insurance")
+                  }
                 />
-                <label style={style.label} htmlFor="filterOption1">Insurance</label>
+                <label style={style.label} htmlFor="filterOption1">
+                  Insurance
+                </label>
               </div>
               <div>
                 <input
                   type="checkbox"
                   value={"travel"}
                   style={{ marginRight: "5%" }}
+                  checked={filters["travel"]}
+                  onClick={() =>
+                    handleFilter(filters["travel"], "travel", "travel")
+                  }
                 />
-                <label style={style.label} htmlFor="filterOption1">Travel & Tourism</label>
+                <label style={style.label} htmlFor="filterOption1">
+                  Travel & Tourism
+                </label>
               </div>
+             
             </div>
           </div>
           <div style={{ flex: "0 0 70%", padding: "20px" }}>

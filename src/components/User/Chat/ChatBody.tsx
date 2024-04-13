@@ -103,9 +103,10 @@ console.log(recipient,'recpnt')
             message.name == localStorage.getItem('userEmail') ? (
               <div className="message__chats" key={message.id}>
                 <p className="sender__name">You</p>
-                <div className="message__sender">
+
+               {message.text.trim() && <div className="message__sender">
                   <p>{message.text}</p>
-                </div>
+                </div>}
 
                 {message.file?.url.trim() && (
                   <div className="message__sender">
@@ -131,9 +132,11 @@ console.log(recipient,'recpnt')
             ) : (
               <div className="message__chats" key={message.id}>
                 <p>{message.name?.split('@')[0]}</p>
-                <div className="message__recipient" ref={lastMessageRef}>
+                
+                {message.text.trim() && <div className="message__recipient" >
                   <p>{message.text}</p>
-                </div>
+                </div>}
+
                 {message.file?.url.trim() && (
                   <div className="message__recipient">
                     <p>
@@ -163,9 +166,9 @@ console.log(recipient,'recpnt')
             <div className="message__chats" key={message.id}>
               <p className="sender__name">You</p>
 
-              <div className="message__sender">
-                {message.text && <p>{message.text}</p>}
-              </div>
+              {message.text.trim() &&<div className="message__sender" ref={lastMessageRef}>
+                <p>{message.text}</p>
+              </div>}
 
               {message.file?.url.trim() && (
                 <div className="message__sender">
@@ -190,7 +193,7 @@ console.log(recipient,'recpnt')
           ) : (
             <div className="message__chats" key={message.id}>
               {message.text.trim() && <p>{message.name?.split('@')[0]}</p>}
-              <div className="message__recipient">
+              <div className="message__recipient" ref={lastMessageRef} >
                 <p>{message.text}</p>
               </div>
               <p >{formatTime(message.time)}</p>

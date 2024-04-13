@@ -1,7 +1,8 @@
 
 const Sort = ({onSortChange}:{onSortChange:(value:string)=>void}) => {
+  let sortValue
     const handleSort = (e: { target: { value: string } })=>{
-const sortValue = e.target.value
+ sortValue = e.target.value
         onSortChange(sortValue)
     }
   return (
@@ -20,10 +21,10 @@ const sortValue = e.target.value
                   marginLeft : '60%',
                   cursor:'pointer'
                 }}
+                value={sortValue}
                 onChange={handleSort}
-                defaultValue={'relevance'}
               > 
-                <option value="old-new">Time (Older)</option>
+                <option value="old">Time (Older)</option>
                 <option value="relevance" selected>Relevance</option>
 
               </select>

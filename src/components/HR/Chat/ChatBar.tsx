@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { axiosHRInstance } from "../../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
+import { FcStackOfPhotos } from "react-icons/fc";
 
 interface ChatMessage {
   recipient1: string | null;
@@ -18,6 +19,8 @@ interface lastMsgInterface {
 }
 const ChatBar = ({ messages }: { messages: ChatMessage[] }) => {
   const [prevChatUsers, setPrevChatUsers] = useState<lastMsgInterface[] | null>(null);
+  const [error,setError] = useState<boolean>(false)
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,8 +30,12 @@ const ChatBar = ({ messages }: { messages: ChatMessage[] }) => {
         console.log(prevChatUsers);
         if (prevChatUsers.status === 201)
           setPrevChatUsers(prevChatUsers?.data?.chatData);
+        setError(false)
+
       } catch (error) {
         console.log(error, "error");
+        setError(true)
+
       }
     };
     fetchPreviousChatHRs();
@@ -54,17 +61,22 @@ const ChatBar = ({ messages }: { messages: ChatMessage[] }) => {
         <div className="chat__users">
           {prevChatUsers &&
             prevChatUsers.map((user) => (
-              <div>
+              
+              <div
+              style={{backgroundColor:'white',padding:'2%',borderRadius:'10px'}}  
+              key={user?.name}
+              >
                 <p
-                  key={user?.name}
                   style={{ cursor: "pointer", fontSize: "1.5rem" }}
                   onClick={() => navigate(`/hr/chatPage/${user.name}`)}
                 >
-                  {user?.name.split("@")[0]}
+                 <FcStackOfPhotos />  {user?.name.split("@")[0]}
                 </p>
-                <h6>{handleLastMsg(user.name)?.text ?handleLastMsg(user.name)?.text :user.text }</h6>
+                <h6>✏️{handleLastMsg(user.name)?.text ?handleLastMsg(user.name)?.text :user.text }</h6>
               </div>
             ))}
+            {error  && <p style={{fontSize:'1rem'}}>No previous messages</p>}
+
         </div>
       </div>
     </div>

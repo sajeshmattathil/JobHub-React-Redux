@@ -1,9 +1,9 @@
-import  { useState } from "react";
+import  { useEffect, useState } from "react";
 // import { GrAttachment } from "react-icons/gr";
 // import upload from "../../../Utils/Cloudinary/cloudinary";
 // import { useForm } from "react-hook-form";
 import { useSocket } from "../../../Providers/Socket";
-// import FileUploadComponent from "../../FileUploadComponent/FileUploadComponent";
+import FileUploadComponent from "../../FileUploadComponent/FileUploadComponent";
 
 const ChatFooter = ({
   recipient,
@@ -16,15 +16,24 @@ const ChatFooter = ({
     fileName: string;
   }
   const [message, setMessage] = useState("");
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<File>({url :'',size : 0,fileName : ''});
+  const [hide,setHide] = useState<boolean>(false)
+
   const {socket} = useSocket()
   // const { register } = useForm();
-
+  useEffect(() => {
+    if (recipient === 'showMessages') {
+      setHide(true);
+    } else {
+      setHide(false);
+    }
+  }, [recipient]);
   const handleSendMessage = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-
+   
     console.log({ userName: localStorage.getItem("HREmail"), message });
     setMessage("");
+    setFile({url :'',size : 0,fileName : ''})
     const HREmail = localStorage.getItem("HREmail");
     console.log(HREmail, "hr email");
 
@@ -45,36 +54,19 @@ const ChatFooter = ({
     }
    }
     setMessage("");
-    setFile(null);
+    setFile({url :'',size : 0,fileName : ''})
 
   };
+  if(recipient !== 'showMessages')
   return (
     <div className="chat__footer">
-      <form className="form">
-        {/* <div style={{ margin: "3%" }}>
-          <GrAttachment style={{ width: "300%", height: "100%" }} />
-        </div>
-        <input
-          type="file"
-          id=""
-          accept=".pdf"
-          {...register("file", {
-            required: file ? false : true,
-          })}
-          onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
-            const files = e.target.files;
-            if (files) {
-              const pdf = files[0];
-              const fileUrl = await upload(pdf, "resume");
-              if (fileUrl) setFile(fileUrl);
-            }
-          }}
-        /> */}
-        {/* <FileUploadComponent  upload={upload} setFile={setFile} /> */}
+      {!hide &&<form className="form">
+
+        <FileUploadComponent   setYourFile={setFile} />
 
         <input
           type="text"
-          placeholder="Write message"
+          placeholder="Write message..✏️"
           className="message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -82,7 +74,7 @@ const ChatFooter = ({
         <button onClick={handleSendMessage} className="sendBtn">
           SEND
         </button>
-      </form>
+      </form>}
     </div>
   );
 };

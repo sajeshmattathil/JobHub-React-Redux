@@ -1,22 +1,29 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUpload } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import { useForm } from 'react-hook-form';
+import upload from '../../Utils/Cloudinary/cloudinary';
+import { GrAttachment } from 'react-icons/gr';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-
+interface File {
+  url: string;
+  size: number;
+  fileName: string;
+}
 interface YourComponentProps {
-    upload: (file: File, folder: string) => Promise<string>;
-    setFile: React.Dispatch<React.SetStateAction<string | null>>; // Define the setFile function type
+  setYourFile:React.Dispatch<React.SetStateAction<File>> ; 
   }
 
-  const FileUploadComponent: React.FC<YourComponentProps> = ({ upload, setFile }) => {
+  const FileUploadComponent: React.FC<YourComponentProps> = ({ setYourFile }) => {
     const {
       register,
     } = useForm();
     return (
-    <div>
-      <label htmlFor="file" className="file-upload-label">
-        <FontAwesomeIcon icon={faUpload} /> Upload File
+    <div style={{margin:'2%'}}>
+      <label htmlFor="file" className="file-upload-label" style={{cursor:'pointer'}} >
+      <div style={{ margin: "3%" }}>
+          <GrAttachment style={{ width: "300%", height: "100%" }} />
+        </div> 
       </label>
       <input
         type="file"
@@ -30,7 +37,7 @@ interface YourComponentProps {
           if (files) {
             const pdf = files[0];
             const fileUrl = await upload(pdf, "resume");
-            if (fileUrl) setFile(fileUrl);
+            if (fileUrl ) setYourFile(fileUrl);
           }
         }}
         style={{ display: 'none' }} 

@@ -526,19 +526,19 @@ const CreateJobForm = () => {
                   Select salary scale
                 </option>
                 <option value="Not Disclosed">Not Disclosed</option>
-                <option value="1-2 LPA">1-2 LPA</option>
-                <option value="2-3 LPA">2-3 LPA</option>
-                <option value="3-4 LPA">3-4 LPA</option>
-                <option value="4-5 LPA">4-5 LPA</option>
-                <option value="5-6 LPA">5-6 LPA</option>
-                <option value="6-7 LPA">6-7 LPA</option>
-                <option value="7-8 LPA">7-8 LPA</option>
-                <option value="8-9 LPA">8-9 LPA</option>
-                <option value="9-10 LPA">9-10 LPA</option>
+                <option value="01-02 LPA">1-2 LPA</option>
+                <option value="02-03 LPA">2-3 LPA</option>
+                <option value="03-04 LPA">3-4 LPA</option>
+                <option value="04-05 LPA">4-5 LPA</option>
+                <option value="05-06 LPA">5-6 LPA</option>
+                <option value="06-07 LPA">6-7 LPA</option>
+                <option value="07-08 LPA">7-8 LPA</option>
+                <option value="08-09 LPA">8-9 LPA</option>
+                <option value="09-10 LPA">9-10 LPA</option>
                 <option value="10-12 LPA">10-12 LPA</option>
                 <option value="12-15 LPA">12-15 LPA</option>
                 <option value="15-20 LPA">15-20 LPA</option>
-                <option value="20+ LPA">20+ LPA</option>
+                <option value="20-99 LPA">20+ LPA</option>
               </select>
             )}
           />

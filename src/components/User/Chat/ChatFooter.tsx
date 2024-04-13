@@ -1,10 +1,10 @@
-import  { useState } from "react";
+import  { useEffect, useState } from "react";
 // import upload from "../../../Utils/Cloudinary/cloudinary";
 // import { useForm } from "react-hook-form";
 // import { GrAttachment } from "react-icons/gr";
 import { useSocket } from "../../../Providers/Socket";
 // import { useParams } from "react-router-dom";
-// import FileUploadComponent from "../../FileUploadComponent/FileUploadComponent";
+import FileUploadComponent from "../../FileUploadComponent/FileUploadComponent";
 
 const ChatFooter = ({ recipient }: { recipient : string | undefined}) => {
   interface File {
@@ -13,18 +13,25 @@ const ChatFooter = ({ recipient }: { recipient : string | undefined}) => {
     fileName: string;
   }
   const [message, setMessage] = useState("");
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<File>({url :'',size : 0,fileName : ''});
   const [hide,setHide] = useState<boolean>(false)
 
   // const { register } = useForm();
   const {socket} = useSocket()
-if(recipient == 'showMessages')setHide(true)
-else setHide(false)
+
+ useEffect(() => {
+    if (recipient === 'showMessages') {
+      setHide(true);
+    } else {
+      setHide(false);
+    }
+  }, [recipient]);
 
   const handleSendMessage = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     setMessage("");
-    setFile(null);
+    setFile({url :'',size : 0,fileName : ''})
+
     const userEmail = localStorage.getItem("userEmail")
    if(socket){
     if ( message.trim() || file?.url.trim()) {
@@ -42,9 +49,7 @@ else setHide(false)
     }
    }
     setMessage("");
-    setFile(null);
-
-    // return <div className="chat__footer">...</div>;
+    setFile({url :'',size : 0,fileName : ''})
   };
   if(recipient !== 'showMessages')
   return (
@@ -72,7 +77,7 @@ else setHide(false)
             }
           }}
         /> */}
-        {/* <FileUploadComponent  upload={upload} setFile={setFile} /> */}
+        <FileUploadComponent setYourFile={setFile} />
         <input
           type="text"
           placeholder="Write message"

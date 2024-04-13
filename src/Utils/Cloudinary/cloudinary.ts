@@ -8,10 +8,6 @@ const upload = async (pdf :File,foldername : string)=>{
                 formData.append('file',pdf)
                 formData.append("upload_preset", cloudPreset);
                 formData.append('folder',foldername)
-
-               
-                  
-                
                 const response = await axios.post(`https://api.cloudinary.com/v1_1/${cloudName}/upload/`,formData,{
                     headers: {
                         'Content-Type': 'multipart/form-data'
