@@ -24,6 +24,7 @@ const ChatBar = ({ messages }: { messages: ChatMessage[] }) => {
   const [error,setError] = useState<boolean>(false)
   const navigate = useNavigate();
 console.log(prevChatUsers)
+console.log(prevChatUsers)
 
 
   useEffect(() => {
