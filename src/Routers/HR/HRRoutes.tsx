@@ -26,7 +26,11 @@ function HRRoutes() {
           path={"/job"}
           element={<HRPrivatedRoute component={CreateJob} />}
         />
-        <Route path={"/"} element={<Home />} />
+        {/* <Route path={"/"} element={<Home />} /> */}
+        <Route
+          path={"/"}
+          element={<HRPrivatedRoute component={Home} />}
+        />
         <Route
           path={"/profilemanagement"}
           element={<HRPrivatedRoute component={ProfileManagement} />}

@@ -118,7 +118,7 @@ body {
   }
   .message {
     width: 80%;
-    height: 15px;
+    height: 40px;
     border-radius: 10px;
     border: 1px solid #ddd;
     outline: none;

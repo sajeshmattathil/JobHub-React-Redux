@@ -37,8 +37,20 @@ const VideoCall = () => {
       },
     });
   };
-
+ 
   useEffect(() => {
+    const getSocket = () => {
+      if (HREmail) {
+        const data = {
+          recipient:userId,
+          message: newMessage,
+        };
+  
+       if(socket) socket.emit("vdo-call", data);
+      } else {
+        console.error("Socket is null. Cannot send data.");
+      }
+    };
     getSocket();
 
     return () => {
@@ -46,20 +58,9 @@ const VideoCall = () => {
         socket.close();
       }
     };
-  }, [userId, HREmail]);
+  }, [userId, HREmail, socket, newMessage]);
 
-  const getSocket = () => {
-    if (HREmail) {
-      const data = {
-        recipient:userId,
-        message: newMessage,
-      };
 
-     if(socket) socket.emit("vdo-call", data);
-    } else {
-      console.error("Socket is null. Cannot send data.");
-    }
-  };
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">

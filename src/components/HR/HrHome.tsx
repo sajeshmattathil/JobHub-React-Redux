@@ -31,21 +31,26 @@ const HrHome = () => {
     const fetchData = async () => {
       try {
         
-        const fetchedData = await axiosHRInstance.get(`/hr/getJobs/${HREmail}?jobsPerPage=3&page=${pageNumber}`);
-       console.log(fetchedData,'hrhome')
-        if (fetchedData.data.status === 201) {
-          const data = fetchedData.data;
-          const pages  =Math.ceil(data.totalPages / 5);
-          setTotalpages(pages)
-          setJobs(data.jobs);
-        } else setMsg("No jobs found");
+     if(HREmail?.trim()){
+      const fetchedData = await axiosHRInstance.get(`/hr/getJobs/${HREmail}?jobsPerPage=5&page=${pageNumber}`);
+      console.log(fetchedData,'hrhome')
+       if (fetchedData.data.status === 201) {
+         const data = fetchedData.data;
+         const pages  =Math.ceil(data.totalPages / 5);
+         setTotalpages(pages)
+         setJobs(data.jobs);
+       } else setMsg("No jobs found");
+     }else{
+      console.log('no hr found');
+      
+     }
       } catch (error) {
         console.log( "err");
         setMsg("no jobs");
       }
     };
     fetchData();
-  }, [pageNumber]);
+  }, [HREmail, pageNumber]);
   if(!HREmail) navigate('/hr/login')
   // {
   //   return (

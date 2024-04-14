@@ -104,7 +104,7 @@ console.log(recipient,'recpnt')
               <div className="message__chats" key={message.id}>
                 <p className="sender__name">You</p>
 
-               {message.text.trim() && <div className="message__sender">
+               {message.text.trim() && <div className="message__sender" ref={lastMessageRef}>
                   <p>{message.text}</p>
                 </div>}
 
@@ -133,7 +133,7 @@ console.log(recipient,'recpnt')
               <div className="message__chats" key={message.id}>
                 <p>{message.name?.split('@')[0]}</p>
                 
-                {message.text.trim() && <div className="message__recipient" >
+                {message.text.trim() && <div className="message__recipient" ref={lastMessageRef} >
                   <p>{message.text}</p>
                 </div>}
 

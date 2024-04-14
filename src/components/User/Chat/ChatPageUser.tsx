@@ -12,7 +12,6 @@ const ChatPageUser = () => {
   const { socket } = useSocket();
   const {recipient} = useParams()
 
-console.log(recipient,"KKKKKKKKKKK");
 
   interface ChatMessage {
     time: Date;
@@ -23,8 +22,10 @@ console.log(recipient,"KKKKKKKKKKK");
     id: string;
     socketID: string;
   }
-
+console.log(socket,'loooo')
   useEffect(() => {
+    console.log(socket,'socket++userr');
+
     if (socket) {
       socket.on("messageResponse", (data: ChatMessage) => {
         console.log(data,'data');

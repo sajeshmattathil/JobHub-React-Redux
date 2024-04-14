@@ -1,16 +1,16 @@
-import {  ChangeEvent, useState } from "react";
+import {  ChangeEvent, useRef, useState } from "react";
 
 const SearchBar = ({ onSearchChange  } :{onSearchChange :(x: string,y: string)=>void}) => {
   const [option,setOption] = useState<string>('')
   const [value,setValue] = useState<string>('')
+const timeOut = useRef<NodeJS.Timeout | null>(null)
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let timeOut : any
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>)=>{
     try {
-      clearTimeout(timeOut)
-      timeOut = setTimeout(() => {
+    if(timeOut.current)  clearTimeout(timeOut.current)
+      timeOut.current = setTimeout(() => {
         handleSearch(e.target.value)
       }, 1000);
 

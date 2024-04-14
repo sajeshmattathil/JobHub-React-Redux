@@ -105,7 +105,7 @@ console.log(messages[messages.length-1],'bodyyyy')
             message.name === localStorage.getItem("HREmail") ? (
               <div className="message__chats" key={message.id}>
                 <p className="sender__name">You</p>
-                <div className="message__sender">
+                <div className="message__sender" ref={lastMessageRef}>
                   <p>{message.text}</p>
                 </div>
                 {message.file?.url.trim() && (

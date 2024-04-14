@@ -73,6 +73,7 @@ const ViewJobDetails = () => {
     company: string;
     salaryFrom: string;
     salaryTo: string;
+    salaryPackage :{min:string,max:string};
     createdAt: Date;
     hrObjectId: string;
   }
@@ -221,6 +222,12 @@ const ViewJobDetails = () => {
               </span>{" "}
               {job.experience} yrs
             </div>
+           { <div style={{ fontSize: "17px", marginBottom: "5px" }}>
+              <span>
+                <IoBagRemoveOutline />
+              </span>{" "}
+              {job?.salaryPackage?.min}-{job?.salaryPackage?.max} LPA
+            </div>}
             <div style={{ fontSize: "17px", marginBottom: "5px" }}>
               <span>
                 <CiLocationOn />
