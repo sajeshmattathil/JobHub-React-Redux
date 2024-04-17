@@ -6,6 +6,7 @@ import { userLogin } from "../../Services/Redux/Slices/UserSlices";
 import { useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import logo2 from '../../../public/logo2.jpg'
 
 function UserLogin() {
   const [email, setEmail] = useState<string>("");
@@ -41,8 +42,6 @@ function UserLogin() {
     }
   };
 
- 
-
   const navigate = useNavigate();
 
   const handleCreateNewUser = () => {
@@ -76,7 +75,7 @@ function UserLogin() {
         onSubmit={handleSubmit(onSubmit)}
       >
         <p style={{ fontFamily: "", fontSize: "30px", marginLeft: "25%" }}>
-          User Login
+        <img src={logo2} alt="" style={{width:'30%',height:'30%'}}/>  User Login
         </p>
         <p
           style={{

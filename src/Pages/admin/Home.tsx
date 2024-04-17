@@ -1,13 +1,17 @@
-import AdminNavbar from '../../components/Admin/AdminsNavbar'
-import AdminHome from '../../components/Admin/AdminHome'
+import AdminHome from "../../components/Admin/AdminHome";
+import AdminNavbar from "../../components/Admin/AdminsNavbar";
+import AdminSidebar from "../../components/Dashboard/AdminSidebar";
 
 const Home = () => {
   return (
     <div>
-      <AdminNavbar/>
-      <AdminHome/>
+      <AdminNavbar />
+      <div className="flex" style={{ display: "flex",height:'100vh' }}>
+        <AdminSidebar />
+        <AdminHome/>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

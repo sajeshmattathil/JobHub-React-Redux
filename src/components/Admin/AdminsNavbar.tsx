@@ -41,11 +41,10 @@ const AdminsNavbar = () => {
         padding: "10px 20px",
         backgroundColor: "#fff",
         color: "#333",
-        borderBottom: "2px solid #333",
       }}
     >
       <div>
-        <h1 style={{ margin: 0 ,cursor :'pointer' }} onClick={()=>navigate('/admin')}>JobHub</h1>
+        <h1 style={{ margin: 0 ,cursor :'pointer',border:'2px solid black',borderRadius:'10px',padding:'10px' }} onClick={()=>navigate('/admin')}>JobHub</h1>
       </div>
       {
         
@@ -56,7 +55,7 @@ const AdminsNavbar = () => {
           onClick={handleClick}
         >
           <HiMiniUserCircle
-            style={{ width: "250%", height: "250%", cursor: "pointer" }}
+            style={{ width: "250%", height: "250%", cursor: "pointer",color:'black' }}
             
           />
         </Button>

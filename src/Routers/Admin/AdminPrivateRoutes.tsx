@@ -15,11 +15,15 @@ const AdminPrivatedRoute: React.FC<RouteProps> = ({ component: Component }) => {
         const fetchData = async () => {
           try {
             
-            const response = await axiosAdminInstance.get("/admin/getAdmin");
+            if(localStorage.getItem('adminEmail')?.trim()){
+              const response = await axiosAdminInstance.get("/admin/getAdmin");
             console.log(response,'resssss>>>>>');
             
             if (response.data.status === 201)
             adminRef.current = response.data.admin.email;
+            }else{
+              adminRef.current = null
+            }
 
           } catch (error) {
             console.log("error happened try again");

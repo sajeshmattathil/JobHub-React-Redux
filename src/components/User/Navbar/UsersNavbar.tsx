@@ -1,4 +1,4 @@
-import  { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { userLogout } from "../../../Services/Redux/Slices/UserSlices";
@@ -8,15 +8,13 @@ import { useSocket } from "../../../Providers/Socket";
 import { Button, Menu, MenuItem } from "@mui/material";
 import { HiMiniUserCircle } from "react-icons/hi2";
 import { LuMessagesSquare } from "react-icons/lu";
-import { ImProfile  } from "react-icons/im";
-
-
+import { ImProfile } from "react-icons/im";
 
 const UsersNavbar = () => {
   const { socket } = useSocket();
   const navigate = useNavigate();
   const [link, setLink] = useState<string>("");
-  const [name,setName] = useState('')
+  const [name, setName] = useState("");
 
   interface ChatMessage {
     recipient1: string;
@@ -34,24 +32,24 @@ const UsersNavbar = () => {
   }
   const notificationRef = useRef<boolean>(false);
   const notificationVdoCallRef = useRef<boolean>(false);
-  const recipientRef = useRef<string>()
+  const recipientRef = useRef<string>();
 
   useEffect(() => {
-    console.log(socket,'socket')
+    console.log(socket, "socket");
     if (socket) {
       const handleMessageResponse = (data: ChatMessage) => {
         if (data.recipient2 === localStorage.getItem("userEmail")) {
-         if(data.name) setName(data?.name?.split('@')[0])
+          if (data.name) setName(data?.name?.split("@")[0]);
           notificationRef.current = true;
-          recipientRef.current =data.recipient1;
-          console.log(notificationRef,recipientRef,'>>>>>>')
+          recipientRef.current = data.recipient1;
+          console.log(notificationRef, recipientRef, ">>>>>>");
         }
       };
-   
+
       const handleJoinVdoCall = (data: VideoCallInterface) => {
         if (data.recipient2 === localStorage.getItem("userEmail")) {
           notificationVdoCallRef.current = true;
-          
+
           setLink(data.message);
         }
       };
@@ -83,7 +81,7 @@ const UsersNavbar = () => {
   };
 
   const dispatch = useDispatch();
-  const userLoggedIn = localStorage.getItem("userEmail"); 
+  const userLoggedIn = localStorage.getItem("userEmail");
 
   return (
     <nav
@@ -100,7 +98,13 @@ const UsersNavbar = () => {
     >
       <div>
         <h1
-          style={{ margin: 0, cursor: "pointer" }}
+          style={{
+            margin: 0,
+            cursor: "pointer",
+            border: "2px solid black",
+            borderRadius: "10px",
+            padding: "10px",
+          }}
           onClick={() => navigate("/")}
         >
           JobHub
@@ -114,37 +118,29 @@ const UsersNavbar = () => {
                 className="inside"
                 style={{ width: "10%", marginRight: "40%", cursor: "pointer" }}
               >
-              
-                  <Button
-              aria-controls="chat-menu"
-              aria-haspopup="true"
-              onClick={handleClick1}
-            >
-               <img
-                  src={messageImage}
-                  style={{ width: "150%" }}
-                 
-                />
-            </Button>
-            <Menu
-              id="chat-menu"
-              anchorEl={anchorEl1}
-              open={Boolean(anchorEl1)}
-              onClose={handleClose1}
-            >
-              <MenuItem
-                onClick={() => {
-                  setAnchorEl1(null);
-                  
-                  navigate(`/chatPage/${recipientRef.current}`);
+                <Button
+                  aria-controls="chat-menu"
+                  aria-haspopup="true"
+                  onClick={handleClick1}
+                >
+                  <img src={messageImage} style={{ width: "150%" }} />
+                </Button>
+                <Menu
+                  id="chat-menu"
+                  anchorEl={anchorEl1}
+                  open={Boolean(anchorEl1)}
+                  onClose={handleClose1}
+                >
+                  <MenuItem
+                    onClick={() => {
+                      setAnchorEl1(null);
 
-                }}
-               
-              >
-                {name}
-              </MenuItem>
-             
-            </Menu>
+                      navigate(`/chatPage/${recipientRef.current}`);
+                    }}
+                  >
+                    {name}
+                  </MenuItem>
+                </Menu>
               </div>
             )}
             {notificationVdoCallRef.current && (
@@ -183,7 +179,8 @@ const UsersNavbar = () => {
                   navigate("/profilemanagement");
                 }}
               >
-              <ImProfile style={{paddingRight : '10%',fontSize:'200%'}} />  Profile
+                <ImProfile style={{ paddingRight: "10%", fontSize: "200%" }} />{" "}
+                Profile
               </MenuItem>
               <MenuItem
                 onClick={() => {
@@ -191,7 +188,10 @@ const UsersNavbar = () => {
                   navigate("/chatPage/showMessages");
                 }}
               >
-<LuMessagesSquare style={{paddingRight : '10%',fontSize:'200%'}} />  Messages
+                <LuMessagesSquare
+                  style={{ paddingRight: "10%", fontSize: "200%" }}
+                />{" "}
+                Messages
               </MenuItem>
               <MenuItem
                 onClick={() => {

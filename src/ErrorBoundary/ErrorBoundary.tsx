@@ -1,5 +1,5 @@
 import{ Component, ReactNode, ErrorInfo } from 'react';
-import images from '../../public/images.png'
+import logo from '/logo2.jpg'
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -22,7 +22,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 
   render() {
     if (this.state.hasError) {
-      return <h1 style={{height:'130vh',width:'30%',fontSize:'2rem',marginLeft:'30%',borderRadius:'10px'}}>{images}</h1>;
+      return <h1 style={{height:'130vh',width:'30%',fontSize:'2rem',marginLeft:'30%',borderRadius:'10px'}}>Something went wrong{logo}</h1>;
     }
 
     return this.props.children;

@@ -11,8 +11,9 @@ const ChatFooter = ({ recipient }: { recipient: string | undefined }) => {
     size: number;
     fileName: string;
   }
-  const [message, setMessage] = useState("");
   const [file, setFile] = useState<File>({ url: "", size: 0, fileName: "" });
+
+  const [message, setMessage] = useState("");
   const [hide, setHide] = useState<boolean>(false);
 
   const { socket } = useSocket();
@@ -24,67 +25,67 @@ const ChatFooter = ({ recipient }: { recipient: string | undefined }) => {
       setHide(false);
     }
   }, [recipient]);
-  // const handleSendMessage = (e: { preventDefault: () => void }) => {
-  //   e.preventDefault();
-  //   console.log(socket, "hr---footer");
-  //   setMessage("");
-  //   setFile({ url: "", size: 0, fileName: "" });
-  //   const HREmail = localStorage.getItem("HREmail");
-
-  //   if (socket && recipient) {
-  //     if (message.trim() || file?.url.trim()) {
-  //       socket.emit(
-  //         "message",
-  //         {
-  //           recipient: recipient,
-  //           message: {
-  //             text: message,
-  //             time: Date.now(),
-  //             file: file?.url.trim()
-  //               ? file
-  //               : { url: "", size: 0, fileName: "" },
-  //             name: localStorage.getItem("HREmail"),
-  //             recipient1: HREmail,
-  //             recipient2: recipient,
-  //             id: `${socket.id}${Math.random()}`,
-  //             socketID: socket.id,
-  //           },
-  //         },
-  //         (acknowledgment: unknown) => {
-  //           console.log("Acknowledgment status:", acknowledgment);
-  //         }
-  //       );
-  //     }
-  //   }
-  //   setMessage("");
-  //   setFile({ url: "", size: 0, fileName: "" });
-  // };
   const handleMessageSend = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-if(socket){
+    console.log(socket, "hr---footer");
+    setMessage("");
+    setFile({ url: "", size: 0, fileName: "" });
+    const HREmail = localStorage.getItem("HREmail");
 
-
-    socket.emit(
-      "message",
-      {
-         recipient: recipient,
-         message: {
-           text: message,
-           time: Date.now(),
-         },
-      },
-      (acknowledgment: string) => {
-         console.log("Acknowledgment callback called with:", acknowledgment);
-         if (acknowledgment === "success") {
-           console.log("Message sent successfully");
-           setMessage("");
-         } else {
-           console.log("Failed to send message");
-         }
+    if (socket && recipient) {
+      if (message.trim() || file?.url.trim()) {
+        socket.emit(
+          "message",
+          {
+            recipient: recipient,
+            message: {
+              text: message,
+              time: Date.now(),
+              file: file?.url.trim()
+                ? file
+                : { url: "", size: 0, fileName: "" },
+              name: localStorage.getItem("HREmail"),
+              recipient1: HREmail,
+              recipient2: recipient,
+              id: `${socket.id}${Math.random()}`,
+              socketID: socket.id,
+            },
+          },
+          (acknowledgment: unknown) => {
+            console.log("Acknowledgment status:", acknowledgment);
+          }
+        );
       }
-     );
-    } 
+    }
+    setMessage("");
+    setFile({ url: "", size: 0, fileName: "" });
   };
+//   const handleMessageSend = (e: { preventDefault: () => void }) => {
+//     e.preventDefault();
+// if(socket){
+
+
+//     socket.emit(
+//       "message",
+//       {
+//          recipient: recipient,
+//          message: {
+//            text: message,
+//            time: Date.now(),
+//          },
+//       },
+//       (acknowledgment: string) => {
+//          console.log("Acknowledgment callback called with:", acknowledgment);
+//          if (acknowledgment === "success") {
+//            console.log("Message sent successfully");
+//            setMessage("");
+//          } else {
+//            console.log("Failed to send message");
+//          }
+//       }
+//      );
+//     } 
+//   };
 
   if (recipient !== "showMessages")
     return (

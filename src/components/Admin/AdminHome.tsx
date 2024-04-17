@@ -1,73 +1,90 @@
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { axiosAdminInstance } from "../../Utils/axios/axios";
 
+interface dashboardInterface {
+  totalUsers: number;
+  totalHR: number;
+  totalActiveSubscribers: number;
+  totalRevenue: number;
+}
 const AdminHome = () => {
-  const navigate = useNavigate();
+  const [dashboardData, setDashboardData] = useState<dashboardInterface | null>(
+    null
+  );
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  const fetchDashboardData = async () => {
+    try {
+      const getDashboardData = await axiosAdminInstance.get(
+        "/admin/getDashboardData"
+      );
+      console.log(getDashboardData, "dashboard");
+      if (getDashboardData.status === 202)
+        setDashboardData({
+          totalUsers: getDashboardData.data.dashboardData.totalUsers,
+          totalHR: getDashboardData.data.dashboardData.totalHR,
+          totalActiveSubscribers:
+            getDashboardData.data.dashboardData.activeSubscribers,
+          totalRevenue: getDashboardData.data.dashboardData.totalRevenue,
+        });
+    } catch (error) {
+      console.log(error);
+    }
+
+  };
+  const rupeeSymbol = "\u20B9";
+
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        fontWeight: "bolder",
-      }}
-    >
-      <div
-        className="card"
-        style={{
-          backgroundColor: "white",
-          color: "black",
-          padding: "20px",
-          borderRadius: "8px",
-          boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
-          fontFamily: "sans-serif",
-          height: "30vh",
-          width: "300px",
-          margin: "0 20px",
-          cursor: "pointer",
-        }}
-        onClick={() => navigate("/admin/usermanagement")}
-      >
-        <h2>User Management</h2>
-        <p>Manage each users here.</p>
+    <div className="row" style={{ padding: "5%" }}>
+      <div className="col-sm-6" style={{borderRadius:'20px'}}>
+        <div className="card" style={{ height: "70%" }}>
+          <div className="card-body">
+            <h5 className="card-title">Users</h5>
+            <p className="card-text">Total number of users joined Job Hub</p>
+            <a href="" className="btn btn-primary" style={{fontSize:'2rem'}}>{dashboardData?.totalUsers}</a>
+          </div>
+        </div>
       </div>
-      <div
-        className="card"
-        style={{
-          backgroundColor: "white",
-          color: "black",
-          padding: "20px",
-          borderRadius: "8px",
-          boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
-          fontFamily: "sans-serif",
-          height: "30vh",
-          width: "300px",
-          margin: "0 20px",
-          cursor: "pointer",
-        }}
-        onClick={() => navigate("/admin/hrmanagement")}
-      >
-        <h2>HR Management</h2>
-        <p>Manage HR details.</p>
+      <div className="col-sm-6">
+        <div className="card" style={{ height: "70%" }}>
+          <div className="card-body">
+            <h5 className="card-title">Hiring Managers</h5>
+            <p className="card-text">
+              Total number of recruiters
+            </p>
+            <a href="" className="btn btn-primary" style={{fontSize:'2rem'}}>
+              {dashboardData?.totalHR}
+            </a>
+          </div>
+        </div>
       </div>
-      <div
-        className="card"
-        style={{
-          backgroundColor: "white",
-          color: "black",
-          padding: "20px",
-          borderRadius: "8px",
-          boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
-          fontFamily: "sans-serif",
-          height: "30vh",
-          width: "300px",
-          margin: "0 20px",
-          cursor: "pointer",
-        }}
-        onClick={() => navigate("/admin/subscriptionManagement")}
-      >
-        <h2>Subscription Management</h2>
-        <p>Manage your subscriptions here.</p>
+      <div className="col-sm-6">
+        <div className="card" style={{ height: "70%" }}>
+          <div className="card-body">
+            <h5 className="card-title">Active Subscribers</h5>
+            <p className="card-text">
+             Total active subscribers
+            </p>
+            <a href="" className="btn btn-primary" style={{fontSize:'2rem'}}>
+             {dashboardData?.totalActiveSubscribers}
+            </a>
+          </div>
+        </div>
+      </div>
+      <div className="col-sm-6">
+        <div className="card" style={{ height: "70%" }}>
+          <div className="card-body">
+            <h5 className="card-title">Revenue</h5>
+            <p className="card-text">
+             Total revenue generated from subscription.
+            </p>
+            <a href="" className="btn btn-primary" style={{fontSize:'2rem'}}>
+            {rupeeSymbol} {dashboardData?.totalRevenue} /-
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   );

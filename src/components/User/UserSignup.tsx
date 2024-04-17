@@ -1,11 +1,11 @@
 import  { useEffect, useRef, useState } from "react";
-
 import { axiosInstance } from "../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
 import generateOtp from "../../Utils/OtpGenerator/otpGenerator";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import logo2 from '../../../public/logo2.jpg'
 
 function UserSignup() {
   const [fname, setFname] = useState<string>("");
@@ -199,12 +199,12 @@ function UserSignup() {
             <p
               style={{
                 fontFamily: "",
-                fontSize: "30px",
-                marginLeft: "25%",
+                fontSize: "2rem",
+                marginLeft: "15%",
                 fontWeight: "bold",
               }}
             >
-              User Sign Up
+            <img src={logo2} alt="" style={{width:'30%',height:'30%'}}/>   User Sign Up
             </p>
             <p
               style={{

@@ -9,10 +9,10 @@ import "react-toastify/dist/ReactToastify.css";
 import SalarySlider from "./SalarySlider";
 
 interface SearchValue {
-  industry ?: industryInterface[] | [];
+  industry?: industryInterface[] | [];
   sort?: string;
-  option: string;
-  value: string;
+  option?: string;
+  value?: string;
   salaryPackage?: number;
 }
 interface industryInterface {
@@ -22,7 +22,7 @@ const UserHome = ({
   searchData,
   sortData,
 }: {
-  searchData: SearchValue | null;
+  searchData: SearchValue ;
   sortData: string;
 }) => {
   const navigate = useNavigate();
@@ -48,13 +48,17 @@ const UserHome = ({
   }
 
   useEffect(() => {
+    console.log(salarySliderValue,'insideffect');
+    
     const fetchData = async () => {
       let fetchedData;
       if (searchData) {
         searchData.sort = sortData;
-        searchData.salaryPackage = salarySliderValue ? salarySliderValue :10;
-        searchData.industry =industryFilter
+        searchData.salaryPackage = salarySliderValue ? salarySliderValue : 10;
+        searchData.industry = industryFilter;
       }
+      console.log(searchData?.salaryPackage,'searchdata');
+      
       try {
         if (localStorage.getItem("userEmail")?.trim())
           fetchedData = await axiosUserInstance.post(
@@ -89,7 +93,7 @@ const UserHome = ({
       setJobs([]);
       setMsg("No jobs");
     };
-  }, [pageNumber, searchData, sortData, salarySliderValue,industryFilter]);
+  }, [pageNumber, searchData, sortData, salarySliderValue, industryFilter]);
 
   const handleViewJob = (id: string) => {
     return (_event: React.MouseEvent<HTMLDivElement>) => {
@@ -106,7 +110,7 @@ const UserHome = ({
     marketing: boolean;
     travel: boolean;
     IT: boolean;
-    insurance : boolean;
+    insurance: boolean;
   }
   const [filters, setFilters] = useState<FiltersState>({
     banking: false,
@@ -114,7 +118,7 @@ const UserHome = ({
     marketing: false,
     travel: false,
     IT: false,
-    insurance : false
+    insurance: false,
   });
 
   useEffect(() => {
@@ -145,6 +149,7 @@ const UserHome = ({
   };
 
   const handleSalarySliderValue = (value: number) => {
+    console.log(value, "value---salary");
     setSalarySliderValue(value);
   };
 
@@ -195,11 +200,15 @@ const UserHome = ({
                   style={{ marginRight: "5%" }}
                   checked={filters["Information Technology"]}
                   onClick={() =>
-                    handleFilter(filters["Information Technology"], "IT", "Information Technology")
+                    handleFilter(
+                      filters["Information Technology"],
+                      "IT",
+                      "Information Technology"
+                    )
                   }
                 />
                 <label style={style.label} htmlFor="filterOption1">
-                IT Services
+                  IT Services
                 </label>
               </div>
               <div>
@@ -258,7 +267,6 @@ const UserHome = ({
                   Travel & Tourism
                 </label>
               </div>
-             
             </div>
           </div>
           <div style={{ flex: "0 0 70%", padding: "20px" }}>

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { adminLogin } from "../../Services/Redux/Slices/AdminSlices";
 import { useDispatch } from "react-redux";
+import logo2  from '../../../public/logo2.jpg'
 
 function AdminLogIn() {
   
@@ -71,7 +72,7 @@ function AdminLogIn() {
         onSubmit={handleSubmit(onSubmit)}
       >
         <p style={{ fontFamily: "", fontSize: "30px", marginLeft: "25%" }}>
-          Admin Login
+        <img src={logo2} alt="" style={{width:'30%',height:'30%'}}/>  Admin Login
         </p>
         <p
           style={{

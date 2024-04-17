@@ -139,6 +139,7 @@ export default function HRProfileManagement() {
                 <button
                   className="edit-button"
                   style={{ backgroundColor: "grey" }}
+                 
                 >
                   <CiEdit className="profile-icon" style={{ color: "white" }} />
                   View followers{}

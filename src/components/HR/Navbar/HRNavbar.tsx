@@ -51,7 +51,7 @@ const HRNavbar = () => {
   const handleClick2 = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     setAnchorEl2(event.currentTarget);
   };
-  
+
   const handleClose1 = () => {
     setAnchorEl1(null);
   };
@@ -74,7 +74,13 @@ const HRNavbar = () => {
     >
       <div>
         <h1
-          style={{ margin: 0, cursor: "pointer" }}
+          style={{
+            margin: 0,
+            cursor: "pointer",
+            border: "2px solid black",
+            borderRadius: "10px",
+            padding: "10px",
+          }}
           onClick={() => navigate("/hr")}
         >
           JobHub
@@ -99,7 +105,7 @@ const HRNavbar = () => {
         </div>
       )}
       {HRLoggedIn && (
-        <div style={{display:'flex'}}>
+        <div style={{ display: "flex" }}>
           {notificationRef.current && (
             <div
               className="inside"
@@ -153,13 +159,16 @@ const HRNavbar = () => {
               Profile Management
             </MenuItem>
             <MenuItem
-                onClick={() => {
-                  setAnchorEl2(null);
-                  navigate("/hr/chatPage/showMessages");
-                }}
-              >
-<LuMessagesSquare style={{paddingRight : '10%',fontSize:'200%'}} />  Messages
-              </MenuItem>
+              onClick={() => {
+                setAnchorEl2(null);
+                navigate("/hr/chatPage/showMessages");
+              }}
+            >
+              <LuMessagesSquare
+                style={{ paddingRight: "10%", fontSize: "200%" }}
+              />{" "}
+              Messages
+            </MenuItem>
             <MenuItem
               onClick={() => {
                 setAnchorEl2(null);
