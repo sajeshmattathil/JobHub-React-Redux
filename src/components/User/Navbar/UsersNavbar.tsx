@@ -92,7 +92,6 @@ const UsersNavbar = () => {
         padding: "10px 20px",
         backgroundColor: "#fff",
         color: "#333",
-        borderBottom: "2px solid #333",
         marginBottom: "4%",
       }}
     >

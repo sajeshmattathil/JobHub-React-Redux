@@ -36,7 +36,7 @@ const ChatFooter = ({ recipient }: { recipient : string | undefined}) => {
    if(socket){
     if ( message.trim() || file?.url.trim()) {
       console.log(recipient,'recip>>>>user')
-      socket.emit("message",{recipient,message: {
+      socket.emit("message", {
         text: message,
         time : Date.now(),
         file: file?.url.trim() ? file : {url :'',size : 0,fileName : ''},
@@ -45,7 +45,7 @@ const ChatFooter = ({ recipient }: { recipient : string | undefined}) => {
         recipient2 : userEmail,
         id: `${socket.id}${Math.random()}`,
         socketID: socket.id,
-      }});
+      });
     }
    }
     setMessage("");

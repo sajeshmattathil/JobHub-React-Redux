@@ -52,38 +52,12 @@ const HrHome = () => {
     fetchData();
   }, [HREmail, pageNumber]);
   if(!HREmail) navigate('/hr/login')
-  // {
-  //   return (
-  //     <div
-  //         className="container"
-  //         style={{
-  //           display: "flex",
-  //           justifyContent: "center",
-  //           alignItems: "center",
-  //           height: "100vh",
-  //         }}
-  //       >
-  //         <div
-  //           className="content"
-  //           style={{
-  //             fontSize: "60px",
-  //             textAlign: "center",
-  //             padding: "20px",
-  //             // border: "1px solid #ccc",
-  //             // borderRadius: "8px",
-  //             backgroundColor: "#f9f9f9",
-  //           }}
-  //         >
-  //         404 ERROR
-  //         </div>
-  //       </div>
-  //   )
-  // }
+
 
   if (msg == "") {
     return (
       <>
-        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "20px",margin:'5%' }}>
         {jobs.map((job, index) => (
   <div
     key={index}

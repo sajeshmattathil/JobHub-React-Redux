@@ -2,7 +2,6 @@ import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 
 function valuetext(value: number) {
-  console.log(value,'value')
   return `${value}`;
 }
 
@@ -13,7 +12,7 @@ type SalarySliderProps = {
 export default function SalarySlider({ onChangeValue }: SalarySliderProps) {
 
   const handleChange = (_event: Event, value: number | number[], _activeThumb: number) => {
-    console.log(_activeThumb,'')
+    console.log(_activeThumb,value,'')
     onChangeValue(Array.isArray(value) ? value[0] : value);
   }
 

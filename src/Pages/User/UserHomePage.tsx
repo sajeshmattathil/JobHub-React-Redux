@@ -7,17 +7,22 @@ import UserNavbar from "../../components/User/Navbar/UsersNavbar";
 interface SearchValue {
   industry ?: industryInterface[] | [];
   sort?: string;
-  option: string;
-  value: string;
+  option?: string;
+  value?: string;
   salaryPackage?: number;
 }
 interface industryInterface {
   industry: string;
 }
 const UserHomePage = () => {
-  const [searchValue, setSearchValue] = useState<SearchValue | null>(null);
+  const [searchValue, setSearchValue] = useState<SearchValue >({
+    option: "",
+        value: "",
+  });
   const [sort, setSort] = useState<string>('');
+
   const handleSearch =  (option : string,value: string) => {
+
     setSearchValue({option,value});    
   };
   const handleSort = (value : string)=>{

@@ -5,10 +5,11 @@ const Sort = ({onSortChange}:{onSortChange:(value:string)=>void}) => {
  sortValue = e.target.value
         onSortChange(sortValue)
     }
+    const sort =null
   return (
     <div style={{display : 'flex'}}>
       
-         <select
+        { sort && <select
                 style={{
                   width: "20%",
                   padding: "10px",
@@ -27,7 +28,7 @@ const Sort = ({onSortChange}:{onSortChange:(value:string)=>void}) => {
                 <option value="old">Time (Older)</option>
                 <option value="relevance" selected>Relevance</option>
 
-              </select>
+              </select>}
     </div>
   )
 }

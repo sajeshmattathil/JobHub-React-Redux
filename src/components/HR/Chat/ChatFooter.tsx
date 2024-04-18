@@ -27,7 +27,7 @@ const ChatFooter = ({ recipient }: { recipient: string | undefined }) => {
   }, [recipient]);
   const handleMessageSend = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    console.log(socket, "hr---footer");
+    console.log(socket,recipient, "hr---footer");
     setMessage("");
     setFile({ url: "", size: 0, fileName: "" });
     const HREmail = localStorage.getItem("HREmail");
@@ -36,9 +36,7 @@ const ChatFooter = ({ recipient }: { recipient: string | undefined }) => {
       if (message.trim() || file?.url.trim()) {
         socket.emit(
           "message",
-          {
-            recipient: recipient,
-            message: {
+           {
               text: message,
               time: Date.now(),
               file: file?.url.trim()
@@ -50,10 +48,7 @@ const ChatFooter = ({ recipient }: { recipient: string | undefined }) => {
               id: `${socket.id}${Math.random()}`,
               socketID: socket.id,
             },
-          },
-          (acknowledgment: unknown) => {
-            console.log("Acknowledgment status:", acknowledgment);
-          }
+        
         );
       }
     }

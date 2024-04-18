@@ -7,6 +7,7 @@ import { HRLogin } from "../../../Services/Redux/Slices/HRSlices";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaRegEyeSlash } from "react-icons/fa";
+import logo2 from '../../../../public/logo2.jpg'
 
 const LoginHr = () => {
   const [email, setEmail] = useState("");
@@ -64,7 +65,7 @@ const LoginHr = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <p style={{ fontFamily: "", fontSize: "30px", marginLeft: "25%" }}>
-          Hiring Manager Login
+        <img src={logo2} alt="" style={{width:'30%',height:'30%'}}/>   Hiring Manager Login
         </p>
         <p
           style={{
@@ -77,7 +78,7 @@ const LoginHr = () => {
         >
           {error}
         </p>
-        <ToastContainer />
+        <ToastContainer/>
 
         <div className="form-control">
           <label>Email</label>

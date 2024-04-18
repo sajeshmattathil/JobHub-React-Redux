@@ -32,7 +32,7 @@ const HRNavbar = () => {
         if (data.recipient1 === localStorage.getItem("HREmail")) {
           if (data.name) setName(data?.name?.split("@")[0]);
           notificationRef.current = true;
-          recipientRef.current = data.recipient1;
+          recipientRef.current = data.recipient2;
           console.log(notificationRef, recipientRef, ">>>>>>");
         }
       };
@@ -140,7 +140,7 @@ const HRNavbar = () => {
             onClick={handleClick2}
           >
             <HiMiniUserCircle
-              style={{ width: "250%", height: "250%", cursor: "pointer" }}
+              style={{ width: "250%", height: "250%", cursor: "pointer" ,color:'black'}}
             />
           </Button>
           <Menu
