@@ -69,7 +69,6 @@ const HRNavbar = () => {
         padding: "10px 20px",
         backgroundColor: "#fff",
         color: "#333",
-        borderBottom: "2px solid #333",
       }}
     >
       <div>
@@ -150,13 +149,21 @@ const HRNavbar = () => {
             open={Boolean(anchorEl2)}
             onClose={handleClose2}
           >
-            <MenuItem
+            <MenuItem className="bi-user"
               onClick={() => {
                 setAnchorEl2(null);
                 navigate("/hr/profilemanagement");
               }}
             >
               Profile Management
+            </MenuItem>
+            <MenuItem className="bi-people"
+              onClick={() => {
+                setAnchorEl2(null);
+                navigate("/hr/followers");
+              }}
+            >
+             Followers
             </MenuItem>
             <MenuItem
               onClick={() => {
@@ -169,7 +176,7 @@ const HRNavbar = () => {
               />{" "}
               Messages
             </MenuItem>
-            <MenuItem
+            <MenuItem className="bi-power"
               onClick={() => {
                 setAnchorEl2(null);
                 localStorage.removeItem("HREmail");

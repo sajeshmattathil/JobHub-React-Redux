@@ -12,6 +12,7 @@ import ChatHomeUser from "../../components/HR/Chat/ChatHomeUser";
 import ShowShortListedUsers from "../../components/HR/ShowShortListedUsers";
 import VideoCall from "../../components/HR/VideoCall/VideoCall";
 import ErrorBoundary from "../../ErrorBoundary/ErrorBoundary";
+import FollowersList from "../../Pages/hr/FollowersList";
 
 
 
@@ -51,6 +52,10 @@ function HRRoutes() {
         <Route
           path="/videoCall/:userId"
           element={<VideoCall  />}
+        />
+         <Route
+          path={"/followers"}
+          element={<HRPrivatedRoute component={FollowersList} />}
         />
       </Routes>
     </ErrorBoundary>

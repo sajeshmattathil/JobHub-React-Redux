@@ -1,35 +1,27 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
-import "./style.css";
+import "../Dashboard/style.css";
 import { useNavigate } from "react-router-dom";
 
-const AdminSidebar = () => {
+const HRSidebar = () => {
   const navigate = useNavigate();
   return (
     <div className="bg-white sidebar p-3">
       <div className="list-group list-group-flush">
+       
         <a href="" className="list-group-item list-group-item-action my-1">
-          <i className="bi bi-speedometer2 fs-4 me-2"></i>
-          <span onClick={() => navigate("/admin")}>Dashboard</span>
-        </a>
-        <a href="" className="list-group-item list-group-item-action my-1">
-          <i className="bi bi-person-badge-fill fs-4 me-2"></i>
+          <i className="bi bi-user fs-4 me-2"></i>
 
-          <span onClick={() => navigate("/admin/usermanagement")}>
-            User Management
+          <span onClick={() =>navigate("/hr/profilemanagement")}>
+            Profile Management
           </span>
         </a>
         <a href="" className="list-group-item list-group-item-action my-1">
-          <i className="bi bi-person-gear fs-4 me-2"></i>
-          <span onClick={() => navigate("/admin/hrmanagement")}>
-            HR Management
+          <i className="bi bi-people fs-4 me-2"></i>
+          <span onClick={() => navigate("/hr/followers")}>
+            Followers
           </span>
         </a>{" "}
-        <a href="" className="list-group-item list-group-item-action my-1">
-          <i className="bi bi-ticket-detailed fs-4 me-2"></i>
-          <span onClick={() => navigate("/admin/subscriptionManagement")}>
-            Subscription Management
-          </span>
-        </a>{" "}
+       
         <a href="" className="list-group-item list-group-item-action my-1">
           <i className="bi bi-power fs-4 me-2"></i>
           <span
@@ -47,4 +39,4 @@ const AdminSidebar = () => {
   );
 };
 
-export default AdminSidebar;
+export default HRSidebar;

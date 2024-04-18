@@ -9,43 +9,43 @@ interface RouteProps {
 }
 
 const HRPrivatedRoute: React.FC<RouteProps> = ({ component: Component }) => {
-  console.log('callingggg')
+  console.log("callingggg");
   const [loading, setLoading] = useState<boolean>(true);
   const HRRef = useRef<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-      if(localStorage.getItem('HREmail')?.trim()){
-        console.log(axiosHRInstance,'instance')
-        const response = await axiosHRInstance.get("/hr/getHR");
-        console.log(response,'hr -- private')
-        if (response.data.status === 201)  HRRef.current = response.data.HR.email;
-        console.log(response?.data?.HR?.email,'private')
-      }else{
-       toast.success("Login for view you account");
-console.log('no hr found');
-
-        HRRef.current = null
-      }
-
+        if (localStorage.getItem("HREmail")?.trim()) {
+          console.log(axiosHRInstance, "instance");
+          const response = await axiosHRInstance.get("/hr/getHR");
+          console.log(response, "hr -- private");
+          if (response.data.status === 201)
+            HRRef.current = response.data.HR.email;
+          console.log(response?.data?.HR?.email, "private");
+        } else {
+          toast.success("Login for view you account");
+          console.log("no hr found");
+          HRRef.current = null;
+        }
       } catch (error) {
-        console.log("error in protected route",error);
-      } 
-      finally {
+        console.log("error in protected route", error);
+      } finally {
         setLoading(false);
       }
     };
     fetchData();
   }, []);
   if (loading) {
-    return(<>
-            <ToastContainer />
+    return (
+      <>
+        <ToastContainer />
 
-    <div>Loading...</div>
-    </> );
+        <div>Loading...</div>
+      </>
+    );
   }
-  console.log(HRRef.current,'hrEmail -- private')
+  console.log(HRRef.current, "hrEmail -- private");
 
   if (!HRRef.current?.trim()) {
     return <Navigate to="/hr/login" />;

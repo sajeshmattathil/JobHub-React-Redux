@@ -69,7 +69,12 @@ const UsersManagementTable: React.FC = () => {
 
     return (
         <>
-         <table>
+         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 100px)', width: 'calc(100% - 200px)' }}>
+
+            <div style={{border:'2px solid grey',margin:'5%',borderRadius:'20px'}}>
+            <h2 style={{marginLeft:'3%',marginTop :'3%'}}>Manage your users here</h2>
+
+         <table  style={{marginBottom:'5%'}}>
             <thead className="userHead">
                 <tr>
                     <th>Name</th>
@@ -97,6 +102,8 @@ const UsersManagementTable: React.FC = () => {
                 ))}
             </tbody>
         </table>
+        </div>
+        </div>
         </>
        
     );

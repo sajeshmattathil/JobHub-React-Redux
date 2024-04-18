@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { GrEdit } from "react-icons/gr";
 
+
 const SubscriptionManagement = () => {
   const navigate = useNavigate();
 
@@ -48,12 +49,18 @@ const SubscriptionManagement = () => {
     <>
       <ToastContainer />
 
-      <div className="subscrition" style={{ display: "flex" }}>
+     
+        <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 100px)', width: 'calc(100% - 200px)' }}>
+
+<div style={{border:'2px solid grey',margin:'5%',borderRadius:'20px'}}>
+<div className="subscrition" style={{ display: "flex" }}>
         <button onClick={() => navigate("/admin/createNewPlan")}>
           Create New Plan
         </button>
       </div>
-      <table>
+<h2 style={{marginLeft:'3%',marginTop :'3%'}}>Manage subscription plans here</h2>
+
+      <table className="" style={{marginBottom:'5%'}}>
         <thead className="userHead">
           <tr>
             <th> Plan Name</th>
@@ -87,6 +94,9 @@ const SubscriptionManagement = () => {
             ))}
         </tbody>
       </table>
+      </div>
+      </div>
+
     </>
   );
 };

@@ -5,6 +5,7 @@ import AdminRoutes from "./Routers/Admin/AdminRoutes";
 import { SocketProvider } from "./Providers/Socket.js";
 import ErrorBoundary from "./ErrorBoundary/ErrorBoundary.js";
 
+
 function App() {
   return (
     <Router>

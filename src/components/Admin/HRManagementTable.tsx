@@ -112,8 +112,9 @@ const HRManagementTable: React.FC = () => {
 
     return (
         <>
-        <div>
-        <h2 style={{marginLeft:'15%',marginTop :'15%'}}>Manage Hiring Managers</h2>
+        <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 100px)', width: 'calc(100% - 200px)' }}>
+            <div style={{border:'2px solid grey',margin:'5%',borderRadius:'20px'}}>
+        <h2 style={{marginLeft:'3%',marginTop :'3%'}}>Manage Hiring Managers</h2>
          <table>
             <thead className="userHead">
                 <tr>
@@ -138,7 +139,7 @@ const HRManagementTable: React.FC = () => {
                         <button onClick={() => onViewDetails()}>View Details</button>
                         </td> */}
                     </tr>
-                )) : <div style={{margin : '30%',width : '400px',paddingLeft : '30%',fontWeight:'bolder'}}>{'No Hiring Managers found'}</div>  }
+                )) : <div style={{margin : '30%',width : '100%',paddingLeft : '30%',fontWeight:'bolder'}}>{'No Hiring Managers found'}</div>  }
             </tbody>
         </table>
         <div
@@ -159,8 +160,9 @@ const HRManagementTable: React.FC = () => {
           </Stack>
         </div>
         </div>
-        <div>
-        <h2 style={{marginLeft:'15%'}}>Manage Approval Requests of Hiring Managers</h2>
+        <div style={{border:'2px solid grey',margin:'5%',borderRadius:'20px'}}>
+
+        <h2 style={{marginLeft:'3%',marginTop :'3%'}}>Manage Approval Requests of Hiring Managers</h2>
          <table>
             <thead className="userHead">
                 <tr>
@@ -186,7 +188,7 @@ const HRManagementTable: React.FC = () => {
 
                         </td> */}
                     </tr>
-                )) : <div style={{margin : '30%',width : '400px',paddingLeft : '30%',fontWeight:'bolder'}}>{'No Hiring Managers found'}</div>  }
+                )) : <div style={{margin : '30%',width : '100%',paddingLeft : '30%',fontWeight:'bolder'}}>{'No Hiring Managers found'}</div>  }
             </tbody>
         </table>
 
@@ -208,7 +210,7 @@ const HRManagementTable: React.FC = () => {
           </Stack>
         </div>
         </div>
-
+</div>
         </>
        
     );
