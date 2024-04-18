@@ -45,10 +45,8 @@ console.log(recipient,'recpnt')
         const response = await axiosUserInstance.get(
           `/getChat?recipient1=${recipient}&recipient2=${userEmail}`
         );
-        console.log(response, "prev --msag --user");
 
         if (response.data.status === 201)
-          console.log(response.data.chatData, "prev -user");
 
         setPreviousChat(response.data.chatData);
       }

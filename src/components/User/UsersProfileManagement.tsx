@@ -643,7 +643,8 @@ export default function UsersProfileManagement() {
                                   `workExperience[${index}].jobRole`,
                                   {
                                     required: !workExperience[index]?.jobRole?.trim(),
-                                    pattern: /^[A-Za-z]+$/,
+                                    pattern: /^[A-Za-z]+(?:\s+[A-Za-z]+)*$/
+
                                   }
                                 )}
                                 placeholder={workExperience[index]?.jobRole}
@@ -672,7 +673,8 @@ export default function UsersProfileManagement() {
                                   `workExperience[${index}].company`,
                                   {
                                     required: !workExperience[index]?.company?.trim(),
-                                    pattern: /^[A-Za-z]+$/,
+                                    pattern: /^[A-Za-z]+(?:\s+[A-Za-z]+)*$/
+
                                   }
                                 )}
                                 id=""

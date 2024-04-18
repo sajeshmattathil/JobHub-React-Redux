@@ -163,7 +163,7 @@ const UsersNavbar = () => {
               onClick={handleClick2}
             >
               <HiMiniUserCircle
-                style={{ width: "250%", height: "250%", cursor: "pointer" }}
+                style={{ width: "250%", height: "250%", cursor: "pointer",color:'black' }}
               />
             </Button>
             <Menu

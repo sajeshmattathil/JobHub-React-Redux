@@ -9,7 +9,7 @@
     font-family: 'Satoshi', sans-serif;
 }
 html{
-    background-color: #ddeedd;
+    /* background-color: #ddeedd; */
 
     font-family: 'Satoshi', sans-serif;
      font-size: 16px;
@@ -17,7 +17,8 @@ html{
 body {
     font-family: 'Satoshi', sans-serif;
     font-size: 16px;
-    background-color: rgba(109, 100, 100, 0.164);
+    /* background-color: #ddeedd; */
+
 
 }
 .home__container {
