@@ -23,7 +23,7 @@ function UserRoutes() {
             />
             <Route path="/login" element={<LoginNew />} />
             <Route path="/forgotPassword" element={<UserForgotPassword />} />
-            {/* <Route path="/" element={<Home/>} /> */}
+            <Route path="/" element={<Home/>} />
             <Route
               path="/login"
               element={<UserSessionRoute component={Home} />}
