@@ -8,7 +8,6 @@ import ProfileManagement from "../../Pages/hr/ProfileManagement";
 import HRPrivatedRoute from "./HRPrivateRoutes";
 import ViewJob from "../../Pages/hr/ViewJob";
 import ChatPageUser from "../../components/HR/Chat/ChatPageUser";
-import ChatHomeUser from "../../components/HR/Chat/ChatHomeUser";
 import ShowShortListedUsers from "../../components/HR/ShowShortListedUsers";
 import VideoCall from "../../components/HR/VideoCall/VideoCall";
 import ErrorBoundary from "../../ErrorBoundary/ErrorBoundary";
@@ -27,7 +26,6 @@ function HRRoutes() {
           path={"/job"}
           element={<HRPrivatedRoute component={CreateJob} />}
         />
-        {/* <Route path={"/"} element={<Home />} /> */}
         <Route
           path={"/"}
           element={<HRPrivatedRoute component={Home} />}
@@ -44,15 +42,15 @@ function HRRoutes() {
           path={"/shortListedUsers/:jobId"}
           element={<HRPrivatedRoute component={ShowShortListedUsers} />}
         />
-        <Route path="/chatSignin" element={<ChatHomeUser />} />
-        <Route
-          path="/chatPage/:recipient"
-          element={<ChatPageUser  />}
+         <Route
+          path={"/chatPage/:recipient"}
+          element={<HRPrivatedRoute component={ChatPageUser} />}
         />
         <Route
-          path="/videoCall/:userId"
-          element={<VideoCall  />}
+          path={"/videoCall/:userId"}
+          element={<HRPrivatedRoute component={VideoCall} />}
         />
+       
          <Route
           path={"/followers"}
           element={<HRPrivatedRoute component={FollowersList} />}

@@ -1,12 +1,13 @@
 import  { useEffect, useRef, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { axiosUserInstance } from "../../Utils/axios/axios";
+import Home from '../../Pages/User/UserHomePage'
 
 interface RouteProps {
   component: React.FC;
 }
 
-const UserProtectedRoute: React.FC<RouteProps> = ({ component: Component }) => {
+const UserSessionRoute: React.FC<RouteProps> = () => {
  
   const userRef = useRef<string | null>(null);
 
@@ -21,11 +22,9 @@ const UserProtectedRoute: React.FC<RouteProps> = ({ component: Component }) => {
         userRef.current = response.data.user.email;
       } catch (error) {
         console.log("error happened try again");
-        userRef.current = null
       }finally{
         setLoading(false)
       }
-
     };
     fetchData();
   }, []);
@@ -36,7 +35,7 @@ const UserProtectedRoute: React.FC<RouteProps> = ({ component: Component }) => {
 
     return <Navigate to="/login" />;
   }
-  return <Component />;
+  return <Home />;
 };
 
-export default UserProtectedRoute;
+export default UserSessionRoute;

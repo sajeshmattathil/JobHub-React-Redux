@@ -8,10 +8,10 @@ import UserPublicRoutes from "./UserPublicRoutes";
 import UserForgotPassword from "../../components/User/UserForgotPassword";
 import ViewJob from "../../Pages/User/ViewJob";
 import SearchBar from "../../components/User/Timer";
-import ChatHomeUser from "../../components/User/Chat/ChatHomeUser";
 import ChatPageUser from "../../components/User/Chat/ChatPageUser";
 import Subscriptions from "../../Pages/User/Subscriptions";
-
+import UserSessionRoute from "./UserSessionRoute";
+UserSessionRoute
 
 function UserRoutes() {
   return (
@@ -23,22 +23,26 @@ function UserRoutes() {
             />
             <Route path="/login" element={<LoginNew />} />
             <Route path="/forgotPassword" element={<UserForgotPassword />} />
-            <Route path="/" element={<Home/>} />
+            {/* <Route path="/" element={<Home/>} /> */}
+            <Route
+              path="/login"
+              element={<UserSessionRoute component={Home} />}
+            />
             <Route
               path="/profilemanagement"
               element={<UserProtectedRoute component={profileManagement} />}
             />
             <Route path="/search" element={<SearchBar />} />
+
             <Route
               path="/jobPost/:id"
               element={<ViewJob/>}
             />
-            <Route path="/chatSignin" element={<ChatHomeUser />} />
-            <Route
-              path="/chatPage/:recipient"
-              element={<ChatPageUser/>}
-            />
            
+             <Route
+               path="/chatPage/:recipient"
+              element={<UserProtectedRoute component={ChatPageUser} />}
+            />
             <Route
               path="/subscriptionPlans"
               element={<UserProtectedRoute component={Subscriptions} />}
