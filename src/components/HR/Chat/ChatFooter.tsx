@@ -84,7 +84,7 @@ const ChatFooter = ({ recipient }: { recipient: string | undefined }) => {
 
   if (recipient !== "showMessages")
     return (
-      <div className="chat__footer">
+      <div className="chat__footer" style={{height:'30%'}}>
         {!hide && (
           <form className="form">
             <FileUploadComponent setYourFile={setFile} />

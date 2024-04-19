@@ -1,13 +1,12 @@
 import  { useEffect, useRef, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { axiosUserInstance } from "../../Utils/axios/axios";
-import Home from '../../Pages/User/UserHomePage'
 
 interface RouteProps {
   component: React.FC;
 }
 
-const UserSessionRoute: React.FC<RouteProps> = () => {
+const UserSessionRoute: React.FC<RouteProps> = ({component:Component}) => {
  
   const userRef = useRef<string | null>(null);
 
@@ -35,7 +34,7 @@ const UserSessionRoute: React.FC<RouteProps> = () => {
 
     return <Navigate to="/login" />;
   }
-  return <Home />;
+  return <Component />;
 };
 
 export default UserSessionRoute;

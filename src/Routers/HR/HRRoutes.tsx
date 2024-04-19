@@ -8,10 +8,11 @@ import ProfileManagement from "../../Pages/hr/ProfileManagement";
 import HRPrivatedRoute from "./HRPrivateRoutes";
 import ViewJob from "../../Pages/hr/ViewJob";
 import ChatPageUser from "../../components/HR/Chat/ChatPageUser";
-import ShowShortListedUsers from "../../components/HR/ShowShortListedUsers";
+// import ShowShortListedUsers from "../../components/HR/ShowShortListedUsers";
 import VideoCall from "../../components/HR/VideoCall/VideoCall";
 import ErrorBoundary from "../../ErrorBoundary/ErrorBoundary";
 import FollowersList from "../../Pages/hr/FollowersList";
+import ShortListedUsers from '../../Pages/hr/ShortListedUsers'
 
 
 
@@ -40,7 +41,7 @@ function HRRoutes() {
         />
         <Route
           path={"/shortListedUsers/:jobId"}
-          element={<HRPrivatedRoute component={ShowShortListedUsers} />}
+          element={<HRPrivatedRoute component={ShortListedUsers} />}
         />
          <Route
           path={"/chatPage/:recipient"}
