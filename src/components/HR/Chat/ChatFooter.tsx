@@ -86,7 +86,7 @@ const ChatFooter = ({ recipient }: { recipient: string | undefined }) => {
     return (
       <div className="chat__footer" style={{height:'30%'}}>
         {!hide && (
-          <form className="form">
+          <form className="form" style={{height:'10%'}}>
             <FileUploadComponent setYourFile={setFile} />
 
             <input

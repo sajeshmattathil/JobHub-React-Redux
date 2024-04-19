@@ -9,6 +9,10 @@ import "react-toastify/dist/ReactToastify.css";
 import logo2 from '../../../public/logo2.jpg'
 
 function UserLogin() {
+  const navigate = useNavigate();
+
+  if(localStorage.getItem('userEmail')?.trim()) navigate('/')
+    
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState("");
@@ -42,7 +46,6 @@ function UserLogin() {
     }
   };
 
-  const navigate = useNavigate();
 
   const handleCreateNewUser = () => {
     navigate("/signup");

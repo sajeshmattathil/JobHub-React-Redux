@@ -104,9 +104,9 @@ const ShowShortListedUsers = () => {
             <th>Name</th>
             <th>Email</th>
             <th>View Resume</th>
-            <th></th>
-            <th></th>
-            <th></th>
+            <th>Message</th>
+            <th>Video Call</th>
+            <th>Remove</th>
           </tr>
         </thead>
         <tbody className="userTableBody">

@@ -53,9 +53,9 @@ const ChatFooter = ({ recipient }: { recipient : string | undefined}) => {
   };
   if(recipient !== 'showMessages')
   return (
-    <div className="chat__footer" style={{height:'30%'}}>
+    <div className="chat__footer" style={{height:'10%'}}>
     
-      {!hide &&<form className="form" onSubmit={handleSendMessage} >
+      {!hide &&<form className="form" onSubmit={handleSendMessage} style={{height:'10%'}} >
    
         {/* <div style={{ margin: "3%" }}>
           <GrAttachment style={{ width: "300%", height: "100%" }} />
