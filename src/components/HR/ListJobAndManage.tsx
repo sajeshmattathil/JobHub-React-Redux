@@ -98,7 +98,6 @@ const ListJobAndManage: React.FC = () => {
             resume: user.userData[0].resume,
           })
         );
-      
 
         const extractedJobPostData = response.data.jobData.map(
           (data: {
@@ -201,8 +200,9 @@ const ListJobAndManage: React.FC = () => {
             Manage Job
           </button>
         </div>
-        {manageJob && <ManageJob jobPostData={jobPostData} />}
-        <div>
+        {manageJob && <ManageJob setManageJob={setManageJob} jobPostData={jobPostData} />}
+
+        <div className="modalViewDetails">
           <Modal isOpen={isOpen} onClose={() => setIsOp(!isOp)}>
             <div className="">
               <div className="signupForm items-center justify-center">
@@ -234,54 +234,48 @@ const ListJobAndManage: React.FC = () => {
             </div>
           </Modal>
         </div>
-        <table>
-          <thead className="userHead">
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody className="userTableBody">
-            {users.map((user: UserInterface, index: number) => (
-              <tr key={user._id}>
-                <td>{`${user.fname} ${user.lname}`}</td>
-                <td>{user.email}</td>
-
-                <td>
-                  <button onClick={() => handleToggleModal(index)}>
-                    View Details
-                  </button>
-                </td>
-                <td>
-                  {appliedUsersRef.current &&
-                  appliedUsersRef.current.includes(user.email) ? (
-                    <div>{"Short Listed"}</div>
-                  ) : (
-                    <button onClick={() => handleToggleManageModal(user.email)}>
-                      Short List
-                    </button>
-                  )}
-                  {/* {shortListed && (
-                    <div>
-                      {shortListed.includes(user.email) ? (
-                        <div>{"Short Listed"}</div>
-                      ) : (
-                        <button
-                          onClick={() => handleToggleManageModal(user.email)}
-                        >
-                          Short List
-                        </button>
-                      )}
-                    </div>
-                  )} */}
-                  {!shortListed && <div> </div>}
-                </td>
+        <div className="container" style={{
+          height:'100vh'
+        }}>
+          <table>
+            <thead className="userHead">
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th></th>
+                <th></th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="userTableBody">
+              {users.map((user: UserInterface, index: number) => (
+                <tr key={user._id}>
+                  <td>{`${user.fname} ${user.lname}`}</td>
+                  <td>{user.email}</td>
+
+                  <td>
+                    <button onClick={() => handleToggleModal(index)}>
+                      View Details
+                    </button>
+                  </td>
+                  <td>
+                    {appliedUsersRef.current &&
+                    appliedUsersRef.current.includes(user.email) ? (
+                      <div>{"Short Listed"}</div>
+                    ) : (
+                      <button
+                        onClick={() => handleToggleManageModal(user.email)}
+                      >
+                        Short List
+                      </button>
+                    )}
+
+                    {!shortListed && <div> </div>}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </>
     );
   else

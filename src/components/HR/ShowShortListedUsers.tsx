@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { CiCircleRemove } from "react-icons/ci";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Modal from "./modal";
 
 interface ShortListedUsersInterface {
   _id: string;
@@ -90,20 +91,27 @@ const ShowShortListedUsers = () => {
       console.log('Something went wrong ,try again.');
     }
   }
+  const [isOpen, setIsOpen] = useState(true);
+
   if (loading) {
     return <div>Loading...</div>;
   }
   if(users.length)
   return (
     <>
+
       <ToastContainer />
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(!isOpen)}><div>sds</div></Modal>
+
       <h1 style={{ marginLeft: "35%", marginTop: "5%" }}>Short Listed Users</h1>
+      <div className="shortList" style={{height:'100vh'}}>
       <table>
         <thead className="userHead">
           <tr>
             <th>Name</th>
             <th>Email</th>
             <th>View Resume</th>
+            <th>Status</th>
             <th>Message</th>
             <th>Video Call</th>
             <th>Remove</th>
@@ -124,6 +132,7 @@ const ShowShortListedUsers = () => {
                   View Resume
                 </a>
               </td>
+              <td style={{cursor:'pointer'}} onClick={() => setIsOpen(!isOpen)} >Update</td>
               <td>
                 <button onClick={() => navigate(`/hr/chatPage/${user.email}`)}>
                   Send Messsage
@@ -139,6 +148,8 @@ const ShowShortListedUsers = () => {
           ))}
         </tbody>
       </table>
+      </div>
+      
     </>
   );
   else return(

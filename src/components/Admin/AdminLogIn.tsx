@@ -39,17 +39,16 @@ function AdminLogIn() {
 
         navigate("/admin");
 
-      } else if (response?.data?.status === 200)
-
-        setError(response?.data?.message);
-
-        (response?.data?.message,'message');
-        
-    } catch (err) {
-      console.log("Error happenend in login submit");
+      } else {
+        setError("Something went wrong ,try again");
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error:any) {      
+        if(error?.response?.data?.status === 401 || error?.response?.data?.status === 401 ) {
+          setError(error?.response?.data?.message);
     }
-  };
-
+  }
+  }
   return (
     <div
       style={{

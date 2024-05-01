@@ -2,8 +2,8 @@ import axios from "axios";
 
 function createAxiosInstance(tokenId: string | null, role: string | null) {
   const instance = axios.create({
-    baseURL: 'https://job-hub.online'
-    // baseURL: "http://localhost:3000",
+    // baseURL: 'https://job-hub.online'
+    baseURL: "http://localhost:3000",
   });
 
   if (tokenId) {
@@ -23,6 +23,7 @@ function createAxiosInstance(tokenId: string | null, role: string | null) {
   }
   return instance;
 }
+
 const axiosUserInstance = createAxiosInstance("userToken", "user");
 const axiosHRInstance =  createAxiosInstance("HRToken", "HR");
 const axiosAdminInstance = createAxiosInstance("adminToken", "admin");

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { axiosInstance, axiosUserInstance } from "../../Utils/axios/axios";
@@ -34,6 +34,9 @@ const UserHome = ({
     industryInterface[] | []
   >([]);
   const [msg, setMsg] = useState<string>("");
+  const timeOut = useRef<NodeJS.Timeout | null>(null)
+
+  
 
   interface jobData {
     salaryScale: string;
@@ -153,7 +156,12 @@ console.log(filteredIndustry,value,'indus');
   };
 
   const handleSalarySliderValue = (value: number) => {
+    // eslint-disable-next-line prefer-const
+
+ if(timeOut.current)   clearTimeout(timeOut.current)
+    timeOut.current = setTimeout(() => {
     setSalarySliderValue(value);
+    }, 2000);
   };
 
   if (!msg.trim()) {
