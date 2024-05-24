@@ -1,8 +1,15 @@
 import axios from "axios";
 
+const roles = Object.freeze({
+  USER: 'user',
+  ADMIN: 'admin',
+  HR : 'HR'
+});
+
+
 function createAxiosInstance(tokenId: string | null, role: string | null) {
   const instance = axios.create({
-    baseURL: 'https://job-hub.online'
+    baseURL: 'http://job-hub.online'
     // baseURL: "http://localhost:3000",
   });
 
@@ -24,9 +31,9 @@ function createAxiosInstance(tokenId: string | null, role: string | null) {
   return instance;
 }
 
-const axiosUserInstance = createAxiosInstance("userToken", "user");
-const axiosHRInstance =  createAxiosInstance("HRToken", "HR");
-const axiosAdminInstance = createAxiosInstance("adminToken", "admin");
+const axiosUserInstance = createAxiosInstance("userToken", roles.USER);
+const axiosHRInstance =  createAxiosInstance("HRToken", roles.HR);
+const axiosAdminInstance = createAxiosInstance("adminToken", roles.ADMIN);
 const axiosInstance = createAxiosInstance(null, null);
 
 export {
