@@ -9,7 +9,7 @@ const roles = Object.freeze({
 
 function createAxiosInstance(tokenId: string | null, role: string | null) {
   const instance = axios.create({
-    baseURL: 'http://job-hub.online'
+    baseURL: 'https://job-hub.online'
     // baseURL: "http://localhost:3000",
   });
 
