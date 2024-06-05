@@ -1,11 +1,10 @@
-import  { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { axiosInstance } from "../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
-import generateOtp from "../../Utils/OtpGenerator/otpGenerator";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import logo2 from '../../../public/logo2.jpg'
+import logo2 from "../../../public/logo2.jpg";
 
 function UserSignup() {
   const [fname, setFname] = useState<string>("");
@@ -13,7 +12,7 @@ function UserSignup() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPsw, setConfirm] = useState<string>("");
-  const [otp, setOtp] = useState<string>("");
+  const [otp, setOtp] = useState<string>("dsdsd");
   const [resendClicked, setClicked] = useState<boolean>(false);
   const [minutes, setMinutes] = useState<number>(10);
   const [seconds, setSeconds] = useState<number | string>("00");
@@ -30,7 +29,6 @@ function UserSignup() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function onSubmit(_data: unknown) {
     try {
@@ -43,7 +41,6 @@ function UserSignup() {
         setError("Complete all the fields");
         return;
       }
-      const otp = generateOtp();
       const createdAt = Date.now();
 
       const response = await axiosInstance.post("/signup_submit", {
@@ -52,21 +49,20 @@ function UserSignup() {
         email: email,
         password: password,
         confirm: confirmPsw,
-        otp: otp,
         createdAt: createdAt,
       });
-      
+
       if (response.data.status === 500) setError(response?.data?.message);
       if (response.data.status === 400) setError(response?.data?.message);
       if (response.data.status === 409) setError(response?.data?.message);
 
       if (response?.data?.status === 201) {
         setError("");
-        if (otp) setOtp(otp);
+        setOtp("Otp send succesfully");
         startTimer();
       }
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error:any) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       toast.success(error?.response?.data?.message);
       // setError("User already exists");
     }
@@ -79,17 +75,18 @@ function UserSignup() {
           userId: email,
         });
 
-        if (response.data.status === 201) navigate("/login");
-        if (response.data.status === 401) setError(response.data.message);
-        if (response.data.status === 500) setError(response.data.message);
-        if (response.data.status === 404) setError(response.data.message);
-
-        setOtp("");
+        if (response.data.status === 200) {
+          toast.success(response.data.message)
+          setTimeout(() => {
+            navigate("/login");
+          }, 1500);
+        }
+        // setOtp("");
       } else {
         setError("Enter correct OTP");
       }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error :any) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       if (error.response.data.status === 401)
         setError(error.response.data.message);
       if (error.response.data.status === 401)
@@ -98,20 +95,20 @@ function UserSignup() {
         setError(error.response.data.message);
 
       // setError("Something went wrong try again");
-      setOtp("");
+      // setOtp("");
     }
   };
 
   const handleResendOTP = async () => {
     try {
       setClicked(true);
-      const otp = generateOtp();
+      setError('')
+      setEnteredOtp('')
       const createdAt = Date.now();
       if (intervalRef.current) clearTimer();
       startTimer();
       const resendOTP = await axiosInstance.post("/resendOTP", {
         userId: email,
-        otp: otp,
         createdAt: createdAt,
       });
       if (resendOTP.data.status === 400)
@@ -141,10 +138,8 @@ function UserSignup() {
   }, [timer]);
 
   const startTimer = () => {
-
     if (!intervalRef.current) {
       intervalRef.current = setInterval(() => {
-
         setTimer((prev) => {
           return prev - 1;
         });
@@ -154,10 +149,9 @@ function UserSignup() {
   };
 
   const clearTimer = () => {
-
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
-      
+
       intervalRef.current = null;
       setTimer(600);
     }
@@ -205,7 +199,8 @@ function UserSignup() {
                 fontWeight: "bold",
               }}
             >
-            <img src={logo2} alt="" style={{width:'30%',height:'30%'}}/>   User Sign Up
+              <img src={logo2} alt="" style={{ width: "30%", height: "30%" }} />{" "}
+              User Sign Up
             </p>
             <p
               style={{
@@ -373,6 +368,7 @@ function UserSignup() {
   } else {
     return (
       <div>
+        <ToastContainer />
         <div
           className="otp"
           style={{
@@ -398,9 +394,12 @@ function UserSignup() {
                 fontWeight: "bolder",
                 fontFamily: "sans-serif",
                 fontSize: "17px",
+                alignContent:'center',
+                placeItems:'center'
               }}
             >
-              Enter your OTP
+              <img src={logo2} alt="" style={{ width: "30%", height: "30%",marginLeft:'35%' }} />{" "}
+              <h2>Enter your OTP</h2>
             </p>
             <p
               style={{
@@ -425,15 +424,16 @@ function UserSignup() {
                 style={{
                   border: "solid black 2px",
                   borderRadius: ".5rem",
-                  margin: ".5rem",
+                  marginBottom: ".5rem",
                 }}
                 onChange={(e) => {
                   setEnteredOtp(e.target.value);
                   setError("");
                 }}
               />
-
-              <button
+            </span>
+            <div style={{display:'flex',justifyContent:'space-between'}}>
+            <button
                 style={{
                   borderRadius: ".5rem",
                   color: "white",
@@ -444,10 +444,11 @@ function UserSignup() {
               >
                 Submit
               </button>
-            </span>
-            <p style={{ cursor: "pointer" }} onClick={handleResendOTP}>
-              Resend OTP
+               <p style={{ cursor: "pointer",fontWeight:'bold',fontSize:'.3rem' }} onClick={handleResendOTP}>
+              <h4>Resend OTP</h4>
             </p>
+            </div>
+           
           </div>
         </div>
       </div>

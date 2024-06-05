@@ -1,6 +1,5 @@
 import  { useEffect, useRef, useState } from "react";
 import { axiosInstance } from "../../Utils/axios/axios";
-import generateOtp from "../../Utils/OtpGenerator/otpGenerator";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -34,10 +33,8 @@ const UserForgotPassword = () => {
     window.scrollTo(0, 0);
 
     try {
-      const otp = generateOtp();
 
       const sendForgotOtp = await axiosInstance.post("/forgot_password", {
-        otp: otp,
         createdAt: Date.now(),
         userId: data.email,
       });
@@ -86,13 +83,12 @@ const UserForgotPassword = () => {
   const handleResendOTP = async () => {
     try {
       setClicked(true);
-      const otp = generateOtp();
+      
       const createdAt = Date.now();
       if (intervalRef.current) clearTimer();
       startTimer();
       const resendOTP = await axiosInstance.post("/resendOTP", {
         userId: email,
-        otp: otp,
         createdAt: createdAt,
       });
       if (resendOTP.data.status === 400)

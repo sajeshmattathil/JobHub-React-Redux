@@ -6,7 +6,6 @@ const roles = Object.freeze({
   HR : 'HR'
 });
 
-
 function createAxiosInstance(tokenId: string | null, role: string | null) {
   const instance = axios.create({
     baseURL: 'https://job-hub.online'
