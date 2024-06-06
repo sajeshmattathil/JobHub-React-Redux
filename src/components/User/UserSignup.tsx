@@ -12,7 +12,7 @@ function UserSignup() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPsw, setConfirm] = useState<string>("");
-  const [otp, setOtp] = useState<string>("dsdsd");
+  const [otp, setOtp] = useState<string>("");
   const [resendClicked, setClicked] = useState<boolean>(false);
   const [minutes, setMinutes] = useState<number>(10);
   const [seconds, setSeconds] = useState<number | string>("00");
