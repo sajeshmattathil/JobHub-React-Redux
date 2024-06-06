@@ -278,39 +278,34 @@ function UserSignup() {
 
               <label>Password</label>
               <input
-                type="password"
-                // name="password"
-                {...register("password", {
-                  required: true,
-                  validate: {
-                    checkLength: (value) => value.length >= 6,
-                    matchPattern: (value) =>
-                      /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*%&*^()`~+-=])/.test(
-                        value
-                      ),
-                  },
-                })}
-                onChange={(
-                  event: React.ChangeEvent<
-                    HTMLInputElement | HTMLTextAreaElement
-                  >
-                ) => setPassword(event.target.value)}
-                value={password}
-              />
-              {errors.password?.type === "required" && (
-                <p className="errorMsg">Password is required.</p>
-              )}
-              {errors.password?.type === "checkLength" && (
-                <p className="errorMsg">
-                  Password should be at-least 6 characters.
-                </p>
-              )}
-              {errors.password?.type === "matchPattern" && (
-                <p className="errorMsg">
-                  Password should contain at least one uppercase letter,
-                  lowercase letter, digit, and special symbol.
-                </p>
-              )}
+        type="password"
+        {...register("password", {
+          required: true,
+          validate: {
+            checkLength: (value) => value.length >= 8,
+            matchPattern: (value) =>
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*?%])[A-Za-z\d!@#$%^&*?%]{8,30}$/.test(
+                value
+              ),
+          },
+        })}
+        onChange={(event) => setPassword(event.target.value)}
+        value={password}
+      />
+      {errors.password?.type === "required" && (
+        <p className="errorMsg">Password is required.</p>
+      )}
+      {errors.password?.type === "checkLength" && (
+        <p className="errorMsg">
+          Password should be at least 8 characters.
+        </p>
+      )}
+      {errors.password?.type === "matchPattern" && (
+        <p className="errorMsg">
+          Password should contain at least one uppercase letter,
+          one lowercase letter, one digit, and one special symbol.
+        </p>
+      )}
 
               <label>Confirm</label>
               <input
@@ -321,7 +316,7 @@ function UserSignup() {
                   validate: {
                     checkLength: (value) => value.length >= 6,
                     matchPattern: (value) =>
-                      /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*])/.test(
+                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*?%])[A-Za-z\d!@#$%^&*?%]{8,30}$/.test(
                         value
                       ),
                   },
