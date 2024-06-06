@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import logo2 from "../../../public/logo2.jpg";
+import { FaRegEyeSlash } from "react-icons/fa";
+import { IoEyeOutline } from "react-icons/io5";
 
 function UserSignup() {
   const [fname, setFname] = useState<string>("");
@@ -12,6 +14,10 @@ function UserSignup() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPsw, setConfirm] = useState<string>("");
+  const [hidePassword, setHidePassword] = useState<boolean>(true);
+  const [hideConfirmPassword, setHideConfirmPassword] = useState<boolean>(true);
+
+
   const [otp, setOtp] = useState<string>("");
   const [resendClicked, setClicked] = useState<boolean>(false);
   const [minutes, setMinutes] = useState<number>(10);
@@ -277,46 +283,83 @@ function UserSignup() {
               )}
 
               <label>Password</label>
+              <div
+               style={{
+                display: "flex",
+                alignItems: "center",
+                border: "1px solid #cccccc",
+                borderRadius: "5px",
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = 'black';
+              }}
+              >
               <input
-        type="password"
-        {...register("password", {
-          required: true,
-          validate: {
-            checkLength: (value) => value.length >= 8,
-            matchPattern: (value) =>
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*?%])[A-Za-z\d!@#$%^&*?%]{8,30}$/.test(
-                value
-              ),
-          },
-        })}
-        onChange={(event) => setPassword(event.target.value)}
-        value={password}
-      />
-      {errors.password?.type === "required" && (
-        <p className="errorMsg">Password is required.</p>
-      )}
-      {errors.password?.type === "checkLength" && (
-        <p className="errorMsg">
-          Password should be at least 8 characters.
-        </p>
-      )}
-      {errors.password?.type === "matchPattern" && (
-        <p className="errorMsg">
-          Password should contain at least one uppercase letter,
-          one lowercase letter, one digit, and one special symbol.
-        </p>
-      )}
-
-              <label>Confirm</label>
-              <input
-                type="password"
-                // name="password"
+               type={hidePassword ? "password" : "text"}
+               style={{ border: "none", outline: "none" }}
                 {...register("password", {
                   required: true,
                   validate: {
                     checkLength: (value) => value.length >= 6,
                     matchPattern: (value) =>
-                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*?%])[A-Za-z\d!@#$%^&*?%]{8,30}$/.test(
+                      /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@%#$*])/.test(
+                        value
+                      ),
+                  },
+                })}
+                onChange={(
+                  event: React.ChangeEvent<
+                    HTMLInputElement | HTMLTextAreaElement
+                  >
+                ) => setPassword(event.target.value)}
+                value={password !== '' ? password:'' }
+              />
+               <div
+              className="hidePassword"
+              onClick={() => setHidePassword((prev) => !prev)}
+              style={{ cursor: "pointer", paddingRight: "3%" }}
+            >
+              <FaRegEyeSlash style={{ fontSize: "150%" }} />
+            </div>
+              </div>
+              
+              {errors.password?.type === "required" && (
+                <p className="errorMsg">Password is required.</p>
+              )}
+              {errors.password?.type === "checkLength" && (
+                <p className="errorMsg">
+                  Password should be at-least 6 characters.
+                </p>
+              )}
+              {errors.password?.type === "matchPattern" && (
+                <p className="errorMsg">
+                  Password should contain at least one uppercase letter,
+                  lowercase letter, digit, and special symbol.
+                </p>
+              )}
+
+              <label>Confirm</label>
+              <div
+               style={{
+                display: "flex",
+                alignItems: "center",
+                border: "1px solid #cccccc",
+                borderRadius: "5px",
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = 'black';
+              }}
+              >
+              <input
+               type={hideConfirmPassword ? "password" : "text"}
+               style={{ border: "none", outline: "none" }}
+               
+                {...register("password", {
+                  required: true,
+                  validate: {
+                    checkLength: (value) => value.length >= 6,
+                    matchPattern: (value) =>
+                      /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@%#$*])/.test(
                         value
                       ),
                   },
@@ -326,8 +369,18 @@ function UserSignup() {
                     HTMLInputElement | HTMLTextAreaElement
                   >
                 ) => setConfirm(event.target.value)}
-                value={confirmPsw}
+                value={confirmPsw !== '' ? confirmPsw:''}
               />
+               <div
+              className="hidePassword"
+              onClick={() => setHideConfirmPassword((prev) => !prev)}
+              style={{ cursor: "pointer", paddingRight: "3%" }}
+            >
+              {hideConfirmPassword ? <FaRegEyeSlash style={{ fontSize: "150%" }} /> : <IoEyeOutline style={{ fontSize: "150%" }} />}
+
+              
+            </div>
+              </div>
               {errors.password?.type === "required" && (
                 <p className="errorMsg">Password is required.</p>
               )}
