@@ -285,7 +285,7 @@ function UserSignup() {
                   validate: {
                     checkLength: (value) => value.length >= 6,
                     matchPattern: (value) =>
-                      /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*])/.test(
+                      /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*%&*^()`~+-=])/.test(
                         value
                       ),
                   },
