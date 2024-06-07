@@ -2,6 +2,8 @@ import { useState } from "react";
 import { axiosInstance } from "../../Utils/axios/axios";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function SignupHr() {
   const [name, setName] = useState<string>("");
@@ -40,15 +42,14 @@ function SignupHr() {
         setError("");
         setOtp("OTP send successfully");
       }
-      if (response?.data?.status === 400) {
-        setError(response?.data?.message);
-      }
-      if (response?.data?.status === 409) {
-        setError(response?.data?.message);
-      }
-    } catch (err) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err:any) {
       console.log("Error happenend in sigunp submit");
-      setError("Internal Server Down");
+      if (err?.response?.data?.status === 409) {
+        toast.success(err?.response?.data?.message);
+      }else{
+        toast.success('Something went wrong ,try again.');
+      }
     }
   };
   const handleOtp = async () => {
@@ -69,11 +70,11 @@ function SignupHr() {
 
         setOtp("");
       } else {
-        setError("Enter correct OTP");
+        toast.success("Enter correct OTP");
       }
     } catch (error) {
-      setError("Something went wrong try again");
-      setOtp("");
+      toast.success("Something went wrong try again");
+      
     }
   };
 
@@ -97,6 +98,7 @@ function SignupHr() {
             borderRadius: "2rem",
           }}
         >
+            <ToastContainer />
           <form
             className="items-center justify-center"
             style={{
@@ -144,7 +146,7 @@ function SignupHr() {
                 <p className="errorMsg">Name is not valid.</p>
               )}
 
-              <label>Email</label>
+              <label>Email *</label>
               <input
                 type="text"
                 {...register("email", {
@@ -166,7 +168,7 @@ function SignupHr() {
                 <p className="errorMsg">Email is not valid.</p>
               )}
 
-              <label>Password</label>
+              <label>Password *</label>
               <input
                 type="password"
                 // name="password"
@@ -209,7 +211,7 @@ function SignupHr() {
               <input
                 type="text"
                 {...register("company", {
-                  required: true,
+                  required: false,
                 })}
                 onChange={(
                   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -244,7 +246,7 @@ function SignupHr() {
               )}
 
               <label></label>
-              <button type="submit">Sign In</button>
+              <button type="submit" style={{marginTop:'1%'}}>Sign Up</button>
             </div>
             <p style={{ cursor: "pointer" }} onClick={handleExistingHr}>
               Already have a account?
@@ -266,6 +268,7 @@ function SignupHr() {
             backgroundColor: "white",
           }}
         >
+            <ToastContainer />
           <div
             className="otpInner items-center justify-center "
             style={{
@@ -294,7 +297,7 @@ function SignupHr() {
                 style={{
                   border: "solid black 2px",
                   borderRadius: ".5rem",
-                  margin: "1rem",
+                
                 }}
                 onChange={(e) => {
                   setEnteredOtp(e.target.value);
@@ -308,13 +311,14 @@ function SignupHr() {
                   color: "white",
                   backgroundColor: "black",
                   border: "none",
+                  marginTop:'1rem'
                 }}
                 onClick={handleOtp}
               >
                 Submit
               </button>
             </span>
-            <p>Resend OTP</p>
+            {/* <p>Resend OTP</p> */}
           </div>
         </div>
       </div>
