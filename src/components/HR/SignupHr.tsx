@@ -175,7 +175,7 @@ function SignupHr() {
                   validate: {
                     checkLength: (value) => value.length >= 6,
                     matchPattern: (value) =>
-                      /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*])/.test(
+                      /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@%&^()#$*])/.test(
                         value
                       ),
                   },
@@ -229,7 +229,7 @@ function SignupHr() {
               <input
                 type="text"
                 {...register("website", {
-                  required: true,
+                  required: false,
                 })}
                 onChange={(
                   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
