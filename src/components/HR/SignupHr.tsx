@@ -44,8 +44,8 @@ function SignupHr() {
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err:any) {
-      console.log("Error happenend in sigunp submit");
-      if (err?.response?.data?.status === 409) {
+      console.log(err.status,'response');
+      if (err?.response?.status === 409) {
         toast.success(err?.response?.data?.message);
       }else{
         toast.success('Something went wrong ,try again.');
@@ -64,17 +64,14 @@ function SignupHr() {
           setError("");
           navigate("/hr/login");
         }
-        if (response.data.status === 401) setError(response.data.message);
-        if (response.data.status === 500) setError(response.data.message);
-        if (response.data.status === 404) setError(response.data.message);
-
+     
         setOtp("");
       } else {
         toast.success("Enter correct OTP");
       }
-    } catch (error) {
-      toast.success("Something went wrong try again");
-      
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error : any) {
+      toast.success(error?.response?.data?.message);  
     }
   };
 
@@ -92,8 +89,8 @@ function SignupHr() {
             justifyContent: "center",
             alignItems: "center",
             backgroundColor: "white",
-            width: "50%",
-            marginLeft: "27%",
+            width: "35%",
+            marginLeft: "35%",
             margin: "10%",
             borderRadius: "2rem",
           }}
@@ -124,7 +121,7 @@ function SignupHr() {
             </p>
 
             <div className="form-control">
-              <label htmlFor="resume_upload">Name</label>
+              <label htmlFor="resume_upload">Name *</label>
               <input
                 type="text"
                 {...register("name", {
@@ -207,11 +204,11 @@ function SignupHr() {
                 </p>
               )}
 
-              <label htmlFor="resume_upload">Company Name</label>
+              <label htmlFor="resume_upload">Company Name *</label>
               <input
                 type="text"
                 {...register("company", {
-                  required: false,
+                  required: true,
                 })}
                 onChange={(
                   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -231,7 +228,7 @@ function SignupHr() {
               <input
                 type="text"
                 {...register("website", {
-                  required: false,
+                  required: true,
                 })}
                 onChange={(
                   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

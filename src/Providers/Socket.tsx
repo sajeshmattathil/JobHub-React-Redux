@@ -15,7 +15,7 @@ type SocketProviderProps = {
 
 export const SocketProvider = (props: SocketProviderProps) => {
   const socket = useMemo(() => io("https://job-hub.online"), []);
-  // const socket = useMemo(() => io("http://localhost:3000"), []);g
+  // const socket = useMemo(() => io("http://localhost:3000"), []);
 
   const contextValue: SocketContextType = {
     socket: socket,
